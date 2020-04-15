@@ -59,7 +59,7 @@ public class Sobre extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(new MigLayout("", "[]", "[30px][][][][20][][][][][][]"));
+		contentPanel.setLayout(new MigLayout("", "[grow]", "[30px][][][][20][][][][][][]"));
 		{
 			JLabel lblSistemaDeCadastro = new JLabel("Sistema de Cadastro de Aluno");
 			lblSistemaDeCadastro.setFont(new Font("Verdana", Font.BOLD, 24));

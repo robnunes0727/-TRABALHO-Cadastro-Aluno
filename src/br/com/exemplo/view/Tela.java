@@ -43,7 +43,12 @@ public class Tela extends JFrame {
 	private JMenuItem mnAjSobre;
 	private JTabbedPane tabbedPane;
 	private JTextField txtStatus;
-	private JPanel panel;
+	private JPanel tabDadosPessoais;
+	private JPanel tabCurso;
+	private JPanel tabNotasFaltas;
+	private JPanel tabBoletim;
+	private JSeparator separator;
+	private JMenuItem mnAjLicensas;
 
 	/**
 	 * Launch the application.
@@ -137,8 +142,8 @@ public class Tela extends JFrame {
 					Sobre dialog = new Sobre();
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
-				} catch (Exception ex) {
-					ex.printStackTrace();
+				} catch (Exception e1) {
+					e1.printStackTrace();
 				}
 
 				// Fim botão sobre
@@ -146,6 +151,25 @@ public class Tela extends JFrame {
 		});
 		mnAjSobre.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 		mnAjuda.add(mnAjSobre);
+		
+		separator = new JSeparator();
+		mnAjuda.add(separator);
+		
+		mnAjLicensas = new JMenuItem("Licenças");
+		mnAjLicensas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// Botão licenças
+				try {
+					Licenca dialog = new Licenca();
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				// Fim botão licensas
+			}
+		});
+		mnAjuda.add(mnAjLicensas);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -155,20 +179,30 @@ public class Tela extends JFrame {
 		tabbedPane.setBounds(10, 11, 664, 333);
 		contentPane.add(tabbedPane);
 		
-		panel = new JPanel();
-		tabbedPane.addTab("Dados Pessoais", null, panel, "Dados pessoais do aluno.");
-		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
+		tabDadosPessoais = new JPanel();
+		tabbedPane.addTab("Dados Pessoais", null, tabDadosPessoais, "Dados pessoais do aluno.");
+		GroupLayout gl_tabDadosPessoais = new GroupLayout(tabDadosPessoais);
+		gl_tabDadosPessoais.setHorizontalGroup(
+			gl_tabDadosPessoais.createParallelGroup(Alignment.LEADING)
 				.addGap(0, 659, Short.MAX_VALUE)
 		);
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
+		gl_tabDadosPessoais.setVerticalGroup(
+			gl_tabDadosPessoais.createParallelGroup(Alignment.LEADING)
 				.addGap(0, 305, Short.MAX_VALUE)
 		);
-		panel.setLayout(gl_panel);
+		tabDadosPessoais.setLayout(gl_tabDadosPessoais);
+		
+		tabCurso = new JPanel();
+		tabbedPane.addTab("Dados do Curso", null, tabCurso, "Dados do curso do aluno.");
+		
+		tabNotasFaltas = new JPanel();
+		tabbedPane.addTab("Notas e Faltas", null, tabNotasFaltas, "Notas e faltas do aluno.");
+		
+		tabBoletim = new JPanel();
+		tabbedPane.addTab("Boletim", null, tabBoletim, "Boletim do aluno.");
 		
 		txtStatus = new JTextField();
+		txtStatus.setToolTipText("Mensagens do sistema aparecem aqui.");
 		txtStatus.setEditable(false);
 		txtStatus.setFont(new Font("Verdana", Font.PLAIN, 15));
 		txtStatus.setBounds(10, 348, 664, 25);
