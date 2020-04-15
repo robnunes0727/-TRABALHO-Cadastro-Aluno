@@ -18,6 +18,9 @@ import java.awt.event.InputEvent;
 import javax.swing.JSeparator;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import java.awt.Font;
 
 public class Tela extends JFrame {
 
@@ -37,6 +40,9 @@ public class Tela extends JFrame {
 	private JMenuItem mnNtConsultar;
 	private JMenu mnAjuda;
 	private JMenuItem mnAjSobre;
+	private JTabbedPane tabbedPane;
+	private JTextField txtStatus;
+	private JPanel panel;
 
 	/**
 	 * Launch the application.
@@ -121,20 +127,42 @@ public class Tela extends JFrame {
 		menuBar.add(mnAjuda);
 		
 		mnAjSobre = new JMenuItem("Sobre");
+		mnAjSobre.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Menu > Ajuda > Sobre
+				
+				// Fim botão sobre
+			}
+		});
 		mnAjSobre.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 		mnAjuda.add(mnAjSobre);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 674, Short.MAX_VALUE)
+		contentPane.setLayout(null);
+		
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBounds(10, 11, 664, 333);
+		contentPane.add(tabbedPane);
+		
+		panel = new JPanel();
+		tabbedPane.addTab("Dados Pessoais", null, panel, "Dados pessoais do aluno.");
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 659, Short.MAX_VALUE)
 		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 370, Short.MAX_VALUE)
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 305, Short.MAX_VALUE)
 		);
-		contentPane.setLayout(gl_contentPane);
+		panel.setLayout(gl_panel);
+		
+		txtStatus = new JTextField();
+		txtStatus.setEditable(false);
+		txtStatus.setFont(new Font("Verdana", Font.PLAIN, 15));
+		txtStatus.setBounds(10, 348, 664, 25);
+		contentPane.add(txtStatus);
+		txtStatus.setColumns(10);
 	}
 }
