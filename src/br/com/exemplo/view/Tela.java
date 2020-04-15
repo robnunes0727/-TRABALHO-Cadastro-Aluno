@@ -133,7 +133,7 @@ public class Tela extends JFrame {
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 391, Short.MAX_VALUE)
+				.addGap(0, 370, Short.MAX_VALUE)
 		);
 		contentPane.setLayout(gl_contentPane);
 	}
