@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout;
+import javax.swing.JDialog;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -131,6 +132,15 @@ public class Tela extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// Menu > Ajuda > Sobre
 				
+				// Copiado da main do Sobre.java
+				try {
+					Sobre dialog = new Sobre();
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+
 				// Fim botão sobre
 			}
 		});

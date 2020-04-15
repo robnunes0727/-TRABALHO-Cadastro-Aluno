@@ -23,6 +23,7 @@ import net.miginfocom.swing.MigLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.UIManager;
+import java.awt.Rectangle;
 
 public class Sobre extends JDialog {
 
@@ -30,13 +31,15 @@ public class Sobre extends JDialog {
 
 	/**
 	 * Launch the application.
-	 */
+	
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
+		
+		****** COPIAR ESSA PARTE DO CODIGO E COLOCAR NO BOTÃO QUE ABRE A JANELA ******
 		try {
 			Sobre dialog = new Sobre();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -45,17 +48,18 @@ public class Sobre extends JDialog {
 			e.printStackTrace();
 		}
 	}
-
+	*/
+	
 	/**
 	 * Create the dialog.
 	 */
 	public Sobre() {
 		setTitle("Sobre");
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 441, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(new MigLayout("", "[][][424px]", "[30px][][][][20][][][][][][]"));
+		contentPanel.setLayout(new MigLayout("", "[]", "[30px][][][][20][][][][][][]"));
 		{
 			JLabel lblSistemaDeCadastro = new JLabel("Sistema de Cadastro de Aluno");
 			lblSistemaDeCadastro.setFont(new Font("Verdana", Font.BOLD, 24));
