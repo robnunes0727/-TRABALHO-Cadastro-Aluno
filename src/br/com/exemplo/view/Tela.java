@@ -93,7 +93,7 @@ public class Tela extends JFrame {
 		mnAlSair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// Menu > Aluno > Sair
-				// Talvez abrir um pop-up de confirmação?
+				// Talvez abrir um pop-up de confirmação??
 				System.exit(0);
 				// Fim botão Sair
 			}
