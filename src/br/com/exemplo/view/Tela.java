@@ -32,6 +32,10 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.ImageIcon;
 
 public class Tela extends JFrame {
 
@@ -78,6 +82,19 @@ public class Tela extends JFrame {
 	private JLabel lblCel;
 	private JFormattedTextField txtCel;
 	private String inputErro = ""; // Tratamento de entrada invalida: 'ESTADO', 'CELULAR' e 'DATA'
+	private JLabel lblCurso;
+	private JLabel lblCampus;
+	private JLabel lblPeriodo;
+	private JComboBox cmbCurso;
+	private JComboBox cmbCampus;
+	private JRadioButton rdMatutino;
+	private JRadioButton rdVespertino;
+	private JRadioButton rdNoturno;
+	private final ButtonGroup rdGrpPeriodo = new ButtonGroup();
+	private JButton btnConsulta;
+	private JButton btnAlterar;
+	private JButton btnInserir;
+	private JButton btnExcluir;
 
 	/**
 	 * Launch the application.
@@ -372,6 +389,68 @@ public class Tela extends JFrame {
 		
 		tabCurso = new JPanel();
 		tabbedPane.addTab("Dados do Curso", null, tabCurso, "Dados do curso do aluno.");
+		tabCurso.setLayout(new MigLayout("", "[][10][grow][grow][grow][25]", "[][25][][25][][25][]"));
+		
+		lblCurso = new JLabel("Curso");
+		lblCurso.setFont(new Font("Verdana", Font.PLAIN, 18));
+		tabCurso.add(lblCurso, "cell 0 0,alignx right");
+		
+		cmbCurso = new JComboBox();
+		cmbCurso.setModel(new DefaultComboBoxModel(new String[] {"Análise e Desenvolvimento de Sistema", "Ciência da Computação", "Farmácia", "Medicina"})); // ** Talvez fazer puxar da db? Hardcoded por enquanto.
+		cmbCurso.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		tabCurso.add(cmbCurso, "cell 2 0 3 1,growx");
+		
+		lblCampus = new JLabel("Campus");
+		lblCampus.setFont(new Font("Verdana", Font.PLAIN, 18));
+		tabCurso.add(lblCampus, "cell 0 2,alignx right");
+		
+		cmbCampus = new JComboBox();
+		cmbCampus.setModel(new DefaultComboBoxModel(new String[] {"Tatuapé", "Pinheiros"}));
+		cmbCampus.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		tabCurso.add(cmbCampus, "cell 2 2 3 1,growx");
+		
+		lblPeriodo = new JLabel("Período");
+		lblPeriodo.setFont(new Font("Verdana", Font.PLAIN, 18));
+		tabCurso.add(lblPeriodo, "cell 0 4,alignx right");
+		
+		rdMatutino = new JRadioButton("Matutino");
+		rdGrpPeriodo.add(rdMatutino);
+		rdMatutino.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		tabCurso.add(rdMatutino, "flowx,cell 2 4,alignx left");
+		
+		rdVespertino = new JRadioButton("Vespertino");
+		rdGrpPeriodo.add(rdVespertino);
+		rdVespertino.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		tabCurso.add(rdVespertino, "cell 3 4,alignx left");
+		
+		rdNoturno = new JRadioButton("Noturno");
+		rdGrpPeriodo.add(rdNoturno);
+		rdNoturno.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		tabCurso.add(rdNoturno, "cell 4 4");
+		
+		btnInserir = new JButton("");
+		btnInserir.setIcon(new ImageIcon("D:\\Users\\Rob\\OneDrive\\AULAS\\TERCEIRO SEMESTRE\\Técnicas de Programação\\[2020.05.04 - 02] Cadastro Aluno\\imagens\\icones\\save.png"));
+		btnInserir.setToolTipText("Salvar");
+		tabCurso.add(btnInserir, "flowx,cell 0 6 6 1,alignx center");
+		
+		btnConsulta = new JButton("");
+		btnConsulta.setToolTipText("Salvar");
+		btnConsulta.setIcon(new ImageIcon("D:\\Users\\Rob\\OneDrive\\AULAS\\TERCEIRO SEMESTRE\\Técnicas de Programação\\[2020.05.04 - 02] Cadastro Aluno\\imagens\\icones\\lookup.png"));
+		btnConsulta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		tabCurso.add(btnConsulta, "cell 0 6 6 1,alignx center");
+		
+		btnAlterar = new JButton("");
+		btnAlterar.setIcon(new ImageIcon("D:\\Users\\Rob\\OneDrive\\AULAS\\TERCEIRO SEMESTRE\\Técnicas de Programação\\[2020.05.04 - 02] Cadastro Aluno\\imagens\\icones\\edit.png"));
+		btnAlterar.setToolTipText("Salvar");
+		tabCurso.add(btnAlterar, "cell 0 6 6 1,alignx center");
+		
+		btnExcluir = new JButton("");
+		btnExcluir.setIcon(new ImageIcon("D:\\Users\\Rob\\OneDrive\\AULAS\\TERCEIRO SEMESTRE\\Técnicas de Programação\\[2020.05.04 - 02] Cadastro Aluno\\imagens\\icones\\delete.png"));
+		btnExcluir.setToolTipText("Salvar");
+		tabCurso.add(btnExcluir, "cell 0 6 6 1,alignx center");
 		
 		tabNotasFaltas = new JPanel();
 		tabbedPane.addTab("Notas e Faltas", null, tabNotasFaltas, "Notas e faltas do aluno.");
