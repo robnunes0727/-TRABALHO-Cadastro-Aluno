@@ -429,13 +429,17 @@ public class Tela extends JFrame {
 		tabCurso.add(rdNoturno, "cell 4 4");
 		
 		btnInserir = new JButton("");
-		btnInserir.setIcon(new ImageIcon("D:\\Users\\Rob\\OneDrive\\AULAS\\TERCEIRO SEMESTRE\\Técnicas de Programação\\[2020.05.04 - 02] Cadastro Aluno\\imagens\\icones\\save.png"));
+		btnInserir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnInserir.setIcon(new ImageIcon("imagens\\icones\\save.png"));
 		btnInserir.setToolTipText("Salvar");
 		tabCurso.add(btnInserir, "flowx,cell 0 6 6 1,alignx center");
 		
 		btnConsulta = new JButton("");
 		btnConsulta.setToolTipText("Salvar");
-		btnConsulta.setIcon(new ImageIcon("D:\\Users\\Rob\\OneDrive\\AULAS\\TERCEIRO SEMESTRE\\Técnicas de Programação\\[2020.05.04 - 02] Cadastro Aluno\\imagens\\icones\\lookup.png"));
+		btnConsulta.setIcon(new ImageIcon("imagens\\icones\\lookup.png"));
 		btnConsulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
@@ -443,12 +447,20 @@ public class Tela extends JFrame {
 		tabCurso.add(btnConsulta, "cell 0 6 6 1,alignx center");
 		
 		btnAlterar = new JButton("");
-		btnAlterar.setIcon(new ImageIcon("D:\\Users\\Rob\\OneDrive\\AULAS\\TERCEIRO SEMESTRE\\Técnicas de Programação\\[2020.05.04 - 02] Cadastro Aluno\\imagens\\icones\\edit.png"));
+		btnAlterar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnAlterar.setIcon(new ImageIcon("imagens\\icones\\edit.png"));
 		btnAlterar.setToolTipText("Salvar");
 		tabCurso.add(btnAlterar, "cell 0 6 6 1,alignx center");
 		
 		btnExcluir = new JButton("");
-		btnExcluir.setIcon(new ImageIcon("D:\\Users\\Rob\\OneDrive\\AULAS\\TERCEIRO SEMESTRE\\Técnicas de Programação\\[2020.05.04 - 02] Cadastro Aluno\\imagens\\icones\\delete.png"));
+		btnExcluir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnExcluir.setIcon(new ImageIcon("imagens\\icones\\delete.png"));
 		btnExcluir.setToolTipText("Salvar");
 		tabCurso.add(btnExcluir, "cell 0 6 6 1,alignx center");
 		
