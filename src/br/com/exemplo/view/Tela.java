@@ -36,6 +36,7 @@ import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
+import javax.swing.JTextPane;
 
 public class Tela extends JFrame {
 
@@ -95,6 +96,8 @@ public class Tela extends JFrame {
 	private JButton btnAlterar;
 	private JButton btnInserir;
 	private JButton btnExcluir;
+	private JTextPane txtBoletim1;
+	private JTextPane txtBoletim2;
 
 	/**
 	 * Launch the application.
@@ -469,6 +472,17 @@ public class Tela extends JFrame {
 		
 		tabBoletim = new JPanel();
 		tabbedPane.addTab("Boletim", null, tabBoletim, "Boletim do aluno.");
+		tabBoletim.setLayout(null);
+		
+		txtBoletim1 = new JTextPane();
+		txtBoletim1.setEditable(false);
+		txtBoletim1.setBounds(0, 0, 327, 305);
+		tabBoletim.add(txtBoletim1);
+		
+		txtBoletim2 = new JTextPane();
+		txtBoletim2.setEditable(false);
+		txtBoletim2.setBounds(332, 0, 327, 305);
+		tabBoletim.add(txtBoletim2);
 		
 		txtStatus = new JTextField();
 		txtStatus.setToolTipText("Mensagens do sistema aparecem aqui.");
