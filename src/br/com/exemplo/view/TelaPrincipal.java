@@ -37,8 +37,9 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.JTextPane;
+import javax.swing.JFormattedTextField;
 
-public class Tela extends JFrame {
+public class TelaPrincipal extends JFrame {
 
 	private JPanel contentPane;
 	private JMenuBar menuBar;
@@ -98,6 +99,29 @@ public class Tela extends JFrame {
 	private JButton btnExcluir;
 	private JTextPane txtBoletim1;
 	private JTextPane txtBoletim2;
+	private JLabel lblBoletimRGM;
+	private JLabel lblBoletimSemestre;
+	private JLabel lblBoletimAno;
+	private JFormattedTextField txtBoletimRGM;
+	private JFormattedTextField txtBoletimAno;
+	private JComboBox cmbBoletimSemestre;
+	private JLabel lblNotasRGM;
+	private JFormattedTextField txtNotasRGM;
+	private JTextField txtNotasCurso;
+	private JTextField txtNotasNome;
+	private JComboBox cmbNotasSemestre;
+	private JLabel lblNotasSemestre;
+	private JLabel lblNotasNota;
+	private JComboBox cmbNotasNota;
+	private JLabel lblNotasFaltas;
+	private JFormattedTextField txtNotasAno;
+	private JLabel lblNotasAno;
+	private JFormattedTextField txtNotasFaltas;
+	private JButton btnNewButton;
+	private JButton btnNotasInserir;
+	private JButton btnNotasConsulta;
+	private JButton btnNotasAlterar;
+	private JButton btnNotasExcluir;
 
 	/**
 	 * Launch the application.
@@ -111,7 +135,7 @@ public class Tela extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Tela frame = new Tela();
+					TelaPrincipal frame = new TelaPrincipal();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -123,7 +147,7 @@ public class Tela extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Tela() throws Exception {		
+	public TelaPrincipal() throws Exception {		
 		setTitle("Cadastro Aluno");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 440);
@@ -139,7 +163,9 @@ public class Tela extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				// Ação ALUNO > Salvar
 				if (inputErro == "") {
-					mudarStatus("POOF");
+					
+					// TODO
+					mudarStatus("Salvo com sucesso");
 				} else {
 					String msgErro = "Erro nos campos: " + inputErro.replace("''", ", "); 
 					mudarStatus(msgErro);
@@ -280,10 +306,10 @@ public class Tela extends JFrame {
 				// regex: https://stackoverflow.com/questions/13194322/php-regex-to-check-date-is-in-yyyy-mm-dd-format
 				String padraoData = "^(((0[1-9]|[12]\\d|3[01])\\/(0[13578]|1[02])"
 						+ "\\/((19|[2-9]\\d)\\d{2}))|((0[1-9]|[12]\\d|30)\\/(0"
-						+"[13456789]|1[012])\\/((19|[2-9]\\d)\\d{2}))|((0[1-9]|"
+						+ "[13456789]|1[012])\\/((19|[2-9]\\d)\\d{2}))|((0[1-9]|"
 						+ "1\\d|2[0-8])\\/02\\/((19|[2-9]\\d)\\d{2}))|"
 						+ "(29\\/02\\/((1[6-9]|[2-9]\\d)(0[48]|[2468][048]|"
-						+"[13579][26])|((16|[2468][048]|[3579][26])00))))$";			
+						+ "[13579][26])|((16|[2468][048]|[3579][26])00))))$";			
 				
 				if(txtNasc.getText().matches(padraoData)){
 					txtNasc.setBackground(Color.GREEN);
@@ -441,7 +467,7 @@ public class Tela extends JFrame {
 		tabCurso.add(btnInserir, "flowx,cell 0 6 6 1,alignx center");
 		
 		btnConsulta = new JButton("");
-		btnConsulta.setToolTipText("Salvar");
+		btnConsulta.setToolTipText("Consultar");
 		btnConsulta.setIcon(new ImageIcon("imagens\\icones\\lookup.png"));
 		btnConsulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -455,7 +481,7 @@ public class Tela extends JFrame {
 			}
 		});
 		btnAlterar.setIcon(new ImageIcon("imagens\\icones\\edit.png"));
-		btnAlterar.setToolTipText("Salvar");
+		btnAlterar.setToolTipText("Editar");
 		tabCurso.add(btnAlterar, "cell 0 6 6 1,alignx center");
 		
 		btnExcluir = new JButton("");
@@ -464,11 +490,90 @@ public class Tela extends JFrame {
 			}
 		});
 		btnExcluir.setIcon(new ImageIcon("imagens\\icones\\delete.png"));
-		btnExcluir.setToolTipText("Salvar");
+		btnExcluir.setToolTipText("Apagar");
 		tabCurso.add(btnExcluir, "cell 0 6 6 1,alignx center");
 		
 		tabNotasFaltas = new JPanel();
 		tabbedPane.addTab("Notas e Faltas", null, tabNotasFaltas, "Notas e faltas do aluno.");
+		tabNotasFaltas.setLayout(new MigLayout("", "[50:50:50,grow][70:70:70][][80:80:80,grow][100px:100px:100px,grow][70:70:70,grow][grow][grow][]", "[][][][][25][]"));
+		
+		lblNotasRGM = new JLabel("RGM:");
+		lblNotasRGM.setFont(new Font("Verdana", Font.PLAIN, 18));
+		tabNotasFaltas.add(lblNotasRGM, "cell 0 0,alignx trailing");
+		
+		txtNotasRGM = new JFormattedTextField(new MaskFormatter("##########"));
+		txtNotasRGM.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		txtNotasRGM.setColumns(10);
+		tabNotasFaltas.add(txtNotasRGM, "cell 1 0 3 1,growx");
+		
+		txtNotasNome = new JTextField();
+		txtNotasNome.setEditable(false);
+		txtNotasNome.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		txtNotasNome.setColumns(10);
+		tabNotasFaltas.add(txtNotasNome, "cell 4 0 5 1,growx");
+		
+		txtNotasCurso = new JTextField();
+		txtNotasCurso.setEditable(false);
+		txtNotasCurso.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		txtNotasCurso.setColumns(10);
+		tabNotasFaltas.add(txtNotasCurso, "cell 0 1 9 1,growx");
+		
+		lblNotasSemestre = new JLabel("Semestre:");
+		lblNotasSemestre.setFont(new Font("Verdana", Font.PLAIN, 18));
+		tabNotasFaltas.add(lblNotasSemestre, "flowx,cell 0 2 3 1,alignx trailing");
+		
+		lblNotasAno = new JLabel("Ano:");
+		lblNotasAno.setFont(new Font("Verdana", Font.PLAIN, 18));
+		tabNotasFaltas.add(lblNotasAno, "cell 3 2,alignx trailing");
+		
+		cmbNotasSemestre = new JComboBox();
+		cmbNotasSemestre.setModel(new DefaultComboBoxModel(new String[] {"1º", "2º", "3º", "4º"}));
+		cmbNotasSemestre.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		tabNotasFaltas.add(cmbNotasSemestre, "cell 0 2 3 1,growx");
+		
+		txtNotasAno = new JFormattedTextField(new MaskFormatter("####"));
+		txtNotasAno.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		txtNotasAno.setColumns(10);
+		tabNotasFaltas.add(txtNotasAno, "cell 4 2,growx");
+		
+		lblNotasNota = new JLabel("Nota:");
+		lblNotasNota.setFont(new Font("Verdana", Font.PLAIN, 18));
+		tabNotasFaltas.add(lblNotasNota, "cell 0 3,alignx trailing");
+		
+		cmbNotasNota = new JComboBox();
+		cmbNotasNota.setModel(new DefaultComboBoxModel(new String[] {"0,5", "1,0", "1,5", "2,0", "2,5", "3,0", "3,5", "4,0", "4,5", "5,0",
+																	"5,5", "6,0", "6,5", "7,0", "7,5", "8,0", "8,5", "9,0", "9,5", "10,0"}));
+		cmbNotasNota.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		tabNotasFaltas.add(cmbNotasNota, "cell 1 3,growx");
+		
+		lblNotasFaltas = new JLabel("Faltas:");
+		lblNotasFaltas.setFont(new Font("Verdana", Font.PLAIN, 18));
+		tabNotasFaltas.add(lblNotasFaltas, "cell 3 3,alignx trailing");
+		
+		txtNotasFaltas = new JFormattedTextField(new MaskFormatter("##"));
+		txtNotasFaltas.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		txtNotasFaltas.setColumns(10);
+		tabNotasFaltas.add(txtNotasFaltas, "cell 4 3,growx");
+		
+		btnNotasInserir = new JButton("");
+		btnNotasInserir.setIcon(new ImageIcon("imagens\\icones\\save.png"));
+		btnNotasInserir.setToolTipText("Salvar");
+		tabNotasFaltas.add(btnNotasInserir, "flowx,cell 0 5 9 1,alignx center");
+		
+		btnNotasConsulta = new JButton("");
+		btnNotasConsulta.setIcon(new ImageIcon("imagens\\icones\\lookup.png"));
+		btnNotasConsulta.setToolTipText("Consultar");
+		tabNotasFaltas.add(btnNotasConsulta, "cell 0 5 9 1");
+		
+		btnNotasAlterar = new JButton("");
+		btnNotasAlterar.setIcon(new ImageIcon("imagens\\icones\\edit.png"));
+		btnNotasAlterar.setToolTipText("Alterar");
+		tabNotasFaltas.add(btnNotasAlterar, "cell 0 5 9 1");
+		
+		btnNotasExcluir = new JButton("");
+		btnNotasExcluir.setIcon(new ImageIcon("imagens\\icones\\delete.png"));
+		btnNotasExcluir.setToolTipText("Excluir");
+		tabNotasFaltas.add(btnNotasExcluir, "cell 0 5 9 1");
 		
 		tabBoletim = new JPanel();
 		tabbedPane.addTab("Boletim", null, tabBoletim, "Boletim do aluno.");
@@ -476,13 +581,55 @@ public class Tela extends JFrame {
 		
 		txtBoletim1 = new JTextPane();
 		txtBoletim1.setEditable(false);
-		txtBoletim1.setBounds(0, 0, 327, 305);
+		txtBoletim1.setBounds(0, 43, 327, 262);
 		tabBoletim.add(txtBoletim1);
 		
 		txtBoletim2 = new JTextPane();
 		txtBoletim2.setEditable(false);
-		txtBoletim2.setBounds(332, 0, 327, 305);
+		txtBoletim2.setBounds(332, 43, 327, 262);
 		tabBoletim.add(txtBoletim2);
+		
+		lblBoletimRGM = new JLabel("RGM:");
+		lblBoletimRGM.setFont(new Font("Verdana", Font.PLAIN, 18));
+		lblBoletimRGM.setBounds(10, 11, 64, 23);
+		tabBoletim.add(lblBoletimRGM);
+		
+		lblBoletimSemestre = new JLabel("Semestre:");
+		lblBoletimSemestre.setFont(new Font("Verdana", Font.PLAIN, 18));
+		lblBoletimSemestre.setBounds(193, 9, 104, 23);
+		tabBoletim.add(lblBoletimSemestre);
+		
+		lblBoletimAno = new JLabel("Ano:");
+		lblBoletimAno.setFont(new Font("Verdana", Font.PLAIN, 18));
+		lblBoletimAno.setBounds(365, 9, 82, 23);
+		tabBoletim.add(lblBoletimAno);
+		
+		txtBoletimRGM = new JFormattedTextField((new MaskFormatter("##########")));
+		txtBoletimRGM.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		txtBoletimRGM.setColumns(10);
+		txtBoletimRGM.setBounds(61, 8, 120, 31);
+		tabBoletim.add(txtBoletimRGM);
+		
+		txtBoletimAno = new JFormattedTextField(new MaskFormatter("####"));
+		txtBoletimAno.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		txtBoletimAno.setColumns(10);
+		txtBoletimAno.setBounds(410, 8, 120, 31);
+		tabBoletim.add(txtBoletimAno);
+		
+		cmbBoletimSemestre = new JComboBox();
+		cmbBoletimSemestre.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		cmbBoletimSemestre.setModel(new DefaultComboBoxModel(new String[] {"1º", "2º", "3º", "4º"}));
+		cmbBoletimSemestre.setBounds(293, 10, 62, 26);
+		tabBoletim.add(cmbBoletimSemestre);
+		
+		btnNewButton = new JButton("Buscar");
+		btnNewButton.setFont(new Font("Verdana", Font.PLAIN, 18));
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnNewButton.setBounds(540, 8, 109, 28);
+		tabBoletim.add(btnNewButton);
 		
 		txtStatus = new JTextField();
 		txtStatus.setToolTipText("Mensagens do sistema aparecem aqui.");
