@@ -25,6 +25,8 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
+import br.com.exemplo.dao.AlunoDAO;
+import br.com.exemplo.model.Aluno;
 import net.miginfocom.swing.MigLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.Color;
@@ -83,7 +85,6 @@ public class TelaPrincipal extends JFrame {
 	private JComboBox cmbEstado;
 	private JLabel lblCel;
 	private JFormattedTextField txtCel;
-	private String inputErro = ""; // Tratamento de entrada invalida: 'ESTADO', 'CELULAR' e 'DATA'
 	private JLabel lblCurso;
 	private JLabel lblCampus;
 	private JLabel lblPeriodo;
@@ -162,13 +163,26 @@ public class TelaPrincipal extends JFrame {
 		mnAlSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// Ação ALUNO > Salvar
-				if (inputErro == "") {
-					
-					// TODO
-					mudarStatus("Salvo com sucesso");
-				} else {
-					String msgErro = "Erro nos campos: " + inputErro.replace("''", ", "); 
-					mudarStatus(msgErro);
+				try {
+				Aluno aluno = new Aluno();
+				AlunoDAO dao = new AlunoDAO();
+
+				aluno.setRgm(txtRgm.getText());
+				aluno.setNome(txtNome.getText());
+				aluno.setNascimento(txtNasc.getText());
+				aluno.setCpf(txtCpf.getText());
+				aluno.setEmail(txtEmail.getText());
+				aluno.setEndereco(txtEnd.getText());
+				aluno.setMunicipio(txtMunicipio.getText());
+				aluno.setUf((String)cmbEstado.getSelectedItem());
+				aluno.setCelular(txtCel.getText());
+				
+				dao.salvar(aluno);
+				
+				mudarStatus("Salvo com sucesso");
+				
+				} catch(Exception e) {
+					System.out.println("Erro ao salvar: " + e.getMessage());
 				}
 				// Fim ALUNO > Salvar
 			}
@@ -279,7 +293,7 @@ public class TelaPrincipal extends JFrame {
 		lblRgm.setFont(new Font("Verdana", Font.PLAIN, 18));
 		tabDadosPessoais.add(lblRgm, "cell 0 0,alignx right");
 		
-		txtRgm = new JFormattedTextField(new MaskFormatter("##########"));;
+		txtRgm = new JFormattedTextField(new MaskFormatter("########"));;
 		txtRgm.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		tabDadosPessoais.add(txtRgm, "cell 1 0,growx");
 		txtRgm.setColumns(10);
@@ -314,13 +328,10 @@ public class TelaPrincipal extends JFrame {
 				if(txtNasc.getText().matches(padraoData)){
 					txtNasc.setBackground(Color.GREEN);
 					mudarStatus("");
-					inputErro = inputErro.replace("'DATA'", "");
 				}
 				else {
 					txtNasc.setBackground(Color.RED);
 					mudarStatus("Data inválida.");
-					if (!inputErro.contains("'DATA'"))
-						inputErro = inputErro + "'DATA'";
 				}
 			}
 		});
@@ -372,11 +383,8 @@ public class TelaPrincipal extends JFrame {
 			// Ação que checa se a UF é válida.
 			public void itemStateChanged(ItemEvent arg0) {
 				if (cmbEstado.getSelectedItem() == "--") {
-					if (!inputErro.contains("'ESTADO'"))
-						inputErro = inputErro + "'ESTADO'";
-					mudarStatus("UF inválida.");
-				} else {
-					inputErro = inputErro.replace("'ESTADO'", "");
+					cmbEstado.setSelectedIndex(0);
+					mudarStatus("UF inválida, alterado para SP.");
 				}
 			}
 		});
@@ -392,26 +400,6 @@ public class TelaPrincipal extends JFrame {
 		tabDadosPessoais.add(lblCel, "cell 3 5,alignx trailing");
 		
 		txtCel = new JFormattedTextField(new MaskFormatter("(##) #####-####"));
-		txtCel.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent arg0) {
-				// Ação Celular
-				// Validar
-				// JFORMAT retorna numeros formatados
-				if (txtCel.getText().matches("^\\(\\d\\d\\) 9\\d\\d\\d\\d\\-\\d\\d\\d\\d$")) {
-					txtCel.setBackground(Color.GREEN);
-					mudarStatus("");
-					inputErro = inputErro.replace("'CELULAR'", "");
-				}
-				else {
-					txtCel.setBackground(Color.RED);
-					mudarStatus("Celular inválido.");
-					if (!inputErro.contains("'CELULAR'"))
-						inputErro = inputErro + "'CELULAR'";
-				}
-				// Fim Celular
-			}
-		});
 		txtCel.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		txtCel.setColumns(10);
 		tabDadosPessoais.add(txtCel, "cell 4 5,growx");

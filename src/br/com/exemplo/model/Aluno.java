@@ -1,5 +1,9 @@
 package br.com.exemplo.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Aluno {
 	
 	private String rgm;
@@ -50,8 +54,10 @@ public class Aluno {
 		return nascimento;
 	}
 
-	public void setNascimento(String nascimento) {
-		this.nascimento = nascimento;
+	public void setNascimento(String nascimento) throws Exception {
+		// Transforma DIA/MES/ANO em ANO-MES-DIA
+		Date dataNasc = new SimpleDateFormat("dd/mm/yyyy").parse(nascimento);
+		this.nascimento = new SimpleDateFormat("yyyy-mm-dd").format(dataNasc);
 	}
 
 	public String getCpf() {
@@ -59,7 +65,7 @@ public class Aluno {
 	}
 
 	public void setCpf(String cpf) {
-		this.cpf = cpf;
+		this.cpf = cpf.replace(".", "").replace("-", "");
 	}
 
 	public String getEmail() {
