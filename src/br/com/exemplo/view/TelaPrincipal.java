@@ -78,13 +78,13 @@ public class TelaPrincipal extends JFrame {
 	private JLabel lblEmail;
 	private JTextField txtEmail;
 	private JLabel lblEnd;
-	private JTextField txtEnd;
+	private JTextField txtEndereco;
 	private JLabel lblMunicipio;
 	private JTextField txtMunicipio;
 	private JLabel lblEstado;
 	private JComboBox cmbEstado;
 	private JLabel lblCel;
-	private JFormattedTextField txtCel;
+	private JFormattedTextField txtCelular;
 	private JLabel lblCurso;
 	private JLabel lblCampus;
 	private JLabel lblPeriodo;
@@ -94,10 +94,10 @@ public class TelaPrincipal extends JFrame {
 	private JRadioButton rdVespertino;
 	private JRadioButton rdNoturno;
 	private final ButtonGroup rdGrpPeriodo = new ButtonGroup();
-	private JButton btnConsulta;
-	private JButton btnAlterar;
-	private JButton btnInserir;
-	private JButton btnExcluir;
+	private JButton btnCursoConsulta;
+	private JButton btnCursoAlterar;
+	private JButton btnCursoInserir;
+	private JButton btnCursoExcluir;
 	private JTextPane txtBoletim1;
 	private JTextPane txtBoletim2;
 	private JLabel lblBoletimRGM;
@@ -123,6 +123,10 @@ public class TelaPrincipal extends JFrame {
 	private JButton btnNotasConsulta;
 	private JButton btnNotasAlterar;
 	private JButton btnNotasExcluir;
+	private JButton btnAlunoInserir;
+	private JButton btnAlunoConsulta;
+	private JButton btnAlunoAlterar;
+	private JButton btnAlunoExcluir;
 
 	/**
 	 * Launch the application.
@@ -163,27 +167,7 @@ public class TelaPrincipal extends JFrame {
 		mnAlSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// Ação ALUNO > Salvar
-				try {
-				Aluno aluno = new Aluno();
-				AlunoDAO dao = new AlunoDAO();
-
-				aluno.setRgm(txtRgm.getText());
-				aluno.setNome(txtNome.getText());
-				aluno.setNascimento(txtNasc.getText());
-				aluno.setCpf(txtCpf.getText());
-				aluno.setEmail(txtEmail.getText());
-				aluno.setEndereco(txtEnd.getText());
-				aluno.setMunicipio(txtMunicipio.getText());
-				aluno.setUf((String)cmbEstado.getSelectedItem());
-				aluno.setCelular(txtCel.getText());
-				
-				dao.salvar(aluno);
-				
-				mudarStatus("Salvo com sucesso");
-				
-				} catch(Exception e) {
-					System.out.println("Erro ao salvar: " + e.getMessage());
-				}
+				alunoSalvar();
 				// Fim ALUNO > Salvar
 			}
 		});
@@ -194,6 +178,13 @@ public class TelaPrincipal extends JFrame {
 		mnAluno.add(mnAlAlterar);
 		
 		mnAlConsultar = new JMenuItem("Consultar");
+		mnAlConsultar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// Aluno consultar
+				alunoConsultar();
+				// FIM aluno consultar
+			}
+		});
 		mnAluno.add(mnAlConsultar);
 		
 		mnAlExcluir = new JMenuItem("Excluir");
@@ -287,7 +278,7 @@ public class TelaPrincipal extends JFrame {
 		
 		tabDadosPessoais = new JPanel();
 		tabbedPane.addTab("Dados Pessoais", null, tabDadosPessoais, "Dados pessoais do aluno.");
-		tabDadosPessoais.setLayout(new MigLayout("", "[][120px:120px:120px,grow][][][170:170:170,grow][grow]", "[][][][][][]"));
+		tabDadosPessoais.setLayout(new MigLayout("", "[][120px:120px:120px,grow][][][170:170:170,grow][grow]", "[][][][][][][10][]"));
 		
 		lblRgm = new JLabel("RGM");
 		lblRgm.setFont(new Font("Verdana", Font.PLAIN, 18));
@@ -360,10 +351,10 @@ public class TelaPrincipal extends JFrame {
 		lblEnd.setFont(new Font("Verdana", Font.PLAIN, 18));
 		tabDadosPessoais.add(lblEnd, "cell 0 3,alignx right");
 		
-		txtEnd = new JTextField();
-		txtEnd.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		txtEnd.setColumns(10);
-		tabDadosPessoais.add(txtEnd, "cell 1 3 5 1,growx");
+		txtEndereco = new JTextField();
+		txtEndereco.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		txtEndereco.setColumns(10);
+		tabDadosPessoais.add(txtEndereco, "cell 1 3 5 1,growx");
 		
 		lblMunicipio = new JLabel("Município");
 		lblMunicipio.setFont(new Font("Verdana", Font.PLAIN, 18));
@@ -399,10 +390,43 @@ public class TelaPrincipal extends JFrame {
 		lblCel.setFont(new Font("Verdana", Font.PLAIN, 18));
 		tabDadosPessoais.add(lblCel, "cell 3 5,alignx trailing");
 		
-		txtCel = new JFormattedTextField(new MaskFormatter("(##) #####-####"));
-		txtCel.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		txtCel.setColumns(10);
-		tabDadosPessoais.add(txtCel, "cell 4 5,growx");
+		txtCelular = new JFormattedTextField(new MaskFormatter("(##) #####-####"));
+		txtCelular.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		txtCelular.setColumns(10);
+		tabDadosPessoais.add(txtCelular, "cell 4 5,growx");
+		
+		btnAlunoInserir = new JButton("");
+		btnAlunoInserir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// Botão AlunoSalvar
+				alunoSalvar();
+			}
+		});
+		btnAlunoInserir.setToolTipText("Salvar");
+		btnAlunoInserir.setIcon(new ImageIcon("imagens\\icones\\save.png"));
+		tabDadosPessoais.add(btnAlunoInserir, "flowx,cell 0 7 6 1,alignx center");
+		
+		btnAlunoConsulta = new JButton("");
+		btnAlunoConsulta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Botão alunoConsultar
+				alunoConsultar();
+				// FIM 
+			}
+		});
+		btnAlunoConsulta.setToolTipText("Consultar");
+		btnAlunoConsulta.setIcon(new ImageIcon("imagens\\icones\\lookup.png"));
+		tabDadosPessoais.add(btnAlunoConsulta, "cell 0 7 6 1,alignx center");
+		
+		btnAlunoAlterar = new JButton("");
+		btnAlunoAlterar.setToolTipText("Editar");
+		btnAlunoAlterar.setIcon(new ImageIcon("imagens\\icones\\edit.png"));
+		tabDadosPessoais.add(btnAlunoAlterar, "cell 0 7 6 1,alignx center");
+		
+		btnAlunoExcluir = new JButton("");
+		btnAlunoExcluir.setToolTipText("Apagar");
+		btnAlunoExcluir.setIcon(new ImageIcon("imagens\\icones\\delete.png"));
+		tabDadosPessoais.add(btnAlunoExcluir, "cell 0 7 6 1,alignx center");
 		
 		tabCurso = new JPanel();
 		tabbedPane.addTab("Dados do Curso", null, tabCurso, "Dados do curso do aluno.");
@@ -445,41 +469,41 @@ public class TelaPrincipal extends JFrame {
 		rdNoturno.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		tabCurso.add(rdNoturno, "cell 4 4");
 		
-		btnInserir = new JButton("");
-		btnInserir.addActionListener(new ActionListener() {
+		btnCursoInserir = new JButton("");
+		btnCursoInserir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnInserir.setIcon(new ImageIcon("imagens\\icones\\save.png"));
-		btnInserir.setToolTipText("Salvar");
-		tabCurso.add(btnInserir, "flowx,cell 0 6 6 1,alignx center");
+		btnCursoInserir.setIcon(new ImageIcon("imagens\\icones\\save.png"));
+		btnCursoInserir.setToolTipText("Salvar");
+		tabCurso.add(btnCursoInserir, "flowx,cell 0 6 6 1,alignx center");
 		
-		btnConsulta = new JButton("");
-		btnConsulta.setToolTipText("Consultar");
-		btnConsulta.setIcon(new ImageIcon("imagens\\icones\\lookup.png"));
-		btnConsulta.addActionListener(new ActionListener() {
+		btnCursoConsulta = new JButton("");
+		btnCursoConsulta.setToolTipText("Consultar");
+		btnCursoConsulta.setIcon(new ImageIcon("imagens\\icones\\lookup.png"));
+		btnCursoConsulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		tabCurso.add(btnConsulta, "cell 0 6 6 1,alignx center");
+		tabCurso.add(btnCursoConsulta, "cell 0 6 6 1,alignx center");
 		
-		btnAlterar = new JButton("");
-		btnAlterar.addActionListener(new ActionListener() {
+		btnCursoAlterar = new JButton("");
+		btnCursoAlterar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnAlterar.setIcon(new ImageIcon("imagens\\icones\\edit.png"));
-		btnAlterar.setToolTipText("Editar");
-		tabCurso.add(btnAlterar, "cell 0 6 6 1,alignx center");
+		btnCursoAlterar.setIcon(new ImageIcon("imagens\\icones\\edit.png"));
+		btnCursoAlterar.setToolTipText("Editar");
+		tabCurso.add(btnCursoAlterar, "cell 0 6 6 1,alignx center");
 		
-		btnExcluir = new JButton("");
-		btnExcluir.addActionListener(new ActionListener() {
+		btnCursoExcluir = new JButton("");
+		btnCursoExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnExcluir.setIcon(new ImageIcon("imagens\\icones\\delete.png"));
-		btnExcluir.setToolTipText("Apagar");
-		tabCurso.add(btnExcluir, "cell 0 6 6 1,alignx center");
+		btnCursoExcluir.setIcon(new ImageIcon("imagens\\icones\\delete.png"));
+		btnCursoExcluir.setToolTipText("Apagar");
+		tabCurso.add(btnCursoExcluir, "cell 0 6 6 1,alignx center");
 		
 		tabNotasFaltas = new JPanel();
 		tabbedPane.addTab("Notas e Faltas", null, tabNotasFaltas, "Notas e faltas do aluno.");
@@ -630,5 +654,61 @@ public class TelaPrincipal extends JFrame {
 	
 	public void mudarStatus(String status) {
 		txtStatus.setText(status);
+	}
+	
+	public void alunoSalvar() {
+		// Usado no botão e no menu Aluno > Salvar
+		try {
+			Aluno aluno = new Aluno();
+			AlunoDAO dao = new AlunoDAO();
+
+			aluno.setRgm(txtRgm.getText());
+			aluno.setNome(txtNome.getText());
+			aluno.setNascimento(txtNasc.getText());
+			aluno.setCpf(txtCpf.getText());
+			aluno.setEmail(txtEmail.getText());
+			aluno.setEndereco(txtEndereco.getText());
+			aluno.setMunicipio(txtMunicipio.getText());
+			aluno.setUf((String)cmbEstado.getSelectedItem());
+			aluno.setCelular(txtCelular.getText());
+			
+			dao.salvar(aluno);
+			
+			mudarStatus("Salvo com sucesso");
+			
+			} catch(Exception e) {
+				System.out.println("Erro ao salvar: " + e.getMessage());
+				mudarStatus("Erro ao salvar: " + e.getMessage());
+			}
+	}
+	
+	public void alunoConsultar() {
+		try {
+			Aluno aluno = new AlunoDAO().consultar(txtRgm.getText());
+			
+			txtNome.setText(aluno.getNome());
+			txtNasc.setText(aluno.getNascimento());
+			txtCpf.setText(aluno.getCpf());
+			txtEmail.setText(aluno.getEmail());
+			txtEndereco.setText(aluno.getEndereco());
+			txtMunicipio.setText(aluno.getMunicipio());
+			cmbEstado.setSelectedItem(aluno.getUf());
+			txtCelular.setText(aluno.getCelular());
+			
+			mudarStatus("Consulta realizada com sucesso");
+		} catch (Exception e) {
+			mudarStatus("Erro ao consultar: " + e.getMessage());
+			System.out.println("Erro ao consultar: " + e.getMessage());
+		} 
+	}
+	
+	public void alunoEditar() {
+		try {
+			
+		} catch (Exception e) {
+			mudarStatus("Erro ao alterar: " + e.getMessage());
+			System.out.println("Erro ao alterar: " + e.getMessage());
+
+		}
 	}
 }

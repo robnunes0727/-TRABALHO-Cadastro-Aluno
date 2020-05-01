@@ -50,7 +50,9 @@ public class Aluno {
 		this.nome = nome;
 	}
 
-	public String getNascimento() {
+	public String getNascimento() throws Exception {
+		Date dataNasc = new SimpleDateFormat("yyyy-mm-dd").parse(this.nascimento);
+		String nascimento = new SimpleDateFormat("dd/mm/yyyy").format(dataNasc);
 		return nascimento;
 	}
 

@@ -45,4 +45,24 @@ public class AlunoDAO {
 			throw new Exception(e.getMessage());
 		}
 	}
+	
+	public Aluno consultar(String rgm) throws Exception {
+		try {
+			String sql = "SELECT * FROM Aluno WHERE rgm = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, rgm);
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				Aluno aluno = new Aluno(rs.getString("rgm"), rs.getString("nome"), rs.getString("nascimento"), rs.getString("cpf"), 
+						rs.getString("email"), rs.getString("endereco"), rs.getString("municipio"), rs.getString("uf"), rs.getString("celular"));
+				return aluno;
+			}
+			else 
+				throw new Exception("Nada encontrado");
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
 }
