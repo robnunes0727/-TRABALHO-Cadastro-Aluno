@@ -26,7 +26,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
 import br.com.exemplo.dao.AlunoDAO;
+import br.com.exemplo.dao.AlunoEmTurmaDAO;
 import br.com.exemplo.model.Aluno;
+import br.com.exemplo.model.Curso;
 import net.miginfocom.swing.MigLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.Color;
@@ -40,6 +42,7 @@ import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.JTextPane;
 import javax.swing.JFormattedTextField;
+import java.awt.Toolkit;
 
 public class TelaPrincipal extends JFrame {
 
@@ -152,7 +155,9 @@ public class TelaPrincipal extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaPrincipal() throws Exception {		
+	public TelaPrincipal() throws Exception {
+		setIconImage(Toolkit.getDefaultToolkit().getImage("imagens\\icones\\icon.png"));
+		setFont(new Font("Verdana", Font.PLAIN, 18));		
 		setTitle("Cadastro Aluno");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 440);
@@ -464,7 +469,7 @@ public class TelaPrincipal extends JFrame {
 		tabCurso.add(lblCurso, "cell 0 0,alignx right");
 		
 		cmbCurso = new JComboBox();
-		cmbCurso.setModel(new DefaultComboBoxModel(new String[] {"Análise e Desenvolvimento de Sistema", "Ciência da Computação", "Farmácia", "Medicina"})); // ** Talvez fazer puxar da db? Hardcoded por enquanto.
+		cmbCurso.setModel(new DefaultComboBoxModel(new String[] {"Análise e Desenvolvimento de Sistemas", "Ciência da Computação", "Medicina"})); // ** Talvez fazer puxar da db? Hardcoded por enquanto.
 		cmbCurso.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		tabCurso.add(cmbCurso, "cell 2 0 3 1,growx");
 		
@@ -482,23 +487,46 @@ public class TelaPrincipal extends JFrame {
 		tabCurso.add(lblPeriodo, "cell 0 4,alignx right");
 		
 		rdMatutino = new JRadioButton("Matutino");
+		rdMatutino.setActionCommand("M");
 		rdGrpPeriodo.add(rdMatutino);
 		rdMatutino.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		tabCurso.add(rdMatutino, "flowx,cell 2 4,alignx left");
 		
 		rdVespertino = new JRadioButton("Vespertino");
+		rdVespertino.setActionCommand("V");
 		rdGrpPeriodo.add(rdVespertino);
 		rdVespertino.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		tabCurso.add(rdVespertino, "cell 3 4,alignx left");
 		
 		rdNoturno = new JRadioButton("Noturno");
+		rdNoturno.setSelected(true);
+		rdNoturno.setActionCommand("N");
 		rdGrpPeriodo.add(rdNoturno);
 		rdNoturno.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		tabCurso.add(rdNoturno, "cell 4 4");
 		
 		btnCursoInserir = new JButton("");
 		btnCursoInserir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent arg0) {
+				// Botão inserir curso
+				try {
+					Aluno aluno = new Aluno();
+					Curso curso = new Curso();
+					AlunoEmTurmaDAO dao = new AlunoEmTurmaDAO();
+					
+					aluno.setRgm(txtRgm.getText());
+					
+					curso.setCurso((String)cmbCurso.getSelectedItem());
+					curso.setCampus((String)cmbCampus.getSelectedItem());
+					curso.setPeriodo(rdGrpPeriodo.getSelection().getActionCommand());
+					
+					dao.salvar(aluno, curso);
+					
+					mudarStatus("Curso salvo com sucesso");
+				} catch (Exception e) {
+					mudarStatus("Erro ao salvar curso: "+ e.getMessage());
+				}
+				// FIM BOTÃO INSERIR CURSO
 			}
 		});
 		btnCursoInserir.setIcon(new ImageIcon("imagens\\icones\\save.png"));

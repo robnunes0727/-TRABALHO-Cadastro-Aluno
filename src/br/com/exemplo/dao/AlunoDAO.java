@@ -82,6 +82,8 @@ public class AlunoDAO {
 			ps.setString(8, aluno.getCelular());
 			ps.setString(9, aluno.getRgm());
 			
+			System.out.println(ps);
+
 			ps.executeUpdate();
 			
 		} catch (Exception e) {
