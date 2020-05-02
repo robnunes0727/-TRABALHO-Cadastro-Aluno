@@ -21,10 +21,11 @@ public class Aluno {
 	}
 
 	public Aluno(String rgm, String nome, String nascimento, String cpf, String email, String endereco,
-			String municipio, String uf, String celular) {
+			String municipio, String uf, String celular) throws ParseException {
 		this.rgm = rgm;
 		this.nome = nome;
-		this.nascimento = nascimento;
+		Date dataNasc = new SimpleDateFormat("yyyy-mm-dd").parse(nascimento);
+		this.nascimento = new SimpleDateFormat("dd/mm/yyyy").format(dataNasc);
 		this.cpf = cpf;
 		this.email = email;
 		this.endereco = endereco;
@@ -50,13 +51,11 @@ public class Aluno {
 		this.nome = nome;
 	}
 
-	public String getNascimento() throws Exception {
-		Date dataNasc = new SimpleDateFormat("yyyy-mm-dd").parse(this.nascimento);
-		String nascimento = new SimpleDateFormat("dd/mm/yyyy").format(dataNasc);
+	public String getNascimento() throws ParseException {
 		return nascimento;
 	}
 
-	public void setNascimento(String nascimento) throws Exception {
+	public void setNascimento(String nascimento) throws ParseException {
 		// Transforma DIA/MES/ANO em ANO-MES-DIA
 		Date dataNasc = new SimpleDateFormat("dd/mm/yyyy").parse(nascimento);
 		this.nascimento = new SimpleDateFormat("yyyy-mm-dd").format(dataNasc);

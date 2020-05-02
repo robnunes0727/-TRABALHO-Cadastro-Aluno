@@ -65,4 +65,41 @@ public class AlunoDAO {
 			throw new Exception(e.getMessage());
 		}
 	}
+	
+	public void alterar(Aluno aluno) throws Exception {
+		try {
+			String sql = "UPDATE Aluno SET nome = ?, nascimento = ?,  cpf = ?, email = ?, endereco = ?, municipio = ?, uf = ?, celular = ? WHERE rgm = ?";
+
+			ps = conn.prepareStatement(sql);
+				
+			ps.setString(1, aluno.getNome());
+			ps.setDate(2, java.sql.Date.valueOf(aluno.getNascimento()));
+			ps.setString(3, aluno.getCpf());
+			ps.setString(4, aluno.getEmail());
+			ps.setString(5, aluno.getEndereco());
+			ps.setString(6, aluno.getMunicipio());
+			ps.setString(7, aluno.getUf());
+			ps.setString(8, aluno.getCelular());
+			ps.setString(9, aluno.getRgm());
+			
+			ps.executeUpdate();
+			
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+
+	public void excluir(String rgm) throws Exception {
+		try {
+			String sql = "DELETE FROM Aluno WHERE rgm = ?";
+			
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, rgm);
+			
+			ps.executeUpdate();
+			
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
 }

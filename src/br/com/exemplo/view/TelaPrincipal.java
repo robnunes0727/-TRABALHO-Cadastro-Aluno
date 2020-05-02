@@ -166,7 +166,7 @@ public class TelaPrincipal extends JFrame {
 		mnAlSalvar = new JMenuItem("Salvar");
 		mnAlSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// Ação ALUNO > Salvar
+				// MENU ALUNO > Salvar
 				alunoSalvar();
 				// Fim ALUNO > Salvar
 			}
@@ -175,12 +175,19 @@ public class TelaPrincipal extends JFrame {
 		mnAluno.add(mnAlSalvar);
 		
 		mnAlAlterar = new JMenuItem("Alterar");
+		mnAlAlterar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// MENU ALUNO > ALTERAR
+				alunoAlterar();
+				// FIM
+			}
+		});
 		mnAluno.add(mnAlAlterar);
 		
 		mnAlConsultar = new JMenuItem("Consultar");
 		mnAlConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// Aluno consultar
+				// MENU Aluno consultar
 				alunoConsultar();
 				// FIM aluno consultar
 			}
@@ -188,6 +195,13 @@ public class TelaPrincipal extends JFrame {
 		mnAluno.add(mnAlConsultar);
 		
 		mnAlExcluir = new JMenuItem("Excluir");
+		mnAlExcluir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// MENU EXCLUIR
+				alunoExcluir();
+				// FIM
+			}
+		});
 		mnAluno.add(mnAlExcluir);
 		
 		mnAlSeparator = new JSeparator();
@@ -419,11 +433,24 @@ public class TelaPrincipal extends JFrame {
 		tabDadosPessoais.add(btnAlunoConsulta, "cell 0 7 6 1,alignx center");
 		
 		btnAlunoAlterar = new JButton("");
+		btnAlunoAlterar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Botão aluno alterar
+				alunoAlterar();
+			}
+		});
 		btnAlunoAlterar.setToolTipText("Editar");
 		btnAlunoAlterar.setIcon(new ImageIcon("imagens\\icones\\edit.png"));
 		tabDadosPessoais.add(btnAlunoAlterar, "cell 0 7 6 1,alignx center");
 		
 		btnAlunoExcluir = new JButton("");
+		btnAlunoExcluir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Botão excluir
+				alunoExcluir();
+				// FIM
+			}
+		});
 		btnAlunoExcluir.setToolTipText("Apagar");
 		btnAlunoExcluir.setIcon(new ImageIcon("imagens\\icones\\delete.png"));
 		tabDadosPessoais.add(btnAlunoExcluir, "cell 0 7 6 1,alignx center");
@@ -702,11 +729,38 @@ public class TelaPrincipal extends JFrame {
 		} 
 	}
 	
-	public void alunoEditar() {
+	public void alunoAlterar() {
 		try {
+			Aluno aluno = new Aluno();
+			AlunoDAO dao = new AlunoDAO();
+			
+			aluno.setRgm(txtRgm.getText());
+			aluno.setNome(txtNome.getText());
+			aluno.setNascimento(txtNasc.getText());
+			aluno.setCpf(txtCpf.getText());
+			aluno.setEmail(txtEmail.getText());
+			aluno.setEndereco(txtEndereco.getText());
+			aluno.setMunicipio(txtMunicipio.getText());
+			aluno.setUf((String)cmbEstado.getSelectedItem());
+			aluno.setCelular(txtCelular.getText());
+			
+			dao.alterar(aluno);
+			
+			mudarStatus("Alterado com sucesso");
 			
 		} catch (Exception e) {
 			mudarStatus("Erro ao alterar: " + e.getMessage());
+			System.out.println("Erro ao alterar: " + e.getMessage());
+		}
+	}
+	
+	public void alunoExcluir() {
+		try {
+			AlunoDAO dao = new AlunoDAO();
+			dao.excluir(txtRgm.getText());
+			mudarStatus("Excluído RGM " + txtRgm.getText() + " com sucesso");
+		} catch (Exception e) {
+			mudarStatus("Erro ao apagar: " + e.getMessage());
 			System.out.println("Erro ao alterar: " + e.getMessage());
 
 		}
