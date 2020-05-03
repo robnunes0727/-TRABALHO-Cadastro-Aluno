@@ -2,17 +2,17 @@ package br.com.exemplo.model;
 
 public class Turma {
 	private int id;
-	private Disciplina disciplina;
-	private Curso curso;
+	private Curso curso; // NUNCA MAIS FAZER ASSIM
+	private String periodo;
+	private String semestre;
 	
-	public Turma() {
-		// Vazio
-	}
+	public Turma() {}
 
-	public Turma(int id, Disciplina disciplina, Curso curso) {
+	public Turma(int id, Curso curso, String periodo, String semestre) {
 		this.id = id;
-		this.disciplina = disciplina;
 		this.curso = curso;
+		this.periodo = periodo;
+		this.semestre = semestre;
 	}
 
 	public int getId() {
@@ -23,14 +23,6 @@ public class Turma {
 		this.id = id;
 	}
 
-	public Disciplina getDisciplina() {
-		return disciplina;
-	}
-
-	public void setDisciplina(Disciplina disciplina) {
-		this.disciplina = disciplina;
-	}
-
 	public Curso getCurso() {
 		return curso;
 	}
@@ -39,4 +31,20 @@ public class Turma {
 		this.curso = curso;
 	}
 
+	public String getPeriodo() {
+		return periodo;
+	}
+
+	public void setPeriodo(String periodo) {
+		this.periodo = periodo;
+	}
+
+	public String getSemestre() {
+		return semestre;
+	}
+
+	public void setSemestre(String semestre) {
+		this.semestre = semestre;
+	}
+	
 }

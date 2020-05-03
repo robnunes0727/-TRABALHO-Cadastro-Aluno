@@ -2,26 +2,24 @@ package br.com.exemplo.model;
 
 public class Curso {
 	
-	private String curso;
+	private String nome;
 	private String campus;
-	private String periodo;
 	
 	public Curso() {
 		// vazio
 	}
 
-	public Curso(String nome, String campus, String periodo) {
-		this.curso = nome;
+	public Curso(String nome, String campus) {
+		this.nome = nome;
 		this.campus = campus;
-		this.periodo = periodo;
 	}
 
-	public String getCurso() {
-		return curso;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setCurso(String curso) {
-		this.curso = curso;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public String getCampus() {
@@ -31,14 +29,5 @@ public class Curso {
 	public void setCampus(String campus) {
 		this.campus = campus;
 	}
-
-	public String getPeriodo() {
-		return periodo;
-	}
-
-	public void setPeriodo(String periodo) {
-		this.periodo = periodo;
-	}
-	
 	
 }

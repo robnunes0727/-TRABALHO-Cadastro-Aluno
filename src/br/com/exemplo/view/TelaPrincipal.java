@@ -28,7 +28,9 @@ import javax.swing.text.MaskFormatter;
 import br.com.exemplo.dao.AlunoDAO;
 import br.com.exemplo.dao.AlunoEmTurmaDAO;
 import br.com.exemplo.model.Aluno;
+import br.com.exemplo.model.AlunoEmTurma;
 import br.com.exemplo.model.Curso;
+import br.com.exemplo.model.Turma;
 import net.miginfocom.swing.MigLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.Color;
@@ -43,6 +45,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JTextPane;
 import javax.swing.JFormattedTextField;
 import java.awt.Toolkit;
+import java.awt.FlowLayout;
 
 public class TelaPrincipal extends JFrame {
 
@@ -487,8 +490,8 @@ public class TelaPrincipal extends JFrame {
 		tabCurso.add(lblPeriodo, "cell 0 4,alignx right");
 		
 		rdMatutino = new JRadioButton("Matutino");
-		rdMatutino.setActionCommand("M");
 		rdGrpPeriodo.add(rdMatutino);
+		rdMatutino.setActionCommand("M");
 		rdMatutino.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		tabCurso.add(rdMatutino, "flowx,cell 2 4,alignx left");
 		
@@ -509,23 +512,7 @@ public class TelaPrincipal extends JFrame {
 		btnCursoInserir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// Botão inserir curso
-				try {
-					Aluno aluno = new Aluno();
-					Curso curso = new Curso();
-					AlunoEmTurmaDAO dao = new AlunoEmTurmaDAO();
-					
-					aluno.setRgm(txtRgm.getText());
-					
-					curso.setCurso((String)cmbCurso.getSelectedItem());
-					curso.setCampus((String)cmbCampus.getSelectedItem());
-					curso.setPeriodo(rdGrpPeriodo.getSelection().getActionCommand());
-					
-					dao.salvar(aluno, curso);
-					
-					mudarStatus("Curso salvo com sucesso");
-				} catch (Exception e) {
-					mudarStatus("Erro ao salvar curso: "+ e.getMessage());
-				}
+				cursoInserir();
 				// FIM BOTÃO INSERIR CURSO
 			}
 		});
@@ -538,6 +525,9 @@ public class TelaPrincipal extends JFrame {
 		btnCursoConsulta.setIcon(new ImageIcon("imagens\\icones\\lookup.png"));
 		btnCursoConsulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				// BOTÃO CURSO CONSULTAR
+				cursoConsultar();
+				// FIM
 			}
 		});
 		tabCurso.add(btnCursoConsulta, "cell 0 6 6 1,alignx center");
@@ -545,6 +535,9 @@ public class TelaPrincipal extends JFrame {
 		btnCursoAlterar = new JButton("");
 		btnCursoAlterar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// BOTÃO CURSO ALTERAR
+				cursoAlterar();
+				// FIM 
 			}
 		});
 		btnCursoAlterar.setIcon(new ImageIcon("imagens\\icones\\edit.png"));
@@ -711,7 +704,7 @@ public class TelaPrincipal extends JFrame {
 		txtStatus.setText(status);
 	}
 	
-	public void alunoSalvar() {
+	private void alunoSalvar() {
 		// Usado no botão e no menu Aluno > Salvar
 		try {
 			Aluno aluno = new Aluno();
@@ -737,7 +730,7 @@ public class TelaPrincipal extends JFrame {
 			}
 	}
 	
-	public void alunoConsultar() {
+	private void alunoConsultar() {
 		try {
 			Aluno aluno = new AlunoDAO().consultar(txtRgm.getText());
 			
@@ -757,7 +750,7 @@ public class TelaPrincipal extends JFrame {
 		} 
 	}
 	
-	public void alunoAlterar() {
+	private void alunoAlterar() {
 		try {
 			Aluno aluno = new Aluno();
 			AlunoDAO dao = new AlunoDAO();
@@ -782,7 +775,7 @@ public class TelaPrincipal extends JFrame {
 		}
 	}
 	
-	public void alunoExcluir() {
+	private void alunoExcluir() {
 		try {
 			AlunoDAO dao = new AlunoDAO();
 			dao.excluir(txtRgm.getText());
@@ -792,5 +785,64 @@ public class TelaPrincipal extends JFrame {
 			System.out.println("Erro ao alterar: " + e.getMessage());
 
 		}
+	}
+	
+	private void cursoInserir() {
+		try {
+			Aluno aluno = new Aluno();
+			Curso curso = new Curso();
+			Turma turma = new Turma();
+			
+			AlunoEmTurma alunoTurma = new AlunoEmTurma();
+			AlunoEmTurmaDAO dao = new AlunoEmTurmaDAO();
+			
+			aluno.setRgm(txtRgm.getText());
+			
+			curso.setNome((String)cmbCurso.getSelectedItem());
+			curso.setCampus((String)cmbCampus.getSelectedItem());
+			turma.setPeriodo(rdGrpPeriodo.getSelection().getActionCommand());
+			
+			turma.setCurso(curso);
+			
+			alunoTurma.setAluno(aluno);
+			alunoTurma.setTurma(turma);
+			
+			dao.salvar(alunoTurma);
+			
+			mudarStatus("Curso salvo com sucesso");
+		} catch (Exception e) {
+			mudarStatus("Erro ao salvar curso: "+ e.getMessage());
+		}	
+	}
+	
+	private void cursoConsultar() {
+		try {
+
+			AlunoEmTurma alunoTurma = new AlunoEmTurmaDAO().consultar(txtRgm.getText());
+			
+			cmbCurso.setSelectedItem(alunoTurma.getTurma().getCurso().getNome());
+			cmbCampus.setSelectedItem(alunoTurma.getTurma().getCurso().getCampus());
+			rdGrpPeriodo.clearSelection();
+			
+			switch (alunoTurma.getTurma().getPeriodo()) {
+			case "M":
+				rdMatutino.setSelected(true);
+				break;	
+			case "V":
+				rdVespertino.setSelected(true);
+				break;
+			case "N":
+				rdNoturno.setSelected(true);
+				break;
+			}
+			
+			mudarStatus("Consulta de curso realizada.");
+		} catch (Exception e) {
+			mudarStatus("Erro na consulta: " + e.getMessage());
+		}
+	}
+	
+	private void cursoAlterar() {
+		// TODO
 	}
 }
