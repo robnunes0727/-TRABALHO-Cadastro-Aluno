@@ -44,7 +44,7 @@ public class AlunoEmTurmaDAO {
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			if (e.getMessage().contains("for key 'alunoemturma.Aluno_rgm_UNIQUE'"))
+			if (e.getMessage().contains("for key 'alunoemturma.PRIMARY'"))
 				throw new Exception("Esse aluno já está cadastrado em um curso.");
 			throw new Exception(e.getMessage());
 		}
@@ -52,7 +52,7 @@ public class AlunoEmTurmaDAO {
 	
 	public AlunoEmTurma consultar(String rgm) throws Exception{
 		try {
-			String sql = "SELECT AlunoEmTurma.id, AlunoEmTurma.Aluno_rgm, Curso.nome, Curso.campus, Turma.periodo " + 
+			String sql = "SELECT AlunoEmTurma.Aluno_rgm, Curso.nome, Curso.campus, Turma.periodo " + 
 					"FROM Turma " + 
 					"INNER JOIN Curso ON Turma.Curso_id = Curso.id " + 
 					"INNER JOIN AlunoEmTurma ON AlunoEmTurma.Turma_id = Turma.id " + 
@@ -74,7 +74,7 @@ public class AlunoEmTurmaDAO {
 				turma.setPeriodo(rs.getString("periodo"));
 				turma.setCurso(curso);
 					
-				AlunoEmTurma AlunoTurma = new AlunoEmTurma(Integer.parseInt(rs.getString("id")), aluno, turma);
+				AlunoEmTurma AlunoTurma = new AlunoEmTurma(aluno, turma);
 				
 				return AlunoTurma;
 				
@@ -83,6 +83,38 @@ public class AlunoEmTurmaDAO {
 			}
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
+		}
+	}
+	
+	public void alterar(AlunoEmTurma alunoTurma) throws Exception {
+		try {
+			String sql = "UPDATE AlunoEmTurma SET AlunoEmTurma.Turma_id = " + 
+					"(SELECT id FROM Turma WHERE Curso_id = " + 
+					"(SELECT id FROM Curso WHERE nome = ? AND campus = ? AND periodo = ? AND semestre = " + 
+					"(SELECT MAX(semestre) FROM Turma)))" + 
+					"WHERE Aluno_rgm = ?";
+			
+			ps = conn.prepareStatement(sql);
+			
+			ps.setString(1, alunoTurma.getTurma().getCurso().getNome());
+			ps.setString(2, alunoTurma.getTurma().getCurso().getCampus());
+			ps.setString(3, alunoTurma.getTurma().getPeriodo());
+			ps.setString(4, alunoTurma.getAluno().getRgm());
+			
+			ps.executeUpdate();
+			
+		} catch (Exception e) {
+			if (e.getMessage().contains("'Turma_id' cannot be null"))
+				throw new Exception("Turma não existe.");
+			throw new Exception(e.getMessage());
+		}
+	}
+	
+	public void excluir() {
+		try {
+			
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
 	}
 }

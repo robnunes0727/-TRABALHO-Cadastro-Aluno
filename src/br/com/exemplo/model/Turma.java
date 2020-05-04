@@ -2,7 +2,7 @@ package br.com.exemplo.model;
 
 public class Turma {
 	private int id;
-	private Curso curso; // NUNCA MAIS FAZER ASSIM
+	private Curso curso; // --
 	private String periodo;
 	private String semestre;
 	

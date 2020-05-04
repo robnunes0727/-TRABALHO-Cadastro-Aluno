@@ -1,26 +1,16 @@
 package br.com.exemplo.model;
 
 public class AlunoEmTurma {
-	private int id;
-	private Aluno aluno; // NUNCA MAIS FAZER ASSIM
-	private Turma turma; // NUNCA MAIS FAZER ASSIM
+	private Aluno aluno; // --
+	private Turma turma; // --
 	
 	public AlunoEmTurma() {
 		// Vazio
 	}
 
-	public AlunoEmTurma(int id, Aluno aluno, Turma turma) {
-		this.id = id;
+	public AlunoEmTurma(Aluno aluno, Turma turma) {
 		this.aluno = aluno;
 		this.turma = turma;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public Aluno getAluno() {

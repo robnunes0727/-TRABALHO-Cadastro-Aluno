@@ -133,11 +133,14 @@ public class TelaPrincipal extends JFrame {
 	private JButton btnAlunoConsulta;
 	private JButton btnAlunoAlterar;
 	private JButton btnAlunoExcluir;
+	private JLabel lblNotasDisciplina;
+	private JComboBox cmbNotasSemestre_1;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		} catch (Throwable e) {
@@ -555,13 +558,13 @@ public class TelaPrincipal extends JFrame {
 		
 		tabNotasFaltas = new JPanel();
 		tabbedPane.addTab("Notas e Faltas", null, tabNotasFaltas, "Notas e faltas do aluno.");
-		tabNotasFaltas.setLayout(new MigLayout("", "[50:50:50,grow][70:70:70][][80:80:80,grow][100px:100px:100px,grow][70:70:70,grow][grow][grow][]", "[][][][][25][]"));
+		tabNotasFaltas.setLayout(new MigLayout("", "[50:50:50,grow][70:70:70][][80:80:80,grow][100px:100px:100px,grow][100:100:100,grow][60:60:60,grow][grow][80:80:80]", "[][][][][25][]"));
 		
 		lblNotasRGM = new JLabel("RGM:");
 		lblNotasRGM.setFont(new Font("Verdana", Font.PLAIN, 18));
 		tabNotasFaltas.add(lblNotasRGM, "cell 0 0,alignx trailing");
 		
-		txtNotasRGM = new JFormattedTextField(new MaskFormatter("##########"));
+		txtNotasRGM = new JFormattedTextField(new MaskFormatter("########"));
 		txtNotasRGM.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		txtNotasRGM.setColumns(10);
 		tabNotasFaltas.add(txtNotasRGM, "cell 1 0 3 1,growx");
@@ -578,23 +581,31 @@ public class TelaPrincipal extends JFrame {
 		txtNotasCurso.setColumns(10);
 		tabNotasFaltas.add(txtNotasCurso, "cell 0 1 9 1,growx");
 		
+		lblNotasDisciplina = new JLabel("Disciplina:");
+		lblNotasDisciplina.setFont(new Font("Verdana", Font.PLAIN, 18));
+		tabNotasFaltas.add(lblNotasDisciplina, "flowx,cell 0 2 5 1,alignx trailing");
+		
+		cmbNotasSemestre_1 = new JComboBox();
+		cmbNotasSemestre_1.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		tabNotasFaltas.add(cmbNotasSemestre_1, "cell 0 2 5 1,growx");
+		
 		lblNotasSemestre = new JLabel("Semestre:");
 		lblNotasSemestre.setFont(new Font("Verdana", Font.PLAIN, 18));
-		tabNotasFaltas.add(lblNotasSemestre, "flowx,cell 0 2 3 1,alignx trailing");
-		
-		lblNotasAno = new JLabel("Ano:");
-		lblNotasAno.setFont(new Font("Verdana", Font.PLAIN, 18));
-		tabNotasFaltas.add(lblNotasAno, "cell 3 2,alignx trailing");
+		tabNotasFaltas.add(lblNotasSemestre, "cell 5 2,alignx trailing");
 		
 		cmbNotasSemestre = new JComboBox();
 		cmbNotasSemestre.setModel(new DefaultComboBoxModel(new String[] {"1º", "2º", "3º", "4º"}));
 		cmbNotasSemestre.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		tabNotasFaltas.add(cmbNotasSemestre, "cell 0 2 3 1,growx");
+		tabNotasFaltas.add(cmbNotasSemestre, "cell 6 2,growx");
+		
+		lblNotasAno = new JLabel("Ano:");
+		lblNotasAno.setFont(new Font("Verdana", Font.PLAIN, 18));
+		tabNotasFaltas.add(lblNotasAno, "flowx,cell 7 2,alignx trailing");
 		
 		txtNotasAno = new JFormattedTextField(new MaskFormatter("####"));
 		txtNotasAno.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		txtNotasAno.setColumns(10);
-		tabNotasFaltas.add(txtNotasAno, "cell 4 2,growx");
+		tabNotasFaltas.add(txtNotasAno, "cell 8 2,growx");
 		
 		lblNotasNota = new JLabel("Nota:");
 		lblNotasNota.setFont(new Font("Verdana", Font.PLAIN, 18));
@@ -843,6 +854,30 @@ public class TelaPrincipal extends JFrame {
 	}
 	
 	private void cursoAlterar() {
-		// TODO
+		try {
+			Aluno aluno = new Aluno();
+			Curso curso = new Curso();
+			Turma turma = new Turma();
+
+			AlunoEmTurma alunoTurma = new AlunoEmTurma();
+			AlunoEmTurmaDAO dao = new AlunoEmTurmaDAO();
+
+			aluno.setRgm(txtRgm.getText());
+
+			curso.setNome((String) cmbCurso.getSelectedItem());
+			curso.setCampus((String) cmbCampus.getSelectedItem());
+			turma.setPeriodo(rdGrpPeriodo.getSelection().getActionCommand());
+
+			turma.setCurso(curso);
+
+			alunoTurma.setAluno(aluno);
+			alunoTurma.setTurma(turma);
+
+			dao.alterar(alunoTurma);
+			
+			mudarStatus("Alteração realizada com sucesso.");
+		} catch (Exception e) {
+			mudarStatus("Erro na alteração: " + e.getMessage());
+		}
 	}
 }
