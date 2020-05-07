@@ -39,7 +39,7 @@ public class AlunoEmTurmaDAO {
 			ps.setString(3, alunoTurma.getTurma().getCurso().getNome());
 			ps.setString(4, alunoTurma.getTurma().getCurso().getCampus());
 			ps.setString(5, alunoTurma.getTurma().getSemestre());
-			System.out.println(ps);
+
 			if(ps.executeUpdate() == 0)
 				throw new Exception("Aluno, curso ou turma não encontrados, verifique os dados.");
 			
@@ -101,7 +101,7 @@ public class AlunoEmTurmaDAO {
 			ps.setString(3, alunoTurma.getTurma().getPeriodo());
 			ps.setString(4, alunoTurma.getTurma().getSemestre());
 			ps.setString(5, alunoTurma.getAluno().getRgm());
-			System.out.println(ps);
+
 			ps.executeUpdate();
 			
 		} catch (Exception e) {

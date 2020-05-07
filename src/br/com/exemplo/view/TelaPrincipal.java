@@ -124,8 +124,6 @@ public class TelaPrincipal extends JFrame {
 	private JLabel lblNotasNota;
 	private JComboBox cmbNotasNota;
 	private JLabel lblNotasFaltas;
-	private JFormattedTextField txtNotasAno;
-	private JLabel lblNotasAno;
 	private JFormattedTextField txtNotasFaltas;
 	private JButton btnNewButton;
 	private JButton btnNotasInserir;
@@ -138,10 +136,10 @@ public class TelaPrincipal extends JFrame {
 	private JButton btnAlunoExcluir;
 	private JLabel lblNotasDisciplina;
 	private JComboBox cmbNotasDisciplina;
-	private JFormattedTextField txtCursoSemestre;
 	private JLabel lblSemestre;
 	private JLabel lblOnicoCurso;
 	private JLabel lblOnicoCurso_1;
+	private JComboBox cmbCursoSemestre;
 
 	/**
 	 * Launch the application.
@@ -475,7 +473,7 @@ public class TelaPrincipal extends JFrame {
 		
 		tabCurso = new JPanel();
 		tabbedPane.addTab("Dados do Curso", null, tabCurso, "Dados do curso do aluno.");
-		tabCurso.setLayout(new MigLayout("", "[][10][grow][180:180:180,grow][100px:100px:100px][25]", "[][25][][25][][25][]"));
+		tabCurso.setLayout(new MigLayout("", "[][10][grow][180:180:180,grow][100px:100px:100px,grow][25]", "[][25][][25][][25][]"));
 		
 		lblCurso = new JLabel("Curso");
 		lblCurso.setFont(new Font("Verdana", Font.PLAIN, 18));
@@ -494,16 +492,11 @@ public class TelaPrincipal extends JFrame {
 		cmbCampus.setModel(new DefaultComboBoxModel(new String[] {"Tatuapé", "Pinheiros"}));
 		cmbCampus.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXX");
 		cmbCampus.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		tabCurso.add(cmbCampus, "cell 2 2 2 1,alignx left");
+		tabCurso.add(cmbCampus, "flowx,cell 2 2 2 1,alignx left");
 		
 		lblSemestre = new JLabel("Semestre ");
 		lblSemestre.setFont(new Font("Verdana", Font.PLAIN, 18));
-		tabCurso.add(lblSemestre, "cell 3 2,alignx trailing");
-		
-		txtCursoSemestre = new JFormattedTextField(new MaskFormatter("####-##"));
-		txtCursoSemestre.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		txtCursoSemestre.setColumns(10);
-		tabCurso.add(txtCursoSemestre, "cell 4 2,growx");
+		tabCurso.add(lblSemestre, "cell 3 2 2 1,alignx trailing");
 		
 		lblOnicoCurso_1 = new JLabel("O único curso em 2019-02 é MEDICINA");
 		lblOnicoCurso_1.setFont(new Font("Verdana", Font.PLAIN, 12));
@@ -579,6 +572,11 @@ public class TelaPrincipal extends JFrame {
 		rdNoturno.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		tabCurso.add(rdNoturno, "cell 2 4 4 1,growx");
 		
+		cmbCursoSemestre = new JComboBox();
+		cmbCursoSemestre.setModel(new DefaultComboBoxModel(new String[] {"2019-02", "2020-01"}));
+		cmbCursoSemestre.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		tabCurso.add(cmbCursoSemestre, "cell 3 2,alignx center");
+		
 		tabNotasFaltas = new JPanel();
 		tabbedPane.addTab("Notas e Faltas", null, tabNotasFaltas, "Notas e faltas do aluno.");
 		tabNotasFaltas.setLayout(new MigLayout("", "[50:50:50,grow][70:70:70][25:25:25][80:80:80,grow][100px:100px:100px,grow][100:100:100,grow][60:60:60,grow][48:48:48,grow][80:80:80]", "[][][][][25][]"));
@@ -626,18 +624,9 @@ public class TelaPrincipal extends JFrame {
 		tabNotasFaltas.add(lblNotasSemestre, "cell 5 2,alignx trailing");
 		
 		cmbNotasSemestre = new JComboBox();
-		cmbNotasSemestre.setModel(new DefaultComboBoxModel(new String[] {"17"}));
+		cmbNotasSemestre.setModel(new DefaultComboBoxModel(new String[] {"2019-02", "2020-01"}));
 		cmbNotasSemestre.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		tabNotasFaltas.add(cmbNotasSemestre, "cell 6 2,growx");
-		
-		lblNotasAno = new JLabel("Ano:");
-		lblNotasAno.setFont(new Font("Verdana", Font.PLAIN, 18));
-		tabNotasFaltas.add(lblNotasAno, "flowx,cell 7 2,alignx trailing");
-		
-		txtNotasAno = new JFormattedTextField(new MaskFormatter("####"));
-		txtNotasAno.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		txtNotasAno.setColumns(10);
-		tabNotasFaltas.add(txtNotasAno, "cell 8 2,growx");
 		
 		lblNotasNota = new JLabel("Nota:");
 		lblNotasNota.setFont(new Font("Verdana", Font.PLAIN, 18));
@@ -846,7 +835,7 @@ public class TelaPrincipal extends JFrame {
 			curso.setNome((String)cmbCurso.getSelectedItem());
 			curso.setCampus((String)cmbCampus.getSelectedItem());
 			turma.setPeriodo(rdGrpPeriodo.getSelection().getActionCommand());
-			turma.setSemestre(txtCursoSemestre.getText());
+			turma.setSemestre((String)cmbCursoSemestre.getSelectedItem());
 			
 			turma.setCurso(curso);
 			
@@ -867,7 +856,7 @@ public class TelaPrincipal extends JFrame {
 			
 			cmbCurso.setSelectedItem(alunoTurma.getTurma().getCurso().getNome());
 			cmbCampus.setSelectedItem(alunoTurma.getTurma().getCurso().getCampus());
-			txtCursoSemestre.setText(alunoTurma.getTurma().getSemestre());
+			cmbCursoSemestre.setSelectedItem(alunoTurma.getTurma().getSemestre());
 			rdGrpPeriodo.clearSelection();
 			
 			switch (alunoTurma.getTurma().getPeriodo()) {
@@ -902,7 +891,7 @@ public class TelaPrincipal extends JFrame {
 			curso.setNome((String) cmbCurso.getSelectedItem());
 			curso.setCampus((String) cmbCampus.getSelectedItem());
 			turma.setPeriodo(rdGrpPeriodo.getSelection().getActionCommand());
-			turma.setSemestre(txtCursoSemestre.getText());
+			turma.setSemestre((String)cmbCursoSemestre.getSelectedItem());
 
 			turma.setCurso(curso);
 			
