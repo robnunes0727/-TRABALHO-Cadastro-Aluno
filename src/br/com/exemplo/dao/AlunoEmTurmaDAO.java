@@ -30,15 +30,16 @@ public class AlunoEmTurmaDAO {
 			String sql = "INSERT INTO AlunoEmTurma (Aluno_rgm, Turma_id) " + 
 					"SELECT ?, id FROM Turma " + 
 					"WHERE periodo = ? AND curso_id = (SELECT id FROM Curso WHERE nome = ? AND campus = ?) " +
-					"AND semestre = (SELECT MAX(semestre) FROM Turma)";
+					"AND semestre = ?";
 
 			ps = conn.prepareStatement(sql);
-
+			
 			ps.setString(1, alunoTurma.getAluno().getRgm());
 			ps.setString(2, alunoTurma.getTurma().getPeriodo());
 			ps.setString(3, alunoTurma.getTurma().getCurso().getNome());
 			ps.setString(4, alunoTurma.getTurma().getCurso().getCampus());
-			
+			ps.setString(5, alunoTurma.getTurma().getSemestre());
+			System.out.println(ps);
 			if(ps.executeUpdate() == 0)
 				throw new Exception("Aluno, curso ou turma não encontrados, verifique os dados.");
 			
@@ -52,10 +53,11 @@ public class AlunoEmTurmaDAO {
 	
 	public AlunoEmTurma consultar(String rgm) throws Exception{
 		try {
-			String sql = "SELECT AlunoEmTurma.Aluno_rgm, Curso.nome, Curso.campus, Turma.periodo " + 
-					"FROM Turma " + 
-					"INNER JOIN Curso ON Turma.Curso_id = Curso.id " + 
-					"INNER JOIN AlunoEmTurma ON AlunoEmTurma.Turma_id = Turma.id " + 
+			String sql = "SELECT Aluno_rgm, aluno.nome as nome_aluno, Turma_id, Curso_id, periodo, semestre, curso.nome as nome_curso, campus " + 
+					"FROM AlunoEmTurma " + 
+					"INNER JOIN Turma ON Turma.id = AlunoEmTurma.Turma_id " + 
+					"INNER JOIN Curso ON Turma.curso_id = Curso.id " + 
+					"INNER JOIN Aluno ON Aluno.rgm = AlunoEmTurma.Aluno_rgm " + 
 					"WHERE AlunoEmTurma.Aluno_rgm = ?";
 			
 			ps = conn.prepareStatement(sql);
@@ -67,12 +69,11 @@ public class AlunoEmTurmaDAO {
 			if(rs.next()) {
 				Aluno aluno = new Aluno();
 				aluno.setRgm(rs.getString("Aluno_rgm"));
+				aluno.setNome(rs.getString("nome_aluno"));
 				
-				Curso curso = new Curso(rs.getString("nome"), rs.getString("campus"));
+				Curso curso = new Curso(rs.getInt("Curso_id"), rs.getString("nome_curso"), rs.getString("campus"));
 				
-				Turma turma = new Turma();
-				turma.setPeriodo(rs.getString("periodo"));
-				turma.setCurso(curso);
+				Turma turma = new Turma(rs.getInt("Turma_id"), curso, rs.getString("periodo"), rs.getString("semestre"));
 					
 				AlunoEmTurma AlunoTurma = new AlunoEmTurma(aluno, turma);
 				
@@ -90,8 +91,7 @@ public class AlunoEmTurmaDAO {
 		try {
 			String sql = "UPDATE AlunoEmTurma SET AlunoEmTurma.Turma_id = " + 
 					"(SELECT id FROM Turma WHERE Curso_id = " + 
-					"(SELECT id FROM Curso WHERE nome = ? AND campus = ? AND periodo = ? AND semestre = " + 
-					"(SELECT MAX(semestre) FROM Turma)))" + 
+					"(SELECT id FROM Curso WHERE nome = ? AND campus = ? AND periodo = ? AND semestre = ?)) " + 
 					"WHERE Aluno_rgm = ?";
 			
 			ps = conn.prepareStatement(sql);
@@ -99,8 +99,9 @@ public class AlunoEmTurmaDAO {
 			ps.setString(1, alunoTurma.getTurma().getCurso().getNome());
 			ps.setString(2, alunoTurma.getTurma().getCurso().getCampus());
 			ps.setString(3, alunoTurma.getTurma().getPeriodo());
-			ps.setString(4, alunoTurma.getAluno().getRgm());
-			
+			ps.setString(4, alunoTurma.getTurma().getSemestre());
+			ps.setString(5, alunoTurma.getAluno().getRgm());
+			System.out.println(ps);
 			ps.executeUpdate();
 			
 		} catch (Exception e) {
@@ -110,11 +111,22 @@ public class AlunoEmTurmaDAO {
 		}
 	}
 	
-	public void excluir() {
+	public void excluir(String rgm) throws Exception {
 		try {
+			String sql = "DELETE FROM AlunoEmTurma WHERE AlunoEmTurma.Aluno_rgm = ?";
+			
+			if (rgm.contains("        ")) {
+				throw new Exception("RGM incorreto");
+			}
+			
+			ps = conn.prepareStatement(sql);
+			
+			ps.setString(1, rgm);
+			
+			ps.executeUpdate();
 			
 		} catch (Exception e) {
-			// TODO: handle exception
+			throw new Exception(e.getMessage());
 		}
 	}
 }

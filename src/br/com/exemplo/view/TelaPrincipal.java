@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.swing.JDialog;
@@ -27,9 +28,11 @@ import javax.swing.text.MaskFormatter;
 
 import br.com.exemplo.dao.AlunoDAO;
 import br.com.exemplo.dao.AlunoEmTurmaDAO;
+import br.com.exemplo.dao.DisciplinaEmCursoDAO;
 import br.com.exemplo.model.Aluno;
 import br.com.exemplo.model.AlunoEmTurma;
 import br.com.exemplo.model.Curso;
+import br.com.exemplo.model.Disciplina;
 import br.com.exemplo.model.Turma;
 import net.miginfocom.swing.MigLayout;
 import java.awt.event.KeyAdapter;
@@ -134,7 +137,11 @@ public class TelaPrincipal extends JFrame {
 	private JButton btnAlunoAlterar;
 	private JButton btnAlunoExcluir;
 	private JLabel lblNotasDisciplina;
-	private JComboBox cmbNotasSemestre_1;
+	private JComboBox cmbNotasDisciplina;
+	private JFormattedTextField txtCursoSemestre;
+	private JLabel lblSemestre;
+	private JLabel lblOnicoCurso;
+	private JLabel lblOnicoCurso_1;
 
 	/**
 	 * Launch the application.
@@ -468,7 +475,7 @@ public class TelaPrincipal extends JFrame {
 		
 		tabCurso = new JPanel();
 		tabbedPane.addTab("Dados do Curso", null, tabCurso, "Dados do curso do aluno.");
-		tabCurso.setLayout(new MigLayout("", "[][10][grow][grow][grow][25]", "[][25][][25][][25][]"));
+		tabCurso.setLayout(new MigLayout("", "[][10][grow][180:180:180,grow][100px:100px:100px][25]", "[][25][][25][][25][]"));
 		
 		lblCurso = new JLabel("Curso");
 		lblCurso.setFont(new Font("Verdana", Font.PLAIN, 18));
@@ -485,8 +492,22 @@ public class TelaPrincipal extends JFrame {
 		
 		cmbCampus = new JComboBox();
 		cmbCampus.setModel(new DefaultComboBoxModel(new String[] {"Tatuapé", "Pinheiros"}));
+		cmbCampus.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXX");
 		cmbCampus.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		tabCurso.add(cmbCampus, "cell 2 2 3 1,growx");
+		tabCurso.add(cmbCampus, "cell 2 2 2 1,alignx left");
+		
+		lblSemestre = new JLabel("Semestre ");
+		lblSemestre.setFont(new Font("Verdana", Font.PLAIN, 18));
+		tabCurso.add(lblSemestre, "cell 3 2,alignx trailing");
+		
+		txtCursoSemestre = new JFormattedTextField(new MaskFormatter("####-##"));
+		txtCursoSemestre.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		txtCursoSemestre.setColumns(10);
+		tabCurso.add(txtCursoSemestre, "cell 4 2,growx");
+		
+		lblOnicoCurso_1 = new JLabel("O único curso em 2019-02 é MEDICINA");
+		lblOnicoCurso_1.setFont(new Font("Verdana", Font.PLAIN, 12));
+		tabCurso.add(lblOnicoCurso_1, "cell 3 3 3 1,alignx center,aligny top");
 		
 		lblPeriodo = new JLabel("Período");
 		lblPeriodo.setFont(new Font("Verdana", Font.PLAIN, 18));
@@ -496,20 +517,7 @@ public class TelaPrincipal extends JFrame {
 		rdGrpPeriodo.add(rdMatutino);
 		rdMatutino.setActionCommand("M");
 		rdMatutino.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		tabCurso.add(rdMatutino, "flowx,cell 2 4,alignx left");
-		
-		rdVespertino = new JRadioButton("Vespertino");
-		rdVespertino.setActionCommand("V");
-		rdGrpPeriodo.add(rdVespertino);
-		rdVespertino.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		tabCurso.add(rdVespertino, "cell 3 4,alignx left");
-		
-		rdNoturno = new JRadioButton("Noturno");
-		rdNoturno.setSelected(true);
-		rdNoturno.setActionCommand("N");
-		rdGrpPeriodo.add(rdNoturno);
-		rdNoturno.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		tabCurso.add(rdNoturno, "cell 4 4");
+		tabCurso.add(rdMatutino, "flowx,cell 2 4 4 1,growx");
 		
 		btnCursoInserir = new JButton("");
 		btnCursoInserir.addActionListener(new ActionListener() {
@@ -550,26 +558,47 @@ public class TelaPrincipal extends JFrame {
 		btnCursoExcluir = new JButton("");
 		btnCursoExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// BOTÃO CURSO EXCLUIR
+				cursoExcluir();
 			}
 		});
 		btnCursoExcluir.setIcon(new ImageIcon("imagens\\icones\\delete.png"));
 		btnCursoExcluir.setToolTipText("Apagar");
 		tabCurso.add(btnCursoExcluir, "cell 0 6 6 1,alignx center");
 		
+		rdVespertino = new JRadioButton("Vespertino");
+		rdVespertino.setActionCommand("V");
+		rdGrpPeriodo.add(rdVespertino);
+		rdVespertino.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		tabCurso.add(rdVespertino, "cell 2 4 4 1,growx");
+		
+		rdNoturno = new JRadioButton("Noturno");
+		rdNoturno.setSelected(true);
+		rdNoturno.setActionCommand("N");
+		rdGrpPeriodo.add(rdNoturno);
+		rdNoturno.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		tabCurso.add(rdNoturno, "cell 2 4 4 1,growx");
+		
 		tabNotasFaltas = new JPanel();
 		tabbedPane.addTab("Notas e Faltas", null, tabNotasFaltas, "Notas e faltas do aluno.");
-		tabNotasFaltas.setLayout(new MigLayout("", "[50:50:50,grow][70:70:70][][80:80:80,grow][100px:100px:100px,grow][100:100:100,grow][60:60:60,grow][grow][80:80:80]", "[][][][][25][]"));
+		tabNotasFaltas.setLayout(new MigLayout("", "[50:50:50,grow][70:70:70][25:25:25][80:80:80,grow][100px:100px:100px,grow][100:100:100,grow][60:60:60,grow][48:48:48,grow][80:80:80]", "[][][][][25][]"));
 		
 		lblNotasRGM = new JLabel("RGM:");
 		lblNotasRGM.setFont(new Font("Verdana", Font.PLAIN, 18));
 		tabNotasFaltas.add(lblNotasRGM, "cell 0 0,alignx trailing");
 		
 		txtNotasRGM = new JFormattedTextField(new MaskFormatter("########"));
+		txtNotasRGM.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				NotasFaltasRgm();
+			}
+		});
 		txtNotasRGM.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		txtNotasRGM.setColumns(10);
 		tabNotasFaltas.add(txtNotasRGM, "cell 1 0 3 1,growx");
 		
 		txtNotasNome = new JTextField();
+		txtNotasNome.setText("Digite o RGM e pressione ENTER");
 		txtNotasNome.setEditable(false);
 		txtNotasNome.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		txtNotasNome.setColumns(10);
@@ -585,16 +614,19 @@ public class TelaPrincipal extends JFrame {
 		lblNotasDisciplina.setFont(new Font("Verdana", Font.PLAIN, 18));
 		tabNotasFaltas.add(lblNotasDisciplina, "flowx,cell 0 2 5 1,alignx trailing");
 		
-		cmbNotasSemestre_1 = new JComboBox();
-		cmbNotasSemestre_1.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		tabNotasFaltas.add(cmbNotasSemestre_1, "cell 0 2 5 1,growx");
+		cmbNotasDisciplina = new JComboBox();
+		cmbNotasDisciplina.setEnabled(false);
+		cmbNotasDisciplina.setModel(new DefaultComboBoxModel(new String[] {"Preencha o RGM"}));
+		cmbNotasDisciplina.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXX");
+		cmbNotasDisciplina.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		tabNotasFaltas.add(cmbNotasDisciplina, "cell 0 2 5 1,growx");
 		
 		lblNotasSemestre = new JLabel("Semestre:");
 		lblNotasSemestre.setFont(new Font("Verdana", Font.PLAIN, 18));
 		tabNotasFaltas.add(lblNotasSemestre, "cell 5 2,alignx trailing");
 		
 		cmbNotasSemestre = new JComboBox();
-		cmbNotasSemestre.setModel(new DefaultComboBoxModel(new String[] {"1º", "2º", "3º", "4º"}));
+		cmbNotasSemestre.setModel(new DefaultComboBoxModel(new String[] {"17"}));
 		cmbNotasSemestre.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		tabNotasFaltas.add(cmbNotasSemestre, "cell 6 2,growx");
 		
@@ -625,6 +657,10 @@ public class TelaPrincipal extends JFrame {
 		txtNotasFaltas.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		txtNotasFaltas.setColumns(10);
 		tabNotasFaltas.add(txtNotasFaltas, "cell 4 3,growx");
+		
+		lblOnicoCurso = new JLabel("O único curso em 2019-02 é MEDICINA");
+		lblOnicoCurso.setFont(new Font("Verdana", Font.PLAIN, 12));
+		tabNotasFaltas.add(lblOnicoCurso, "cell 5 3 4 1,alignx center,aligny top");
 		
 		btnNotasInserir = new JButton("");
 		btnNotasInserir.setIcon(new ImageIcon("imagens\\icones\\save.png"));
@@ -793,8 +829,7 @@ public class TelaPrincipal extends JFrame {
 			mudarStatus("Excluído RGM " + txtRgm.getText() + " com sucesso");
 		} catch (Exception e) {
 			mudarStatus("Erro ao apagar: " + e.getMessage());
-			System.out.println("Erro ao alterar: " + e.getMessage());
-
+			System.out.println("Erro ao excluir: " + e.getMessage());
 		}
 	}
 	
@@ -804,7 +839,6 @@ public class TelaPrincipal extends JFrame {
 			Curso curso = new Curso();
 			Turma turma = new Turma();
 			
-			AlunoEmTurma alunoTurma = new AlunoEmTurma();
 			AlunoEmTurmaDAO dao = new AlunoEmTurmaDAO();
 			
 			aluno.setRgm(txtRgm.getText());
@@ -812,11 +846,11 @@ public class TelaPrincipal extends JFrame {
 			curso.setNome((String)cmbCurso.getSelectedItem());
 			curso.setCampus((String)cmbCampus.getSelectedItem());
 			turma.setPeriodo(rdGrpPeriodo.getSelection().getActionCommand());
+			turma.setSemestre(txtCursoSemestre.getText());
 			
 			turma.setCurso(curso);
 			
-			alunoTurma.setAluno(aluno);
-			alunoTurma.setTurma(turma);
+			AlunoEmTurma alunoTurma = new AlunoEmTurma(aluno, turma);
 			
 			dao.salvar(alunoTurma);
 			
@@ -833,6 +867,7 @@ public class TelaPrincipal extends JFrame {
 			
 			cmbCurso.setSelectedItem(alunoTurma.getTurma().getCurso().getNome());
 			cmbCampus.setSelectedItem(alunoTurma.getTurma().getCurso().getCampus());
+			txtCursoSemestre.setText(alunoTurma.getTurma().getSemestre());
 			rdGrpPeriodo.clearSelection();
 			
 			switch (alunoTurma.getTurma().getPeriodo()) {
@@ -859,7 +894,7 @@ public class TelaPrincipal extends JFrame {
 			Curso curso = new Curso();
 			Turma turma = new Turma();
 
-			AlunoEmTurma alunoTurma = new AlunoEmTurma();
+			
 			AlunoEmTurmaDAO dao = new AlunoEmTurmaDAO();
 
 			aluno.setRgm(txtRgm.getText());
@@ -867,17 +902,55 @@ public class TelaPrincipal extends JFrame {
 			curso.setNome((String) cmbCurso.getSelectedItem());
 			curso.setCampus((String) cmbCampus.getSelectedItem());
 			turma.setPeriodo(rdGrpPeriodo.getSelection().getActionCommand());
+			turma.setSemestre(txtCursoSemestre.getText());
 
 			turma.setCurso(curso);
-
-			alunoTurma.setAluno(aluno);
-			alunoTurma.setTurma(turma);
+			
+			AlunoEmTurma alunoTurma = new AlunoEmTurma(aluno, turma);
 
 			dao.alterar(alunoTurma);
 			
 			mudarStatus("Alteração realizada com sucesso.");
 		} catch (Exception e) {
 			mudarStatus("Erro na alteração: " + e.getMessage());
+		}
+	}
+	
+	private void cursoExcluir() {
+		try {
+			AlunoEmTurmaDAO dao = new AlunoEmTurmaDAO();		
+			
+			dao.excluir(txtRgm.getText());
+			
+			mudarStatus("Informações da turma de: RGM " + txtRgm.getText() + " excluidas com sucesso");
+		} catch (Exception e) {
+			mudarStatus("Erro ao excluir: " + e.getMessage());
+		}
+	}
+	
+	private void NotasFaltasRgm() {
+		try {
+			AlunoEmTurmaDAO dao = new AlunoEmTurmaDAO();
+			
+			AlunoEmTurma alunoTurma = dao.consultar(txtNotasRGM.getText());
+			
+			txtNotasNome.setText(alunoTurma.getAluno().getNome());
+			Curso curso = alunoTurma.getTurma().getCurso();
+			String descricao = curso.getNome() + " - " + alunoTurma.getTurma().getPeriodo() + " / " + curso.getCampus();
+			txtNotasCurso.setText(descricao);
+			cmbNotasDisciplina.setEnabled(true);
+			cmbNotasDisciplina.setModel(new DefaultComboBoxModel(new String[] {"Selecione a disciplina"}));
+			
+			DisciplinaEmCursoDAO dao1 = new DisciplinaEmCursoDAO();
+			List<Disciplina> disciplinas = dao1.consultarDisciplinas(curso.getId());
+			
+			for (Disciplina disciplina : disciplinas) {
+				cmbNotasDisciplina.addItem(disciplina.getNome());
+				System.out.println(disciplina.getNome());
+			}
+			
+		} catch (Exception e) {
+			mudarStatus("Erro ao trazer dados do aluno: " + e.getMessage());
 		}
 	}
 }

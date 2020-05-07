@@ -2,6 +2,7 @@ package br.com.exemplo.model;
 
 public class Curso {
 	
+	private int id;
 	private String nome;
 	private String campus;
 	
@@ -9,9 +10,18 @@ public class Curso {
 		// vazio
 	}
 
-	public Curso(String nome, String campus) {
+	public Curso(int id, String nome, String campus) {
+		this.id = id;
 		this.nome = nome;
 		this.campus = campus;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getNome() {
@@ -29,5 +39,7 @@ public class Curso {
 	public void setCampus(String campus) {
 		this.campus = campus;
 	}
+
+	
 	
 }

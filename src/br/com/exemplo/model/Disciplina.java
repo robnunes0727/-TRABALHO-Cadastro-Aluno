@@ -3,16 +3,14 @@ package br.com.exemplo.model;
 public class Disciplina {
 	private int id;
 	private String nome;
-	private String semestre;
 	
 	public Disciplina() {
 		// Vazio
 	}
 
-	public Disciplina(int id, String nome, String semestre) {
+	public Disciplina(int id, String nome) {
 		this.id = id;
 		this.nome = nome;
-		this.semestre = semestre;
 	}
 
 	public int getId() {
@@ -31,13 +29,4 @@ public class Disciplina {
 		this.nome = nome;
 	}
 
-	public String getSemestre() {
-		return semestre;
-	}
-
-	public void setSemestre(String semestre) {
-		this.semestre = semestre;
-	}
-	
-	
 }

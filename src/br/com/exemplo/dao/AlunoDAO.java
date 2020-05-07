@@ -93,6 +93,10 @@ public class AlunoDAO {
 		try {
 			String sql = "DELETE FROM Aluno WHERE rgm = ?";
 			
+			if (rgm.contains("        ")) {
+				throw new Exception("RGM incorreto");
+			}
+			
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, rgm);
 			
