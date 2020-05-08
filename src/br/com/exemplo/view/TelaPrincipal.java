@@ -250,16 +250,36 @@ public class TelaPrincipal extends JFrame {
 		menuBar.add(mnNotasFaltas);
 		
 		mnNtSalvar = new JMenuItem("Salvar");
+		mnNtSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				notasSalvar();
+			}
+		});
 		mnNotasFaltas.add(mnNtSalvar);
 		
 		mnNtAlterar = new JMenuItem("Alterar");
+		mnNtAlterar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				notasAlterar();
+			}
+		});
 		mnNtAlterar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
 		mnNotasFaltas.add(mnNtAlterar);
 		
 		mnNtExcluir = new JMenuItem("Excluir");
+		mnNtExcluir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				notasExcluir();
+			}
+		});
 		mnNotasFaltas.add(mnNtExcluir);
 		
 		mnNtConsultar = new JMenuItem("Consultar");
+		mnNtConsultar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				notasConsultar();
+			}
+		});
 		mnNotasFaltas.add(mnNtConsultar);
 		
 		mnAjuda = new JMenu("Ajuda");
@@ -703,16 +723,31 @@ public class TelaPrincipal extends JFrame {
 		tabNotasFaltas.add(btnNotasInserir, "cell 0 5 9 1,alignx center");
 		
 		btnNotasConsulta = new JButton("");
+		btnNotasConsulta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				notasConsultar();
+			}
+		});
 		btnNotasConsulta.setIcon(new ImageIcon("imagens\\icones\\lookup.png"));
 		btnNotasConsulta.setToolTipText("Consultar");
 		tabNotasFaltas.add(btnNotasConsulta, "cell 0 5 9 1");
 		
 		btnNotasAlterar = new JButton("");
+		btnNotasAlterar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				notasAlterar();
+			}
+		});
 		btnNotasAlterar.setIcon(new ImageIcon("imagens\\icones\\edit.png"));
 		btnNotasAlterar.setToolTipText("Alterar");
 		tabNotasFaltas.add(btnNotasAlterar, "cell 0 5 9 1");
 		
 		btnNotasExcluir = new JButton("");
+		btnNotasExcluir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				notasExcluir();
+			}
+		});
 		btnNotasExcluir.setIcon(new ImageIcon("imagens\\icones\\delete.png"));
 		btnNotasExcluir.setToolTipText("Excluir");
 		tabNotasFaltas.add(btnNotasExcluir, "cell 0 5 9 1");
@@ -782,6 +817,9 @@ public class TelaPrincipal extends JFrame {
 		txtStatus.setColumns(10);
 	}
 	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	/***************************************** FUNÇÕES GERAIS ********************************************/
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void mudarStatus(String status) {
 		txtStatus.setText(status);
 	}
@@ -790,6 +828,11 @@ public class TelaPrincipal extends JFrame {
 		main(null);
 		this.dispose();
 	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	/******************************************* ABA ALUNO ***********************************************/
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	private void alunoSalvar() {
 		// Usado no botão e no menu Aluno > Salvar
 		try {
@@ -872,6 +915,9 @@ public class TelaPrincipal extends JFrame {
 		}
 	}
 	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	/******************************************** ABA CURSO **********************************************/
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	private void cursoInserir() {
 		try {
 			Aluno aluno = new Aluno();
@@ -967,22 +1013,33 @@ public class TelaPrincipal extends JFrame {
 		}
 	}
 	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	/***************************************** ABA NOTAS FALTAS ******************************************/
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	private void NotasFaltasRgm() {
 		try {
 			AlunoEmTurmaDAO dao = new AlunoEmTurmaDAO();
 			
 			AlunoEmTurma alunoTurma = dao.consultar(txtNotasRGM.getText());
 			
+			// Settar o texto nos campos de consulta
 			txtNotasNome.setText(alunoTurma.getAluno().getNome());
 			Curso curso = alunoTurma.getTurma().getCurso();
 			String descricao = curso.getNome() + " - " + alunoTurma.getTurma().getPeriodo() + " / " + curso.getCampus();
 			txtNotasCurso.setText(descricao);
+			
+			// Habilitar lista
 			cmbNotasDisciplina.setEnabled(true);
+			
+			// Apagar mensagem de RGM
 			cmbNotasDisciplina.setModel(new DefaultComboBoxModel(new String[] {}));
 			
+			// Consultar lista de disciplinas
 			DisciplinaEmCursoDAO dao1 = new DisciplinaEmCursoDAO();
 			List<Disciplina> disciplinas = dao1.consultarDisciplinas(curso.getId());
 			
+			// Colocar a lista dentro do combobox
 			for (Disciplina disciplina : disciplinas) {
 				cmbNotasDisciplina.addItem(disciplina.getNome()  + " - " + disciplina.getId() + " / " + curso.getId());
 				System.out.println(disciplina.getNome());
@@ -1000,6 +1057,7 @@ public class TelaPrincipal extends JFrame {
 		int disciplinaId;
 		int cursoId;
 		
+		// Puxar ids da string
 		try {
 			String[] nomeDisc = cmbNotasDisciplina.getSelectedItem().toString().split(" - ");
 			String[] dcId = nomeDisc[1].split(" / ");
@@ -1021,16 +1079,115 @@ public class TelaPrincipal extends JFrame {
 		Disciplina d = new Disciplina();
 		d.setId(disciplinaId);
 		nf.setDisciplina(d);
-		System.out.println("aaa");
+		
+		// Tratamento de número com virgula
 		nf.setFaltas(Integer.parseInt(txtNotasFaltas.getText().trim()));
 		nf.setNota(Double.parseDouble(cmbNotasNota.getSelectedItem().toString().replace(",", ".")));
-		System.out.println("bbb");
+	
 		try {
 			NotasFaltasDAO dao = new NotasFaltasDAO();
 			dao.salvar(nf);	
 		} catch (Exception e) {
 			mudarStatus("Erro ao salvar: " + e.getMessage());
 		}
-		
 	}
+	
+	private void notasConsultar() {
+		NotasFaltas nf;
+		int disciplinaId;
+		int cursoId;
+		
+		// Puxar ids
+		try {
+			String[] nomeDisc = cmbNotasDisciplina.getSelectedItem().toString().split(" - ");
+			String[] dcId = nomeDisc[1].split(" / ");
+			disciplinaId = Integer.parseInt(dcId[0]);
+			cursoId = Integer.parseInt(dcId[1]);
+		} catch (Exception e) {
+			mudarStatus("Disciplina inválida");
+			return;
+		}
+		
+		// Conectar
+		try {
+			nf = new NotasFaltasDAO().consultar(txtNotasRGM.getText(), disciplinaId, cursoId);
+			txtNotasFaltas.setText(String.valueOf(nf.getFaltas()));
+			cmbNotasNota.setSelectedItem(String.valueOf(nf.getNota()).replace(".", ","));
+		} catch (Exception e) {
+			mudarStatus("Erro ao consultar: " + e.getMessage());
+		}
+	}
+	
+	private void notasAlterar() {
+		NotasFaltas nf = new NotasFaltas();
+		int disciplinaId;
+		int cursoId;
+				
+		Aluno a = new Aluno();
+		a.setRgm(txtNotasRGM.getText());
+		nf.setAluno(a);
+
+		// Puxar ids da string
+		try {
+			String[] nomeDisc = cmbNotasDisciplina.getSelectedItem().toString().split(" - ");
+			String[] dcId = nomeDisc[1].split(" / ");
+			disciplinaId = Integer.parseInt(dcId[0]);
+			cursoId = Integer.parseInt(dcId[1]);
+		} catch (Exception e) {
+			mudarStatus("Disciplina inválida");
+			return;
+		}
+		
+		Disciplina d = new Disciplina();
+		d.setId(disciplinaId);
+		nf.setDisciplina(d);
+		
+		Curso c = new Curso();
+		c.setId(cursoId);
+		
+		try {
+			NotasFaltasDAO dao = new NotasFaltasDAO();
+			dao.alterar(nf);
+		} catch (Exception e) {
+			mudarStatus("Erro ao alterar: " + e.getMessage());
+		}
+	}
+	
+	private void notasExcluir() {
+		NotasFaltas nf = new NotasFaltas();
+		int disciplinaId;
+		int cursoId;
+		
+		// Puxar ids da string -- devia ter feito uma função
+		try {
+			String[] nomeDisc = cmbNotasDisciplina.getSelectedItem().toString().split(" - ");
+			String[] dcId = nomeDisc[1].split(" / ");
+			disciplinaId = Integer.parseInt(dcId[0]);
+			cursoId = Integer.parseInt(dcId[1]);
+		} catch (Exception e) {
+			mudarStatus("Disciplina inválida");
+			return;
+		}
+		
+		Aluno a = new Aluno();
+		a.setRgm(txtNotasRGM.getText());
+		nf.setAluno(a);
+		
+		Disciplina d = new Disciplina();
+		d.setId(disciplinaId);
+		nf.setDisciplina(d);
+		
+		Curso c = new Curso();
+		c.setId(cursoId);
+		nf.setCurso(c);
+		
+		try {
+			NotasFaltasDAO dao = new NotasFaltasDAO();
+			dao.excluir(nf);
+		} catch (Exception e) {
+			mudarStatus("Erro ao excluir: " + e.getMessage());
+		}
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
 }

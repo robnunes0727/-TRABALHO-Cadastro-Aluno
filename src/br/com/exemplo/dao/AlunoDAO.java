@@ -39,6 +39,8 @@ public class AlunoDAO {
 			ps.setString(7, aluno.getMunicipio());
 			ps.setString(8, aluno.getUf());
 			ps.setString(9, aluno.getCelular());
+			
+			System.out.println(ps);
 			ps.executeUpdate();	
 			
 		} catch (Exception e) {
