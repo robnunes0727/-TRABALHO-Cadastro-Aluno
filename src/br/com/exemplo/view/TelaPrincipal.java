@@ -29,10 +29,13 @@ import javax.swing.text.MaskFormatter;
 import br.com.exemplo.dao.AlunoDAO;
 import br.com.exemplo.dao.AlunoEmTurmaDAO;
 import br.com.exemplo.dao.DisciplinaEmCursoDAO;
+import br.com.exemplo.dao.NotasFaltasDAO;
 import br.com.exemplo.model.Aluno;
 import br.com.exemplo.model.AlunoEmTurma;
 import br.com.exemplo.model.Curso;
 import br.com.exemplo.model.Disciplina;
+import br.com.exemplo.model.DisciplinaEmCurso;
+import br.com.exemplo.model.NotasFaltas;
 import br.com.exemplo.model.Turma;
 import net.miginfocom.swing.MigLayout;
 import java.awt.event.KeyAdapter;
@@ -140,6 +143,9 @@ public class TelaPrincipal extends JFrame {
 	private JLabel lblOnicoCurso;
 	private JLabel lblOnicoCurso_1;
 	private JComboBox cmbCursoSemestre;
+	private JButton btnNovo;
+	private JButton btnCursoNovo;
+	private JButton btnNotasNovo;
 
 	/**
 	 * Launch the application.
@@ -432,9 +438,20 @@ public class TelaPrincipal extends JFrame {
 				alunoSalvar();
 			}
 		});
+		
+		btnNovo = new JButton("");
+		btnNovo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				botaoNovo();
+			}
+		});
+		btnNovo.setToolTipText("Novo");
+		btnNovo.setIcon(new ImageIcon("imagens\\icones\\clear.png"));
+		tabDadosPessoais.add(btnNovo, "flowx,cell 0 7 6 1,alignx center");
+		
 		btnAlunoInserir.setToolTipText("Salvar");
 		btnAlunoInserir.setIcon(new ImageIcon("imagens\\icones\\save.png"));
-		tabDadosPessoais.add(btnAlunoInserir, "flowx,cell 0 7 6 1,alignx center");
+		tabDadosPessoais.add(btnAlunoInserir, "cell 0 7 6 1,alignx center");
 		
 		btnAlunoConsulta = new JButton("");
 		btnAlunoConsulta.addActionListener(new ActionListener() {
@@ -520,9 +537,21 @@ public class TelaPrincipal extends JFrame {
 				// FIM BOTÃO INSERIR CURSO
 			}
 		});
+		
+		btnCursoNovo = new JButton("");
+		btnCursoNovo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				botaoNovo();
+			}
+		});
+		btnCursoNovo.setToolTipText("Novo");
+		btnCursoNovo.setIcon(new ImageIcon("imagens\\icones\\clear.png"));
+		tabCurso.add(btnCursoNovo, "flowx,cell 0 6 6 1,alignx center");
+		
+		
 		btnCursoInserir.setIcon(new ImageIcon("imagens\\icones\\save.png"));
 		btnCursoInserir.setToolTipText("Salvar");
-		tabCurso.add(btnCursoInserir, "flowx,cell 0 6 6 1,alignx center");
+		tabCurso.add(btnCursoInserir, "cell 0 6 6 1,alignx center");
 		
 		btnCursoConsulta = new JButton("");
 		btnCursoConsulta.setToolTipText("Consultar");
@@ -573,7 +602,7 @@ public class TelaPrincipal extends JFrame {
 		tabCurso.add(rdNoturno, "cell 2 4 4 1,growx");
 		
 		cmbCursoSemestre = new JComboBox();
-		cmbCursoSemestre.setModel(new DefaultComboBoxModel(new String[] {"2019-02", "2020-01"}));
+		cmbCursoSemestre.setModel(new DefaultComboBoxModel(new String[] {"2020-01", "2019-02"}));
 		cmbCursoSemestre.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		tabCurso.add(cmbCursoSemestre, "cell 3 2,alignx center");
 		
@@ -624,7 +653,7 @@ public class TelaPrincipal extends JFrame {
 		tabNotasFaltas.add(lblNotasSemestre, "cell 5 2,alignx trailing");
 		
 		cmbNotasSemestre = new JComboBox();
-		cmbNotasSemestre.setModel(new DefaultComboBoxModel(new String[] {"2019-02", "2020-01"}));
+		cmbNotasSemestre.setModel(new DefaultComboBoxModel(new String[] {"2020-01", "2019-02"}));
 		cmbNotasSemestre.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		tabNotasFaltas.add(cmbNotasSemestre, "cell 6 2,growx");
 		
@@ -643,6 +672,7 @@ public class TelaPrincipal extends JFrame {
 		tabNotasFaltas.add(lblNotasFaltas, "cell 3 3,alignx trailing");
 		
 		txtNotasFaltas = new JFormattedTextField(new MaskFormatter("##"));
+		txtNotasFaltas.setText("0");
 		txtNotasFaltas.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		txtNotasFaltas.setColumns(10);
 		tabNotasFaltas.add(txtNotasFaltas, "cell 4 3,growx");
@@ -652,9 +682,25 @@ public class TelaPrincipal extends JFrame {
 		tabNotasFaltas.add(lblOnicoCurso, "cell 5 3 4 1,alignx center,aligny top");
 		
 		btnNotasInserir = new JButton("");
+		btnNotasInserir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				notasSalvar();
+			}
+		});
+		
+		btnNotasNovo = new JButton("");
+		btnNotasNovo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				botaoNovo();
+			}
+		});
+		btnNotasNovo.setToolTipText("Novo");
+		btnNotasNovo.setIcon(new ImageIcon("imagens\\icones\\clear.png"));
+		tabNotasFaltas.add(btnNotasNovo, "flowx,cell 0 5 9 1,alignx center");
+		
 		btnNotasInserir.setIcon(new ImageIcon("imagens\\icones\\save.png"));
 		btnNotasInserir.setToolTipText("Salvar");
-		tabNotasFaltas.add(btnNotasInserir, "flowx,cell 0 5 9 1,alignx center");
+		tabNotasFaltas.add(btnNotasInserir, "cell 0 5 9 1,alignx center");
 		
 		btnNotasConsulta = new JButton("");
 		btnNotasConsulta.setIcon(new ImageIcon("imagens\\icones\\lookup.png"));
@@ -740,6 +786,10 @@ public class TelaPrincipal extends JFrame {
 		txtStatus.setText(status);
 	}
 	
+	private void botaoNovo() {
+		main(null);
+		this.dispose();
+	}
 	private void alunoSalvar() {
 		// Usado no botão e no menu Aluno > Salvar
 		try {
@@ -928,18 +978,59 @@ public class TelaPrincipal extends JFrame {
 			String descricao = curso.getNome() + " - " + alunoTurma.getTurma().getPeriodo() + " / " + curso.getCampus();
 			txtNotasCurso.setText(descricao);
 			cmbNotasDisciplina.setEnabled(true);
-			cmbNotasDisciplina.setModel(new DefaultComboBoxModel(new String[] {"Selecione a disciplina"}));
+			cmbNotasDisciplina.setModel(new DefaultComboBoxModel(new String[] {}));
 			
 			DisciplinaEmCursoDAO dao1 = new DisciplinaEmCursoDAO();
 			List<Disciplina> disciplinas = dao1.consultarDisciplinas(curso.getId());
 			
 			for (Disciplina disciplina : disciplinas) {
-				cmbNotasDisciplina.addItem(disciplina.getNome());
+				cmbNotasDisciplina.addItem(disciplina.getNome()  + " - " + disciplina.getId() + " / " + curso.getId());
 				System.out.println(disciplina.getNome());
 			}
 			
 		} catch (Exception e) {
 			mudarStatus("Erro ao trazer dados do aluno: " + e.getMessage());
 		}
+	}
+	
+	private void notasSalvar() {
+		
+		NotasFaltas nf = new NotasFaltas();	
+		
+		int disciplinaId;
+		int cursoId;
+		
+		try {
+			String[] nomeDisc = cmbNotasDisciplina.getSelectedItem().toString().split(" - ");
+			String[] dcId = nomeDisc[1].split(" / ");
+			disciplinaId = Integer.parseInt(dcId[0]);
+			cursoId = Integer.parseInt(dcId[1]);
+		} catch (Exception e) {
+			mudarStatus("Disciplina inválida");
+			return;
+		}
+		
+		Aluno a = new Aluno();		
+		a.setRgm(txtNotasRGM.getText());
+		nf.setAluno(a);
+		
+		Curso c = new Curso();
+		c.setId(cursoId);
+		nf.setCurso(c);
+		
+		Disciplina d = new Disciplina();
+		d.setId(disciplinaId);
+		nf.setDisciplina(d);
+		System.out.println("aaa");
+		nf.setFaltas(Integer.parseInt(txtNotasFaltas.getText().trim()));
+		nf.setNota(Double.parseDouble(cmbNotasNota.getSelectedItem().toString().replace(",", ".")));
+		System.out.println("bbb");
+		try {
+			NotasFaltasDAO dao = new NotasFaltasDAO();
+			dao.salvar(nf);	
+		} catch (Exception e) {
+			mudarStatus("Erro ao salvar: " + e.getMessage());
+		}
+		
 	}
 }

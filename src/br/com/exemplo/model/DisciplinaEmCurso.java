@@ -26,7 +26,4 @@ public class DisciplinaEmCurso {
 	public void setCurso_id(int curso_id) {
 		this.curso_id = curso_id;
 	}
-	
-	
-	
 }
