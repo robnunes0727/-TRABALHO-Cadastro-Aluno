@@ -32,7 +32,7 @@ public class AlunoEmTurmaDAO {
 					"WHERE periodo = ? AND curso_id = (SELECT id FROM Curso WHERE nome = ? AND campus = ?) " +
 					"AND semestre = ?";
 
-			ps = conn.prepareStatement(sql);
+			ps = conn.prepareStatement(sql.toLowerCase());
 			
 			ps.setString(1, alunoTurma.getAluno().getRgm());
 			ps.setString(2, alunoTurma.getTurma().getPeriodo());
@@ -60,7 +60,7 @@ public class AlunoEmTurmaDAO {
 					"INNER JOIN Aluno ON Aluno.rgm = AlunoEmTurma.Aluno_rgm " + 
 					"WHERE AlunoEmTurma.Aluno_rgm = ?";
 			
-			ps = conn.prepareStatement(sql);
+			ps = conn.prepareStatement(sql.toLowerCase());
 			
 			ps.setString(1, rgm);
 			
@@ -94,7 +94,7 @@ public class AlunoEmTurmaDAO {
 					"(SELECT id FROM Curso WHERE nome = ? AND campus = ? AND periodo = ? AND semestre = ?)) " + 
 					"WHERE Aluno_rgm = ?";
 			
-			ps = conn.prepareStatement(sql);
+			ps = conn.prepareStatement(sql.toLowerCase());
 			
 			ps.setString(1, alunoTurma.getTurma().getCurso().getNome());
 			ps.setString(2, alunoTurma.getTurma().getCurso().getCampus());
@@ -119,7 +119,7 @@ public class AlunoEmTurmaDAO {
 				throw new Exception("RGM incorreto");
 			}
 			
-			ps = conn.prepareStatement(sql);
+			ps = conn.prepareStatement(sql.toLowerCase());
 			
 			ps.setString(1, rgm);
 			

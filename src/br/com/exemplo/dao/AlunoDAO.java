@@ -26,10 +26,10 @@ public class AlunoDAO {
 	
 	public void salvar(Aluno aluno) throws Exception {
 		try {
-			String sql = "INSERT INTO Aluno (rgm, nome, nascimento, cpf, email, endereco, municipio, uf, celular)"
+			String sql = "INSERT INTO aluno (rgm, nome, nascimento, cpf, email, endereco, municipio, uf, celular)"
 							+		"VALUES (  ?,    ?,          ?,   ?,     ?,        ?,         ?,  ?,       ?)";
 			
-			ps = conn.prepareStatement(sql);
+			ps = conn.prepareStatement(sql.toLowerCase());
 			ps.setString(1, aluno.getRgm());
 			ps.setString(2, aluno.getNome());
 			ps.setDate(3, java.sql.Date.valueOf(aluno.getNascimento()));
@@ -51,7 +51,7 @@ public class AlunoDAO {
 	public Aluno consultar(String rgm) throws Exception {
 		try {
 			String sql = "SELECT * FROM Aluno WHERE rgm = ?";
-			ps = conn.prepareStatement(sql);
+			ps = conn.prepareStatement(sql.toLowerCase());
 			ps.setString(1, rgm);
 			
 			rs = ps.executeQuery();
@@ -72,7 +72,7 @@ public class AlunoDAO {
 		try {
 			String sql = "UPDATE Aluno SET nome = ?, nascimento = ?,  cpf = ?, email = ?, endereco = ?, municipio = ?, uf = ?, celular = ? WHERE rgm = ?";
 
-			ps = conn.prepareStatement(sql);
+			ps = conn.prepareStatement(sql.toLowerCase());
 				
 			ps.setString(1, aluno.getNome());
 			ps.setDate(2, java.sql.Date.valueOf(aluno.getNascimento()));
@@ -99,7 +99,7 @@ public class AlunoDAO {
 				throw new Exception("RGM incorreto");
 			}
 			
-			ps = conn.prepareStatement(sql);
+			ps = conn.prepareStatement(sql.toLowerCase());
 			ps.setString(1, rgm);
 			
 			ps.executeUpdate();

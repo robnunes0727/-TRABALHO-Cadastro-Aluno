@@ -30,7 +30,7 @@ public class CodigoSQL extends JDialog {
 
 	/**
 	 * Launch the application.
-	 */
+
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -45,7 +45,7 @@ public class CodigoSQL extends JDialog {
 			e.printStackTrace();
 		}
 	}
-
+	*/
 	/**
 	 * Create the dialog.
 	 */

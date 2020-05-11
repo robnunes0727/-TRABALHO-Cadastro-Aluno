@@ -373,6 +373,13 @@ public class TelaPrincipal extends JFrame {
 		mntmCdigoSql = new JMenuItem("Código SQL");
 		mntmCdigoSql.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					CodigoSQL dialog = new CodigoSQL();
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		mnBancoDeDados.add(mntmCdigoSql);
@@ -1097,7 +1104,6 @@ public class TelaPrincipal extends JFrame {
 			// Colocar a lista dentro do combobox
 			for (Disciplina disciplina : disciplinas) {
 				cmbNotasDisciplina.addItem(disciplina.getNome()  + " - " + disciplina.getId() + " / " + curso.getId());
-				System.out.println(disciplina.getNome());
 			}
 			mudarStatus("Dados do aluno buscados com sucesso");
 		} catch (Exception e) {
@@ -1201,7 +1207,7 @@ public class TelaPrincipal extends JFrame {
 		
 		Curso c = new Curso();
 		c.setId(cursoId);
-		
+		nf.setCurso(c);
 		try {
 			NotasFaltasDAO dao = new NotasFaltasDAO();
 			dao.alterar(nf);

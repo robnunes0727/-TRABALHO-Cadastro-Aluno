@@ -25,7 +25,7 @@ public class BoletimDAO {
 		
 			String sql = "SELECT a.rgm as rgm, a.nome as nome, c.nome as curso, t.semestre as semestre, d.nome as disciplina, t.periodo as periodo, n.nota as nota, n.faltas as faltas "
 					   + "FROM NotasFaltas n "
-					   + "INNER JOIN DisciplinaEmCurso dc ON dc.Disciplina_id = n.Disciplina_id AND dc.Curso_id AND n.Curso_id "
+					   + "INNER JOIN DisciplinaEmCurso dc ON dc.Disciplina_id = n.Disciplina_id AND dc.Curso_id = n.Curso_id "
 					   + "INNER JOIN Disciplina d ON dc.Curso_id = d.id "
 					   + "INNER JOIN Curso c ON c.id = dc.Curso_id "
 					   + "INNER JOIN Aluno a ON a.rgm = n.Aluno_rgm "
@@ -33,9 +33,11 @@ public class BoletimDAO {
 					   + "INNER JOIN Turma t ON t.id = at.Turma_id "
 					   + "WHERE n.Aluno_rgm = ? AND t.semestre = ?";
 			
-			ps = conn.prepareStatement(sql);
+			ps = conn.prepareStatement(sql.toLowerCase());
+			
 			ps.setString(1, rgm);
 			ps.setString(2, semestre);
+			System.out.println(ps);
 			rs = ps.executeQuery();
 
 			List<Boletim> bolList = new ArrayList<Boletim>();
