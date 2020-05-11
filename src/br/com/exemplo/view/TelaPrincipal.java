@@ -6,9 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
@@ -187,7 +185,7 @@ public class TelaPrincipal extends JFrame {
 	 * Create the frame.
 	 */
 	public TelaPrincipal() throws Exception {
-		setIconImage(Toolkit.getDefaultToolkit().getImage("imagens\\icones\\icon.png"));
+		setIconImage(new ImageIcon(getClass().getResource("/icones/icon.png")).getImage());
 		setFont(new Font("Verdana", Font.PLAIN, 18));		
 		setTitle("Cadastro Aluno");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -527,11 +525,11 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		btnNovo.setToolTipText("Novo");
-		btnNovo.setIcon(new ImageIcon("imagens\\icones\\clear.png"));
+		btnNovo.setIcon(new ImageIcon(getClass().getResource("/icones/clear.png")));
 		tabDadosPessoais.add(btnNovo, "flowx,cell 0 7 6 1,alignx center");
 		
 		btnAlunoInserir.setToolTipText("Salvar");
-		btnAlunoInserir.setIcon(new ImageIcon("imagens\\icones\\save.png"));
+		btnAlunoInserir.setIcon(new ImageIcon(getClass().getResource("/icones/save.png")));
 		tabDadosPessoais.add(btnAlunoInserir, "cell 0 7 6 1,alignx center");
 		
 		btnAlunoConsulta = new JButton("");
@@ -543,7 +541,7 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		btnAlunoConsulta.setToolTipText("Consultar");
-		btnAlunoConsulta.setIcon(new ImageIcon("imagens\\icones\\lookup.png"));
+		btnAlunoConsulta.setIcon(new ImageIcon(getClass().getResource("/icones/lookup.png")));
 		tabDadosPessoais.add(btnAlunoConsulta, "cell 0 7 6 1,alignx center");
 		
 		btnAlunoAlterar = new JButton("");
@@ -554,7 +552,7 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		btnAlunoAlterar.setToolTipText("Editar");
-		btnAlunoAlterar.setIcon(new ImageIcon("imagens\\icones\\edit.png"));
+		btnAlunoAlterar.setIcon(new ImageIcon(getClass().getResource("/icones/edit.png")));
 		tabDadosPessoais.add(btnAlunoAlterar, "cell 0 7 6 1,alignx center");
 		
 		btnAlunoExcluir = new JButton("");
@@ -566,7 +564,7 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		btnAlunoExcluir.setToolTipText("Apagar");
-		btnAlunoExcluir.setIcon(new ImageIcon("imagens\\icones\\delete.png"));
+		btnAlunoExcluir.setIcon(new ImageIcon(getClass().getResource("/icones/delete.png")));
 		tabDadosPessoais.add(btnAlunoExcluir, "cell 0 7 6 1,alignx center");
 		
 		tabCurso = new JPanel();
@@ -626,17 +624,17 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		btnCursoNovo.setToolTipText("Novo");
-		btnCursoNovo.setIcon(new ImageIcon("imagens\\icones\\clear.png"));
+		btnCursoNovo.setIcon(new ImageIcon(getClass().getResource("/icones/clear.png")));
 		tabCurso.add(btnCursoNovo, "flowx,cell 0 6 6 1,alignx center");
 		
 		
-		btnCursoInserir.setIcon(new ImageIcon("imagens\\icones\\save.png"));
+		btnCursoInserir.setIcon(new ImageIcon(getClass().getResource("/icones/save.png")));
 		btnCursoInserir.setToolTipText("Salvar");
 		tabCurso.add(btnCursoInserir, "cell 0 6 6 1,alignx center");
 		
 		btnCursoConsulta = new JButton("");
 		btnCursoConsulta.setToolTipText("Consultar");
-		btnCursoConsulta.setIcon(new ImageIcon("imagens\\icones\\lookup.png"));
+		btnCursoConsulta.setIcon(new ImageIcon(getClass().getResource("/icones/lookup.png")));
 		btnCursoConsulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// BOTÃO CURSO CONSULTAR
@@ -654,7 +652,7 @@ public class TelaPrincipal extends JFrame {
 				// FIM 
 			}
 		});
-		btnCursoAlterar.setIcon(new ImageIcon("imagens\\icones\\edit.png"));
+		btnCursoAlterar.setIcon(new ImageIcon(getClass().getResource("/icones/edit.png")));
 		btnCursoAlterar.setToolTipText("Editar");
 		tabCurso.add(btnCursoAlterar, "cell 0 6 6 1,alignx center");
 		
@@ -665,7 +663,7 @@ public class TelaPrincipal extends JFrame {
 				cursoExcluir();
 			}
 		});
-		btnCursoExcluir.setIcon(new ImageIcon("imagens\\icones\\delete.png"));
+		btnCursoExcluir.setIcon(new ImageIcon(getClass().getResource("/icones/delete.png")));
 		btnCursoExcluir.setToolTipText("Apagar");
 		tabCurso.add(btnCursoExcluir, "cell 0 6 6 1,alignx center");
 		
@@ -776,10 +774,10 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		btnNotasNovo.setToolTipText("Novo");
-		btnNotasNovo.setIcon(new ImageIcon("imagens\\icones\\clear.png"));
+		btnNotasNovo.setIcon(new ImageIcon(getClass().getResource("/icones/clear.png")));
 		tabNotasFaltas.add(btnNotasNovo, "flowx,cell 0 5 9 1,alignx center");
 		
-		btnNotasInserir.setIcon(new ImageIcon("imagens\\icones\\save.png"));
+		btnNotasInserir.setIcon(new ImageIcon(getClass().getResource("/icones/save.png")));
 		btnNotasInserir.setToolTipText("Salvar");
 		tabNotasFaltas.add(btnNotasInserir, "cell 0 5 9 1,alignx center");
 		
@@ -789,7 +787,7 @@ public class TelaPrincipal extends JFrame {
 				notasConsultar();
 			}
 		});
-		btnNotasConsulta.setIcon(new ImageIcon("imagens\\icones\\lookup.png"));
+		btnNotasConsulta.setIcon(new ImageIcon(getClass().getResource("/icones/lookup.png")));
 		btnNotasConsulta.setToolTipText("Consultar");
 		tabNotasFaltas.add(btnNotasConsulta, "cell 0 5 9 1");
 		
@@ -799,7 +797,7 @@ public class TelaPrincipal extends JFrame {
 				notasAlterar();
 			}
 		});
-		btnNotasAlterar.setIcon(new ImageIcon("imagens\\icones\\edit.png"));
+		btnNotasAlterar.setIcon(new ImageIcon(getClass().getResource("/icones/edit.png")));
 		btnNotasAlterar.setToolTipText("Alterar");
 		tabNotasFaltas.add(btnNotasAlterar, "cell 0 5 9 1");
 		
@@ -809,7 +807,7 @@ public class TelaPrincipal extends JFrame {
 				notasExcluir();
 			}
 		});
-		btnNotasExcluir.setIcon(new ImageIcon("imagens\\icones\\delete.png"));
+		btnNotasExcluir.setIcon(new ImageIcon(getClass().getResource("/icones/delete.png")));
 		btnNotasExcluir.setToolTipText("Excluir");
 		tabNotasFaltas.add(btnNotasExcluir, "cell 0 5 9 1");
 		
