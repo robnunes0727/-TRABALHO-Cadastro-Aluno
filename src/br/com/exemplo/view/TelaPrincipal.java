@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
@@ -28,15 +29,18 @@ import javax.swing.text.MaskFormatter;
 
 import br.com.exemplo.dao.AlunoDAO;
 import br.com.exemplo.dao.AlunoEmTurmaDAO;
+import br.com.exemplo.dao.BoletimDAO;
 import br.com.exemplo.dao.DisciplinaEmCursoDAO;
 import br.com.exemplo.dao.NotasFaltasDAO;
 import br.com.exemplo.model.Aluno;
 import br.com.exemplo.model.AlunoEmTurma;
+import br.com.exemplo.model.Boletim;
 import br.com.exemplo.model.Curso;
 import br.com.exemplo.model.Disciplina;
 import br.com.exemplo.model.DisciplinaEmCurso;
 import br.com.exemplo.model.NotasFaltas;
 import br.com.exemplo.model.Turma;
+import br.com.exemplo.util.Globals;
 import net.miginfocom.swing.MigLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.Color;
@@ -52,6 +56,10 @@ import javax.swing.JTextPane;
 import javax.swing.JFormattedTextField;
 import java.awt.Toolkit;
 import java.awt.FlowLayout;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JScrollPane;
+import javax.swing.JCheckBoxMenuItem;
 
 public class TelaPrincipal extends JFrame {
 
@@ -110,13 +118,9 @@ public class TelaPrincipal extends JFrame {
 	private JButton btnCursoAlterar;
 	private JButton btnCursoInserir;
 	private JButton btnCursoExcluir;
-	private JTextPane txtBoletim1;
-	private JTextPane txtBoletim2;
 	private JLabel lblBoletimRGM;
 	private JLabel lblBoletimSemestre;
-	private JLabel lblBoletimAno;
 	private JFormattedTextField txtBoletimRGM;
-	private JFormattedTextField txtBoletimAno;
 	private JComboBox cmbBoletimSemestre;
 	private JLabel lblNotasRGM;
 	private JFormattedTextField txtNotasRGM;
@@ -127,7 +131,7 @@ public class TelaPrincipal extends JFrame {
 	private JLabel lblNotasNota;
 	private JComboBox cmbNotasNota;
 	private JLabel lblNotasFaltas;
-	private JFormattedTextField txtNotasFaltas;
+	private JTextField txtNotasFaltas;
 	private JButton btnNewButton;
 	private JButton btnNotasInserir;
 	private JButton btnNotasConsulta;
@@ -146,6 +150,16 @@ public class TelaPrincipal extends JFrame {
 	private JButton btnNovo;
 	private JButton btnCursoNovo;
 	private JButton btnNotasNovo;
+	private JTable tbBoletim;
+	private DefaultTableModel tModel;
+	private JScrollPane scrollPane;
+	private JMenu mnBancoDeDados;
+	private JCheckBoxMenuItem mnLocal;
+	private JCheckBoxMenuItem mnRemoto;
+	private final ButtonGroup rdGrpBanco = new ButtonGroup();
+	private JSeparator separator_1;
+	private JMenuItem mnExplicacao;
+	private JMenuItem mntmCdigoSql;
 
 	/**
 	 * Launch the application.
@@ -323,6 +337,46 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		mnAjuda.add(mnAjLicensas);
+		
+		mnBancoDeDados = new JMenu("Banco de Dados");
+		menuBar.add(mnBancoDeDados);
+		
+		mnLocal = new JCheckBoxMenuItem("Localhost (rápido)");
+		mnLocal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				menuTrocarBanco();
+			}
+		});
+		rdGrpBanco.add(mnLocal);
+		mnLocal.setSelected(true);
+		mnBancoDeDados.add(mnLocal);
+		
+		mnRemoto = new JCheckBoxMenuItem("Remoto (lento)");
+		mnRemoto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				menuTrocarBanco();
+			}
+		});
+		rdGrpBanco.add(mnRemoto);
+		mnBancoDeDados.add(mnRemoto);
+		
+		separator_1 = new JSeparator();
+		mnBancoDeDados.add(separator_1);
+		
+		mnExplicacao = new JMenuItem("Explicação");
+		mnExplicacao.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JOptionPane.showMessageDialog(null, "Caso o MySQL Connector 8.0 não funcione, usar o banco remoto", "Banco de dados", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		
+		mntmCdigoSql = new JMenuItem("Código SQL");
+		mntmCdigoSql.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		mnBancoDeDados.add(mntmCdigoSql);
+		mnBancoDeDados.add(mnExplicacao);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -691,10 +745,10 @@ public class TelaPrincipal extends JFrame {
 		lblNotasFaltas.setFont(new Font("Verdana", Font.PLAIN, 18));
 		tabNotasFaltas.add(lblNotasFaltas, "cell 3 3,alignx trailing");
 		
-		txtNotasFaltas = new JFormattedTextField(new MaskFormatter("##"));
+		txtNotasFaltas = new JTextField();
 		txtNotasFaltas.setText("0");
 		txtNotasFaltas.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		txtNotasFaltas.setColumns(10);
+		txtNotasFaltas.setColumns(2);
 		tabNotasFaltas.add(txtNotasFaltas, "cell 4 3,growx");
 		
 		lblOnicoCurso = new JLabel("O único curso em 2019-02 é MEDICINA");
@@ -756,16 +810,6 @@ public class TelaPrincipal extends JFrame {
 		tabbedPane.addTab("Boletim", null, tabBoletim, "Boletim do aluno.");
 		tabBoletim.setLayout(null);
 		
-		txtBoletim1 = new JTextPane();
-		txtBoletim1.setEditable(false);
-		txtBoletim1.setBounds(0, 43, 327, 262);
-		tabBoletim.add(txtBoletim1);
-		
-		txtBoletim2 = new JTextPane();
-		txtBoletim2.setEditable(false);
-		txtBoletim2.setBounds(332, 43, 327, 262);
-		tabBoletim.add(txtBoletim2);
-		
 		lblBoletimRGM = new JLabel("RGM:");
 		lblBoletimRGM.setFont(new Font("Verdana", Font.PLAIN, 18));
 		lblBoletimRGM.setBounds(10, 11, 64, 23);
@@ -773,41 +817,45 @@ public class TelaPrincipal extends JFrame {
 		
 		lblBoletimSemestre = new JLabel("Semestre:");
 		lblBoletimSemestre.setFont(new Font("Verdana", Font.PLAIN, 18));
-		lblBoletimSemestre.setBounds(193, 9, 104, 23);
+		lblBoletimSemestre.setBounds(191, 11, 104, 23);
 		tabBoletim.add(lblBoletimSemestre);
 		
-		lblBoletimAno = new JLabel("Ano:");
-		lblBoletimAno.setFont(new Font("Verdana", Font.PLAIN, 18));
-		lblBoletimAno.setBounds(365, 9, 82, 23);
-		tabBoletim.add(lblBoletimAno);
-		
-		txtBoletimRGM = new JFormattedTextField((new MaskFormatter("##########")));
+		txtBoletimRGM = new JFormattedTextField((new MaskFormatter("########")));
 		txtBoletimRGM.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		txtBoletimRGM.setColumns(10);
+		txtBoletimRGM.setColumns(8);
 		txtBoletimRGM.setBounds(61, 8, 120, 31);
 		tabBoletim.add(txtBoletimRGM);
 		
-		txtBoletimAno = new JFormattedTextField(new MaskFormatter("####"));
-		txtBoletimAno.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		txtBoletimAno.setColumns(10);
-		txtBoletimAno.setBounds(410, 8, 120, 31);
-		tabBoletim.add(txtBoletimAno);
-		
 		cmbBoletimSemestre = new JComboBox();
 		cmbBoletimSemestre.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		cmbBoletimSemestre.setModel(new DefaultComboBoxModel(new String[] {"1º", "2º", "3º", "4º"}));
-		cmbBoletimSemestre.setBounds(293, 10, 62, 26);
+		cmbBoletimSemestre.setModel(new DefaultComboBoxModel(new String[] {"2020-01", "2019-02"}));
+		cmbBoletimSemestre.setBounds(293, 10, 129, 26);
 		tabBoletim.add(cmbBoletimSemestre);
 		
 		btnNewButton = new JButton("Buscar");
 		btnNewButton.setFont(new Font("Verdana", Font.PLAIN, 18));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				boletimListar();
 			}
 		});
 		btnNewButton.setBounds(540, 8, 109, 28);
 		tabBoletim.add(btnNewButton);
+		DefaultTableModel tModel = new DefaultTableModel();
+		Object[] colunas = new Object[] {"RGM", "Nome do Aluno", "Disciplina", "Notas", "Faltas", "Periodo", "Curso", "Semestre"};
+		tModel.setColumnIdentifiers(colunas);
 		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 45, 639, 249);
+		tabBoletim.add(scrollPane);
+		
+		tbBoletim = new JTable();
+		scrollPane.setViewportView(tbBoletim);
+		tbBoletim.setEnabled(false);
+		tbBoletim.setModel(tModel);
+		
+		setTamanhoColunasBoletim();
+	
 		txtStatus = new JTextField();
 		txtStatus.setToolTipText("Mensagens do sistema aparecem aqui.");
 		txtStatus.setEditable(false);
@@ -820,7 +868,7 @@ public class TelaPrincipal extends JFrame {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	/***************************************** FUNÇÕES GERAIS ********************************************/
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	public void mudarStatus(String status) {
+	private void mudarStatus(String status) {
 		txtStatus.setText(status);
 	}
 	
@@ -829,6 +877,13 @@ public class TelaPrincipal extends JFrame {
 		this.dispose();
 	}
 	
+	private void menuTrocarBanco() {
+		if (mnLocal.isSelected()) {
+			Globals.banco = 0;
+		} else if (mnRemoto.isSelected()) {
+			Globals.banco = 1;
+		}
+	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	/******************************************* ABA ALUNO ***********************************************/
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1044,7 +1099,7 @@ public class TelaPrincipal extends JFrame {
 				cmbNotasDisciplina.addItem(disciplina.getNome()  + " - " + disciplina.getId() + " / " + curso.getId());
 				System.out.println(disciplina.getNome());
 			}
-			
+			mudarStatus("Dados do aluno buscados com sucesso");
 		} catch (Exception e) {
 			mudarStatus("Erro ao trazer dados do aluno: " + e.getMessage());
 		}
@@ -1086,7 +1141,8 @@ public class TelaPrincipal extends JFrame {
 	
 		try {
 			NotasFaltasDAO dao = new NotasFaltasDAO();
-			dao.salvar(nf);	
+			dao.salvar(nf);
+			mudarStatus("Notas/Faltas adicionadas com sucesso");
 		} catch (Exception e) {
 			mudarStatus("Erro ao salvar: " + e.getMessage());
 		}
@@ -1113,6 +1169,7 @@ public class TelaPrincipal extends JFrame {
 			nf = new NotasFaltasDAO().consultar(txtNotasRGM.getText(), disciplinaId, cursoId);
 			txtNotasFaltas.setText(String.valueOf(nf.getFaltas()));
 			cmbNotasNota.setSelectedItem(String.valueOf(nf.getNota()).replace(".", ","));
+			mudarStatus("Notas/Faltas buscada com sucesso");
 		} catch (Exception e) {
 			mudarStatus("Erro ao consultar: " + e.getMessage());
 		}
@@ -1148,6 +1205,7 @@ public class TelaPrincipal extends JFrame {
 		try {
 			NotasFaltasDAO dao = new NotasFaltasDAO();
 			dao.alterar(nf);
+			mudarStatus("Notas/Faltas alteradas com sucesso");
 		} catch (Exception e) {
 			mudarStatus("Erro ao alterar: " + e.getMessage());
 		}
@@ -1184,10 +1242,61 @@ public class TelaPrincipal extends JFrame {
 		try {
 			NotasFaltasDAO dao = new NotasFaltasDAO();
 			dao.excluir(nf);
+			mudarStatus("Notas/Faltas alteradas com sucesso");
 		} catch (Exception e) {
 			mudarStatus("Erro ao excluir: " + e.getMessage());
 		}
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	/******************************************** ABA BOLETIM ********************************************/
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	private void boletimListar() {
+		try {
+			BoletimDAO dao = new BoletimDAO();
+			List<Boletim> bolList = dao.listar(txtBoletimRGM.getText(), cmbBoletimSemestre.getSelectedItem().toString());
+			
+			DefaultTableModel rModel = new DefaultTableModel();
+			Object[] colunas = new Object[] {"RGM", "Nome do Aluno", "Disciplina", "Notas", "Faltas", "Periodo", "Curso", "Semestre"};
+			rModel.setColumnIdentifiers(colunas);
+			
+			for (Boletim b : bolList) {
+				//{"RGM", "Nome do Aluno", "Disciplina", "Notas", "Faltas", "Periodo", "Curso", "Semestre"}
+				String[] linha = new String[8];
+				linha[0] = b.getRgm();
+				linha[1] = b.getNome();
+				linha[2] = b.getDisciplina();
+				linha[3] = Double.toString(b.getNota());
+				linha[4] = Integer.toString(b.getFaltas());
+
+				if (b.getPeriodo().contains("M")) {
+					linha[5] = "Matutino";
+				} else if (b.getPeriodo().contains("N")) {
+					linha[5] = "Noturno";
+				} else {
+					linha[5] = "Vespertino";
+				}
+
+				linha[6] = b.getCurso();
+				linha[7] = b.getSemestre();
+				
+				rModel.addRow(linha);
+			}
+
+			tbBoletim.setModel(rModel);
+			setTamanhoColunasBoletim();
+			mudarStatus("Boletim criado com sucesso");
+		} catch (Exception e) {
+			mudarStatus("Erro ao listar: " + e.getMessage());
+		}
+	}
+	
+	private void setTamanhoColunasBoletim() {
+		tbBoletim.getColumnModel().getColumn(1).setPreferredWidth(162);
+		tbBoletim.getColumnModel().getColumn(3).setPreferredWidth(41);
+		tbBoletim.getColumnModel().getColumn(4).setPreferredWidth(41);
+		tbBoletim.getColumnModel().getColumn(5).setPreferredWidth(48);
+		tbBoletim.getColumnModel().getColumn(6).setPreferredWidth(104);
+	}
 }
