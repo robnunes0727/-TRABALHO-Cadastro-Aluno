@@ -28,7 +28,7 @@ public class ConnectionFactory {
 			
 			return DriverManager.getConnection(url,login,senha);
 		} catch(Exception e) {
-			throw new Exception("Erro " + e.getMessage());
+			throw new Exception("SQL " + e.getMessage());
 		}
 	}
 }

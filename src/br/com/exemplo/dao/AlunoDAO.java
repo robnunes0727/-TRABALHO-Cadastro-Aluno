@@ -20,7 +20,7 @@ public class AlunoDAO {
 		try {
 			conn = ConnectionFactory.getConnection();
 		} catch (Exception e) {
-			throw new Exception("Erro: " + e.getMessage());
+			throw new Exception(e.getMessage());
 		}
 	}
 	
