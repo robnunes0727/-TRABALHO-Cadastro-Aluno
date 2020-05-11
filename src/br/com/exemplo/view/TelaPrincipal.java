@@ -58,6 +58,10 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class TelaPrincipal extends JFrame {
 
@@ -129,7 +133,6 @@ public class TelaPrincipal extends JFrame {
 	private JLabel lblNotasNota;
 	private JComboBox cmbNotasNota;
 	private JLabel lblNotasFaltas;
-	private JTextField txtNotasFaltas;
 	private JButton btnNewButton;
 	private JButton btnNotasInserir;
 	private JButton btnNotasConsulta;
@@ -158,6 +161,7 @@ public class TelaPrincipal extends JFrame {
 	private JSeparator separator_1;
 	private JMenuItem mnExplicacao;
 	private JMenuItem mntmCdigoSql;
+	private JSpinner txtNotasFaltas;
 
 	/**
 	 * Launch the application.
@@ -346,7 +350,6 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		rdGrpBanco.add(mnLocal);
-		mnLocal.setSelected(true);
 		mnBancoDeDados.add(mnLocal);
 		
 		mnRemoto = new JCheckBoxMenuItem("Remoto (lento)");
@@ -358,6 +361,13 @@ public class TelaPrincipal extends JFrame {
 		rdGrpBanco.add(mnRemoto);
 		mnBancoDeDados.add(mnRemoto);
 		
+		if (Globals.banco == 1) {
+			mnRemoto.setSelected(true);
+			mnLocal.setSelected(false);
+		} else {
+			mnRemoto.setSelected(false);
+			mnLocal.setSelected(true);
+		}
 		separator_1 = new JSeparator();
 		mnBancoDeDados.add(separator_1);
 		
@@ -704,7 +714,13 @@ public class TelaPrincipal extends JFrame {
 		tabNotasFaltas.add(txtNotasRGM, "cell 1 0 3 1,growx");
 		
 		txtNotasNome = new JTextField();
-		txtNotasNome.setText("Digite o RGM e pressione ENTER");
+		txtNotasNome.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				NotasFaltasRgm();
+			}
+		});
+		txtNotasNome.setText("Pressione ENTER ou clique aqui");
 		txtNotasNome.setEditable(false);
 		txtNotasNome.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		txtNotasNome.setColumns(10);
@@ -750,10 +766,9 @@ public class TelaPrincipal extends JFrame {
 		lblNotasFaltas.setFont(new Font("Verdana", Font.PLAIN, 18));
 		tabNotasFaltas.add(lblNotasFaltas, "cell 3 3,alignx trailing");
 		
-		txtNotasFaltas = new JTextField();
-		txtNotasFaltas.setText("0");
+		txtNotasFaltas = new JSpinner();
+		txtNotasFaltas.setModel(new SpinnerNumberModel(0, 0, 99, 1));
 		txtNotasFaltas.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		txtNotasFaltas.setColumns(2);
 		tabNotasFaltas.add(txtNotasFaltas, "cell 4 3,growx");
 		
 		lblOnicoCurso = new JLabel("O único curso em 2019-02 é MEDICINA");
@@ -868,12 +883,13 @@ public class TelaPrincipal extends JFrame {
 		txtStatus.setBounds(10, 348, 664, 25);
 		contentPane.add(txtStatus);
 		txtStatus.setColumns(10);
+		
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	/***************************************** FUNÇÕES GERAIS ********************************************/
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	private void mudarStatus(String status) {
+	public void mudarStatus(String status) {
 		txtStatus.setText(status);
 	}
 	
@@ -894,6 +910,7 @@ public class TelaPrincipal extends JFrame {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	private void alunoSalvar() {
+		mudarStatus("Executando...");
 		// Usado no botão e no menu Aluno > Salvar
 		try {
 			Aluno aluno = new Aluno();
@@ -920,6 +937,7 @@ public class TelaPrincipal extends JFrame {
 	}
 	
 	private void alunoConsultar() {
+		mudarStatus("Executando...");
 		try {
 			Aluno aluno = new AlunoDAO().consultar(txtRgm.getText());
 			
@@ -940,6 +958,7 @@ public class TelaPrincipal extends JFrame {
 	}
 	
 	private void alunoAlterar() {
+		mudarStatus("Executando...");
 		try {
 			Aluno aluno = new Aluno();
 			AlunoDAO dao = new AlunoDAO();
@@ -965,6 +984,7 @@ public class TelaPrincipal extends JFrame {
 	}
 	
 	private void alunoExcluir() {
+		mudarStatus("Executando...");
 		try {
 			AlunoDAO dao = new AlunoDAO();
 			dao.excluir(txtRgm.getText());
@@ -979,6 +999,7 @@ public class TelaPrincipal extends JFrame {
 	/******************************************** ABA CURSO **********************************************/
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	private void cursoInserir() {
+		mudarStatus("Executando...");
 		try {
 			Aluno aluno = new Aluno();
 			Curso curso = new Curso();
@@ -1006,6 +1027,7 @@ public class TelaPrincipal extends JFrame {
 	}
 	
 	private void cursoConsultar() {
+		mudarStatus("Executando...");
 		try {
 
 			AlunoEmTurma alunoTurma = new AlunoEmTurmaDAO().consultar(txtRgm.getText());
@@ -1034,6 +1056,7 @@ public class TelaPrincipal extends JFrame {
 	}
 	
 	private void cursoAlterar() {
+		mudarStatus("Executando...");
 		try {
 			Aluno aluno = new Aluno();
 			Curso curso = new Curso();
@@ -1062,6 +1085,7 @@ public class TelaPrincipal extends JFrame {
 	}
 	
 	private void cursoExcluir() {
+		mudarStatus("Executando...");
 		try {
 			AlunoEmTurmaDAO dao = new AlunoEmTurmaDAO();		
 			
@@ -1078,6 +1102,7 @@ public class TelaPrincipal extends JFrame {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	private void NotasFaltasRgm() {
+		mudarStatus("Executando...");
 		try {
 			AlunoEmTurmaDAO dao = new AlunoEmTurmaDAO();
 			
@@ -1110,6 +1135,7 @@ public class TelaPrincipal extends JFrame {
 	}
 	
 	private void notasSalvar() {
+		mudarStatus("Executando...");
 		
 		NotasFaltas nf = new NotasFaltas();	
 		
@@ -1140,7 +1166,7 @@ public class TelaPrincipal extends JFrame {
 		nf.setDisciplina(d);
 		
 		// Tratamento de número com virgula
-		nf.setFaltas(Integer.parseInt(txtNotasFaltas.getText().trim()));
+		nf.setFaltas((int)txtNotasFaltas.getValue());
 		nf.setNota(Double.parseDouble(cmbNotasNota.getSelectedItem().toString().replace(",", ".")));
 	
 		try {
@@ -1153,6 +1179,8 @@ public class TelaPrincipal extends JFrame {
 	}
 	
 	private void notasConsultar() {
+		mudarStatus("Executando...");
+		
 		NotasFaltas nf;
 		int disciplinaId;
 		int cursoId;
@@ -1171,7 +1199,7 @@ public class TelaPrincipal extends JFrame {
 		// Conectar
 		try {
 			nf = new NotasFaltasDAO().consultar(txtNotasRGM.getText(), disciplinaId, cursoId);
-			txtNotasFaltas.setText(String.valueOf(nf.getFaltas()));
+			txtNotasFaltas.setValue((nf.getFaltas()));
 			cmbNotasNota.setSelectedItem(String.valueOf(nf.getNota()).replace(".", ","));
 			mudarStatus("Notas/Faltas buscada com sucesso");
 		} catch (Exception e) {
@@ -1180,6 +1208,8 @@ public class TelaPrincipal extends JFrame {
 	}
 	
 	private void notasAlterar() {
+		mudarStatus("Executando...");
+		
 		NotasFaltas nf = new NotasFaltas();
 		int disciplinaId;
 		int cursoId;
@@ -1216,6 +1246,8 @@ public class TelaPrincipal extends JFrame {
 	}
 	
 	private void notasExcluir() {
+		mudarStatus("Executando...");
+		
 		NotasFaltas nf = new NotasFaltas();
 		int disciplinaId;
 		int cursoId;
@@ -1257,6 +1289,7 @@ public class TelaPrincipal extends JFrame {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	private void boletimListar() {
+		mudarStatus("Executando...");
 		try {
 			BoletimDAO dao = new BoletimDAO();
 			List<Boletim> bolList = dao.listar(txtBoletimRGM.getText(), cmbBoletimSemestre.getSelectedItem().toString());

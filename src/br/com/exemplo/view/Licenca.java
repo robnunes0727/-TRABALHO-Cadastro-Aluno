@@ -21,6 +21,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
 
 public class Licenca extends JDialog {
 
@@ -29,11 +30,7 @@ public class Licenca extends JDialog {
 	private JLabel lblLic2;
 	private JButton btnFechar;
 	private JLabel lblLic3;
-	private JLabel lblLic5;
 	private JLabel lblLic4;
-	private JLabel lblLic6;
-	private JLabel lblLic7;
-	private JLabel lblLic8;
 
 	/**
 	 * Launch the application.
@@ -53,11 +50,14 @@ public class Licenca extends JDialog {
 	 * Create the dialog.
 	 */
 	public Licenca() {
-		setBounds(100, 100, 444, 300);
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Licenca.class.getResource("/icones/icon.png")));
+		setTitle("Licenças e Recursos");
+		setResizable(false);
+		setBounds(100, 100, 259, 211);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(new MigLayout("", "[grow,center]", "[][5][][][][][][][][][baseline]"));
+		contentPanel.setLayout(new MigLayout("", "[grow,center]", "[][5][][][][][baseline]"));
 		{
 			JLabel lblSistemaDeCadastro = new JLabel("Recursos Usados");
 			lblSistemaDeCadastro.setHorizontalAlignment(SwingConstants.CENTER);
@@ -66,6 +66,7 @@ public class Licenca extends JDialog {
 		}
 		
 		lblLic2 = new JLabel("MiG Layout (BSD License)");
+		lblLic2.setToolTipText("Layout de painel");
 		lblLic2.addMouseListener(new MouseAdapter() {
 			// LIC2 LINK (mig)
 			@Override
@@ -99,6 +100,7 @@ public class Licenca extends JDialog {
 		contentPanel.add(lblLic2, "cell 0 2");
 		
 		lblLic1 = new JLabel("GNOME Desktop Icons (GPL 2)");
+		lblLic1.setToolTipText("Pacote de ícones");
 		lblLic1.addMouseListener(new MouseAdapter() {
 			// LIC2 LINK (gnome)
 			@Override
@@ -140,7 +142,8 @@ public class Licenca extends JDialog {
 			}
 		});
 		
-		lblLic3 = new JLabel(" ");
+		lblLic3 = new JLabel("db4Free");
+		lblLic3.setToolTipText("Para hospedar o banco remoto");
 		lblLic3.setForeground(new Color(0, 0, 178));
 		lblLic3.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		contentPanel.add(lblLic3, "cell 0 4");
@@ -149,27 +152,7 @@ public class Licenca extends JDialog {
 		lblLic4.setForeground(new Color(0, 0, 178));
 		lblLic4.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		contentPanel.add(lblLic4, "cell 0 5");
-		
-		lblLic5 = new JLabel(" ");
-		lblLic5.setForeground(new Color(0, 0, 178));
-		lblLic5.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		contentPanel.add(lblLic5, "cell 0 6");
-		
-		lblLic6 = new JLabel(" ");
-		lblLic6.setForeground(new Color(0, 0, 178));
-		lblLic6.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		contentPanel.add(lblLic6, "cell 0 7");
-		
-		lblLic7 = new JLabel(" ");
-		lblLic7.setForeground(new Color(0, 0, 178));
-		lblLic7.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		contentPanel.add(lblLic7, "cell 0 8");
-		
-		lblLic8 = new JLabel(" ");
-		lblLic8.setForeground(new Color(0, 0, 178));
-		lblLic8.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		contentPanel.add(lblLic8, "cell 0 9");
-		contentPanel.add(btnFechar, "cell 0 10,alignx center,aligny baseline");
+		contentPanel.add(btnFechar, "cell 0 6,alignx center,aligny baseline");
 	}
 
 }

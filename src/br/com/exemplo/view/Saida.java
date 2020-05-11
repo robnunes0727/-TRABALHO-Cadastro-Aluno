@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.Window.Type;
+import java.awt.Toolkit;
 
 public class Saida extends JDialog {
 
@@ -21,27 +22,17 @@ public class Saida extends JDialog {
 	private JButton btnCancelar;
 	private JLabel lblTemCertezaQue;
 
-	/**
-	 * Launch the application.
-	 
-	public static void main(String[] args) {
-		try {
-			Saida dialog = new Saida();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	*/
-	/**
-	 * Create the dialog.
-	 */
+	// ----------------------------------------------------------------------- //
+	//  Aprendi depois que era melhor ter usado JOptionPane em vez de JDialog. //
+	// ----------------------------------------------------------------------- //
+	
 	public Saida() {
+		setResizable(false);
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Saida.class.getResource("/icones/icon.png")));
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setTitle("Confirmação de Saída");
 		setAlwaysOnTop(true);
-		setBounds(100, 100, 283, 166);
+		setBounds(100, 100, 283, 145);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);

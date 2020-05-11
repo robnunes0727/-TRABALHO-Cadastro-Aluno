@@ -25,6 +25,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+import java.awt.Toolkit;
 
 public class CodigoSQL extends JDialog {
 
@@ -50,6 +51,7 @@ public class CodigoSQL extends JDialog {
 	 * Create the dialog.
 	 */
 	public CodigoSQL() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(CodigoSQL.class.getResource("/icones/edit.png")));
 		setTitle("Código SQL");
 		setBounds(100, 100, 450, 468);
 		getContentPane().setLayout(new MigLayout("", "[grow]", "[grow][30:30:30]"));

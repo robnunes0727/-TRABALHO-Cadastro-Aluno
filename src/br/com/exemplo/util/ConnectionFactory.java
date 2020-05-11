@@ -19,7 +19,7 @@ public class ConnectionFactory {
 				senha = "root";
 				url = "jdbc:mysql://localhost:3306/roberto_unicid";
 			} else {
-				/* Online */
+				/* Online, será apagado quando a nota sair */
 				System.out.println("Conectando ao Banco de Dados remoto...");
 				login = "rob_root";
 				senha = "nuPFZ8nsew";		

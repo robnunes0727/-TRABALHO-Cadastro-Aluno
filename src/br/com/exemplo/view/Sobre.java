@@ -24,6 +24,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.UIManager;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 
 public class Sobre extends JDialog {
 
@@ -54,6 +55,8 @@ public class Sobre extends JDialog {
 	 * Create the dialog.
 	 */
 	public Sobre() {
+		setResizable(false);
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Sobre.class.getResource("/icones/lookup.png")));
 		setTitle("Sobre");
 		setBounds(100, 100, 441, 300);
 		getContentPane().setLayout(new BorderLayout());
