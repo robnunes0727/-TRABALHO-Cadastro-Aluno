@@ -36,7 +36,6 @@ public class NotasFaltasDAO {
 			ps.executeUpdate();
 			
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 			if(e.getMessage().contains("Duplicate entry"))
 				throw new Exception("Entrada duplicada");
 			throw new Exception(e.getMessage());

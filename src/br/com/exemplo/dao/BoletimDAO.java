@@ -37,7 +37,6 @@ public class BoletimDAO {
 			
 			ps.setString(1, rgm);
 			ps.setString(2, semestre);
-			System.out.println(ps);
 			rs = ps.executeQuery();
 
 			List<Boletim> bolList = new ArrayList<Boletim>();
