@@ -10,6 +10,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
@@ -67,7 +69,7 @@ public class CodigoSQL extends JDialog {
 					JScrollPane scrollPane = new JScrollPane();
 					abaDDL.add(scrollPane, "cell 0 0,grow");
 					{
-						JTextPane txtDDL = new JTextPane();
+						JTextArea txtDDL = new JTextArea();
 						txtDDL.setEditable(false);
 						txtDDL.addFocusListener(new FocusAdapter() {
 							@Override
@@ -154,7 +156,7 @@ public class CodigoSQL extends JDialog {
 					JScrollPane scrollPane = new JScrollPane();
 					abaDML.add(scrollPane, "cell 0 0,grow");
 					{
-						JTextPane txtDML = new JTextPane();
+						JTextArea txtDML = new JTextArea();
 						txtDML.addFocusListener(new FocusAdapter() {
 							@Override
 							public void focusGained(FocusEvent arg0) {

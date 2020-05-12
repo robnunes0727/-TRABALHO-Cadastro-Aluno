@@ -21,17 +21,24 @@ public class Aluno {
 	}
 
 	public Aluno(String rgm, String nome, String nascimento, String cpf, String email, String endereco,
-			String municipio, String uf, String celular) throws ParseException {
-		this.rgm = rgm;
-		this.nome = nome;
-		Date dataNasc = new SimpleDateFormat("yyyy-mm-dd").parse(nascimento);
-		this.nascimento = new SimpleDateFormat("dd/mm/yyyy").format(dataNasc);
-		this.cpf = cpf;
-		this.email = email;
-		this.endereco = endereco;
-		this.municipio = municipio;
-		this.uf = uf;
-		this.celular = celular;
+			String municipio, String uf, String celular) throws Exception {
+		
+		try {
+			this.rgm = rgm;
+			this.nome = nome;
+			Date dataNasc = new SimpleDateFormat("yyyy-mm-dd").parse(nascimento);
+			this.nascimento = new SimpleDateFormat("dd/mm/yyyy").format(dataNasc);
+			this.cpf = cpf;
+			this.email = email;
+			this.endereco = endereco;
+			this.municipio = municipio;
+			this.uf = uf;
+			this.celular = celular;
+		} catch (ParseException e) {
+			if (e.getMessage().contains("Unparseable date")) {
+				throw new Exception("Data inválida");
+			}
+		}
 	}
 	
 	// Getter & Setter
@@ -51,14 +58,20 @@ public class Aluno {
 		this.nome = nome;
 	}
 
-	public String getNascimento() throws ParseException {
+	public String getNascimento() {
 		return nascimento;
 	}
 
-	public void setNascimento(String nascimento) throws ParseException {
+	public void setNascimento(String nascimento) throws Exception {
 		// Transforma DIA/MES/ANO em ANO-MES-DIA
-		Date dataNasc = new SimpleDateFormat("dd/mm/yyyy").parse(nascimento);
-		this.nascimento = new SimpleDateFormat("yyyy-mm-dd").format(dataNasc);
+		try {
+			Date dataNasc = new SimpleDateFormat("dd/mm/yyyy").parse(nascimento);
+			this.nascimento = new SimpleDateFormat("yyyy-mm-dd").format(dataNasc);
+		} catch (ParseException e) {
+			if (e.getMessage().contains("Unparseable date")) {
+				throw new Exception("Data inválida");
+			}
+		}
 	}
 
 	public String getCpf() {
@@ -67,6 +80,7 @@ public class Aluno {
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf.replace(".", "").replace("-", "");
+
 	}
 
 	public String getEmail() {

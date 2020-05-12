@@ -85,7 +85,6 @@ public class NotasFaltasDAO {
 			ps.setInt(2, nf.getFaltas());
 			ps.setString(3, nf.getAluno().getRgm());
 			ps.setInt(4, nf.getDisciplina().getId());
-			
 			ps.setInt(5, nf.getCurso().getId());
 
 			ps.executeUpdate();
