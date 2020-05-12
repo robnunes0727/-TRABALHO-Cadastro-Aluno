@@ -42,7 +42,11 @@ import br.com.exemplo.util.Globals;
 import net.miginfocom.swing.MigLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
@@ -60,6 +64,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingWorker;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -162,6 +168,8 @@ public class TelaPrincipal extends JFrame {
 	private JMenuItem mnExplicacao;
 	private JMenuItem mntmCdigoSql;
 	private JSpinner txtNotasFaltas;
+	private boolean[] erroDados = new boolean[] {true, true, true, true, true, true, true, true}; 
+											    // rgm,nome, nasc,  cpf, email, end, munic, celular 
 
 	/**
 	 * Launch the application.
@@ -189,6 +197,7 @@ public class TelaPrincipal extends JFrame {
 	 * Create the frame.
 	 */
 	public TelaPrincipal() throws Exception {
+		
 		setIconImage(new ImageIcon(getClass().getResource("/icones/icon.png")).getImage());
 		setFont(new Font("Verdana", Font.PLAIN, 18));		
 		setTitle("Cadastro Aluno");
@@ -205,7 +214,17 @@ public class TelaPrincipal extends JFrame {
 		mnAlSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// MENU ALUNO > Salvar
-				alunoSalvar();
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						alunoSalvar();
+						return null;
+					}
+				}.execute();
+				enableDisable(contentPane, true);
+				enableDisable(menuBar, true);
 				// Fim ALUNO > Salvar
 			}
 		});
@@ -216,7 +235,17 @@ public class TelaPrincipal extends JFrame {
 		mnAlAlterar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// MENU ALUNO > ALTERAR
-				alunoAlterar();
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				mudarStatus("Executando...");
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						alunoAlterar();
+						return null;
+					}
+				}.execute();
+				enableDisable(contentPane, true);
+				enableDisable(menuBar, true);
 				// FIM
 			}
 		});
@@ -226,7 +255,17 @@ public class TelaPrincipal extends JFrame {
 		mnAlConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// MENU Aluno consultar
-				alunoConsultar();
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						alunoConsultar();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();
 				// FIM aluno consultar
 			}
 		});
@@ -236,7 +275,17 @@ public class TelaPrincipal extends JFrame {
 		mnAlExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// MENU EXCLUIR
-				alunoExcluir();
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						alunoExcluir();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();
 				// FIM
 			}
 		});
@@ -268,7 +317,18 @@ public class TelaPrincipal extends JFrame {
 		mnNtSalvar = new JMenuItem("Salvar");
 		mnNtSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				notasSalvar();
+				// Menu NOTAS salvar
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						notasSalvar();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();
 			}
 		});
 		mnNotasFaltas.add(mnNtSalvar);
@@ -276,7 +336,18 @@ public class TelaPrincipal extends JFrame {
 		mnNtAlterar = new JMenuItem("Alterar");
 		mnNtAlterar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				notasAlterar();
+				// Menu NOTAS Alterar
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);;
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						notasAlterar();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();
 			}
 		});
 		mnNtAlterar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
@@ -285,7 +356,17 @@ public class TelaPrincipal extends JFrame {
 		mnNtExcluir = new JMenuItem("Excluir");
 		mnNtExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				notasExcluir();
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						notasExcluir();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();
 			}
 		});
 		mnNotasFaltas.add(mnNtExcluir);
@@ -293,7 +374,18 @@ public class TelaPrincipal extends JFrame {
 		mnNtConsultar = new JMenuItem("Consultar");
 		mnNtConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				notasConsultar();
+				// MENU NOTAS CONSULTAR
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						notasConsultar();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();
 			}
 		});
 		mnNotasFaltas.add(mnNtConsultar);
@@ -409,7 +501,25 @@ public class TelaPrincipal extends JFrame {
 		lblRgm.setFont(new Font("Verdana", Font.PLAIN, 18));
 		tabDadosPessoais.add(lblRgm, "cell 0 0,alignx right");
 		
-		txtRgm = new JFormattedTextField(new MaskFormatter("########"));;
+		txtRgm = new JFormattedTextField(new MaskFormatter("########"));
+		txtRgm.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(txtRgm.getText().trim().isEmpty()){
+					txtRgm.setBackground(Color.RED);
+					mudarStatus("RGM inválido.");
+					tabbedPane.setEnabledAt(1, false);
+					erroDados[0] = true;
+				}
+				else {
+					txtRgm.setBackground(Color.WHITE);
+					mudarStatus("");
+					if (!txtRgm.getText().contains(" "))
+						tabbedPane.setEnabledAt(1, true);
+					erroDados[0] = false;
+				}
+			}
+		});
 		txtRgm.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		tabDadosPessoais.add(txtRgm, "cell 1 0,growx");
 		txtRgm.setColumns(10);
@@ -419,6 +529,21 @@ public class TelaPrincipal extends JFrame {
 		tabDadosPessoais.add(lblNome, "cell 3 0,alignx trailing");
 		
 		txtNome = new JTextField();
+		txtNome.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(txtNome.getText().trim().isEmpty()){
+					txtNome.setBackground(Color.RED);
+					mudarStatus("Nome em branco.");
+					erroDados[1] = true;
+				}
+				else {
+					txtNome.setBackground(Color.WHITE);
+					mudarStatus("");
+					erroDados[1] = false;
+				}
+			}
+		});
 		txtNome.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		txtNome.setColumns(10);
 		tabDadosPessoais.add(txtNome, "cell 4 0 2 1,growx");
@@ -441,13 +566,15 @@ public class TelaPrincipal extends JFrame {
 						+ "(29\\/02\\/((1[6-9]|[2-9]\\d)(0[48]|[2468][048]|"
 						+ "[13579][26])|((16|[2468][048]|[3579][26])00))))$";			
 				
-				if(txtNasc.getText().matches(padraoData)){
-					txtNasc.setBackground(Color.GREEN);
-					mudarStatus("");
-				}
-				else {
+				if(!txtNasc.getText().matches(padraoData)){
 					txtNasc.setBackground(Color.RED);
 					mudarStatus("Data inválida.");
+					erroDados[2] = true;
+				}
+				else {
+					mudarStatus("");
+					txtNasc.setBackground(Color.WHITE);
+					erroDados[2] = false;
 				}
 			}
 		});
@@ -460,6 +587,21 @@ public class TelaPrincipal extends JFrame {
 		tabDadosPessoais.add(lblCpf, "cell 3 1,alignx trailing");
 		
 		txtCpf = new JFormattedTextField(new MaskFormatter("###.###.###-##"));
+		txtCpf.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(txtCpf.getText().contains(" ")){
+					txtCpf.setBackground(Color.RED);
+					mudarStatus("CPF inválido.");
+					erroDados[3] = true;
+				}
+				else {
+					txtCpf.setBackground(Color.WHITE);
+					mudarStatus("");
+					erroDados[3] = false;
+				}
+			}
+		});
 		txtCpf.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		tabDadosPessoais.add(txtCpf, "cell 4 1,growx");
 		
@@ -468,6 +610,21 @@ public class TelaPrincipal extends JFrame {
 		tabDadosPessoais.add(lblEmail, "cell 0 2,alignx right");
 		
 		txtEmail = new JTextField();
+		txtEmail.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(txtEmail.getText().trim().isEmpty() || !txtEmail.getText().contains("@")){
+					txtEmail.setBackground(Color.RED);
+					mudarStatus("E-mail invalido.");
+					erroDados[4] = true;
+				}
+				else {
+					txtEmail.setBackground(Color.WHITE);
+					mudarStatus("");
+					erroDados[4] = false;
+				}
+			}
+		});
 		txtEmail.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		txtEmail.setColumns(10);
 		tabDadosPessoais.add(txtEmail, "cell 1 2 5 1,growx");
@@ -477,6 +634,21 @@ public class TelaPrincipal extends JFrame {
 		tabDadosPessoais.add(lblEnd, "cell 0 3,alignx right");
 		
 		txtEndereco = new JTextField();
+		txtEndereco.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(txtEndereco.getText().trim().isEmpty()){
+					txtEndereco.setBackground(Color.RED);
+					mudarStatus("Endereço em branco.");
+					erroDados[5] = true;
+				}
+				else {
+					txtEndereco.setBackground(Color.WHITE);
+					mudarStatus("");
+					erroDados[5] = false;
+				}
+			}
+		});
 		txtEndereco.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		txtEndereco.setColumns(10);
 		tabDadosPessoais.add(txtEndereco, "cell 1 3 5 1,growx");
@@ -486,6 +658,21 @@ public class TelaPrincipal extends JFrame {
 		tabDadosPessoais.add(lblMunicipio, "cell 0 4,alignx right");
 		
 		txtMunicipio = new JTextField();
+		txtMunicipio.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(txtMunicipio.getText().trim().isEmpty()){
+					txtMunicipio.setBackground(Color.RED);
+					mudarStatus("Município em branco.");
+					erroDados[6] = true;
+				}
+				else {
+					txtMunicipio.setBackground(Color.WHITE);
+					mudarStatus("");
+					erroDados[6] = false;
+				}
+			}
+		});
 		txtMunicipio.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		txtMunicipio.setColumns(10);
 		tabDadosPessoais.add(txtMunicipio, "cell 1 4 4 1,growx");
@@ -516,6 +703,21 @@ public class TelaPrincipal extends JFrame {
 		tabDadosPessoais.add(lblCel, "cell 3 5,alignx trailing");
 		
 		txtCelular = new JFormattedTextField(new MaskFormatter("(##) #####-####"));
+		txtCelular.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(txtCelular.getText().contains("  ")){
+					txtCelular.setBackground(Color.RED);
+					mudarStatus("Celular em branco.");
+					erroDados[7] = true;
+				}
+				else {
+					txtCelular.setBackground(Color.WHITE);
+					mudarStatus("");
+					erroDados[7] = false;
+				}
+			}
+		});
 		txtCelular.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		txtCelular.setColumns(10);
 		tabDadosPessoais.add(txtCelular, "cell 4 5,growx");
@@ -524,7 +726,17 @@ public class TelaPrincipal extends JFrame {
 		btnAlunoInserir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// Botão AlunoSalvar
-				alunoSalvar();
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						alunoSalvar();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();
 			}
 		});
 		
@@ -546,7 +758,17 @@ public class TelaPrincipal extends JFrame {
 		btnAlunoConsulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Botão alunoConsultar
-				alunoConsultar();
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						alunoConsultar();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();
 				// FIM 
 			}
 		});
@@ -558,7 +780,17 @@ public class TelaPrincipal extends JFrame {
 		btnAlunoAlterar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Botão aluno alterar
-				alunoAlterar();
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						alunoAlterar();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();
 			}
 		});
 		btnAlunoAlterar.setToolTipText("Editar");
@@ -569,7 +801,17 @@ public class TelaPrincipal extends JFrame {
 		btnAlunoExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Botão excluir
-				alunoExcluir();
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						alunoExcluir();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();
 				// FIM
 			}
 		});
@@ -579,6 +821,7 @@ public class TelaPrincipal extends JFrame {
 		
 		tabCurso = new JPanel();
 		tabbedPane.addTab("Dados do Curso", null, tabCurso, "Dados do curso do aluno.");
+		tabbedPane.setEnabledAt(1, false);
 		tabCurso.setLayout(new MigLayout("", "[][10][grow][180:180:180,grow][100px:100px:100px,grow][25]", "[][25][][25][][25][]"));
 		
 		lblCurso = new JLabel("Curso");
@@ -586,7 +829,7 @@ public class TelaPrincipal extends JFrame {
 		tabCurso.add(lblCurso, "cell 0 0,alignx right");
 		
 		cmbCurso = new JComboBox();
-		cmbCurso.setModel(new DefaultComboBoxModel(new String[] {"Análise e Desenvolvimento de Sistemas", "Ciência da Computação", "Medicina"})); // ** Talvez fazer puxar da db? Hardcoded por enquanto.
+		cmbCurso.setModel(new DefaultComboBoxModel(new String[] {"Análise e Desenvolvimento de Sistemas", "Ciência da Computação", "Medicina"}));
 		cmbCurso.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		tabCurso.add(cmbCurso, "cell 2 0 3 1,growx");
 		
@@ -622,7 +865,17 @@ public class TelaPrincipal extends JFrame {
 		btnCursoInserir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// Botão inserir curso
-				cursoInserir();
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						cursoInserir();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();				
 				// FIM BOTÃO INSERIR CURSO
 			}
 		});
@@ -648,7 +901,17 @@ public class TelaPrincipal extends JFrame {
 		btnCursoConsulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// BOTÃO CURSO CONSULTAR
-				cursoConsultar();
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						cursoConsultar();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();
 				// FIM
 			}
 		});
@@ -658,7 +921,17 @@ public class TelaPrincipal extends JFrame {
 		btnCursoAlterar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// BOTÃO CURSO ALTERAR
-				cursoAlterar();
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						cursoAlterar();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();
 				// FIM 
 			}
 		});
@@ -670,7 +943,17 @@ public class TelaPrincipal extends JFrame {
 		btnCursoExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// BOTÃO CURSO EXCLUIR
-				cursoExcluir();
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						cursoExcluir();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();
 			}
 		});
 		btnCursoExcluir.setIcon(new ImageIcon(getClass().getResource("/icones/delete.png")));
@@ -706,7 +989,18 @@ public class TelaPrincipal extends JFrame {
 		txtNotasRGM = new JFormattedTextField(new MaskFormatter("########"));
 		txtNotasRGM.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				NotasFaltasRgm();
+				// Notas RGM ENTER
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						NotasFaltasRgm();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();
 			}
 		});
 		txtNotasRGM.setFont(new Font("Monospaced", Font.PLAIN, 18));
@@ -717,7 +1011,18 @@ public class TelaPrincipal extends JFrame {
 		txtNotasNome.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				NotasFaltasRgm();
+				// Notas RGM Click
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						NotasFaltasRgm();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();
 			}
 		});
 		txtNotasNome.setText("Pressione ENTER ou clique aqui");
@@ -778,7 +1083,18 @@ public class TelaPrincipal extends JFrame {
 		btnNotasInserir = new JButton("");
 		btnNotasInserir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				notasSalvar();
+				// NOTAS SALVAR
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						notasSalvar();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();
 			}
 		});
 		
@@ -799,7 +1115,17 @@ public class TelaPrincipal extends JFrame {
 		btnNotasConsulta = new JButton("");
 		btnNotasConsulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				notasConsultar();
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						notasConsultar();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();
 			}
 		});
 		btnNotasConsulta.setIcon(new ImageIcon(getClass().getResource("/icones/lookup.png")));
@@ -809,7 +1135,17 @@ public class TelaPrincipal extends JFrame {
 		btnNotasAlterar = new JButton("");
 		btnNotasAlterar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				notasAlterar();
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						notasAlterar();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();
 			}
 		});
 		btnNotasAlterar.setIcon(new ImageIcon(getClass().getResource("/icones/edit.png")));
@@ -819,7 +1155,17 @@ public class TelaPrincipal extends JFrame {
 		btnNotasExcluir = new JButton("");
 		btnNotasExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				notasExcluir();
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						notasExcluir();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();
 			}
 		});
 		btnNotasExcluir.setIcon(new ImageIcon(getClass().getResource("/icones/delete.png")));
@@ -841,6 +1187,21 @@ public class TelaPrincipal extends JFrame {
 		tabBoletim.add(lblBoletimSemestre);
 		
 		txtBoletimRGM = new JFormattedTextField((new MaskFormatter("########")));
+		txtBoletimRGM.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						boletimListar();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();
+			}
+		});
 		txtBoletimRGM.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		txtBoletimRGM.setColumns(8);
 		txtBoletimRGM.setBounds(61, 8, 120, 31);
@@ -856,7 +1217,17 @@ public class TelaPrincipal extends JFrame {
 		btnNewButton.setFont(new Font("Verdana", Font.PLAIN, 18));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				boletimListar();
+				mudarStatus("Executando...");
+				enableDisable(contentPane, false);
+				enableDisable(menuBar, false);
+				new SwingWorker<Void, Void>() { // Criando uma nova thread para o programa ficar responsivo.
+					protected Void doInBackground() throws Exception {
+						boletimListar();
+						enableDisable(contentPane, true);
+						enableDisable(menuBar, true);
+						return null;
+					}
+				}.execute();
 			}
 		});
 		btnNewButton.setBounds(540, 8, 109, 28);
@@ -873,9 +1244,10 @@ public class TelaPrincipal extends JFrame {
 		scrollPane.setViewportView(tbBoletim);
 		tbBoletim.setEnabled(false);
 		tbBoletim.setModel(tModel);
+		tbBoletim.setAutoCreateRowSorter(true);
 		
 		setTamanhoColunasBoletim();
-	
+
 		txtStatus = new JTextField();
 		txtStatus.setToolTipText("Mensagens do sistema aparecem aqui.");
 		txtStatus.setEditable(false);
@@ -883,12 +1255,13 @@ public class TelaPrincipal extends JFrame {
 		txtStatus.setBounds(10, 348, 664, 25);
 		contentPane.add(txtStatus);
 		txtStatus.setColumns(10);
-		
+		txtStatus.setText("Mensagens do sistema aparecem aqui.");
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	/***************************************** FUNÇÕES GERAIS ********************************************/
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	public void mudarStatus(String status) {
 		txtStatus.setText(status);
 	}
@@ -905,13 +1278,60 @@ public class TelaPrincipal extends JFrame {
 			Globals.banco = 1;
 		}
 	}
+	
+	// POLIMORFISMO RECURSIVO QUE DEIXA TUDO DISABLED / ENABLED
+	private void enableDisable(JPanel painel, boolean isEnabled) {
+		Component[] elementos = painel.getComponents();
+		painel.getRootPane().setEnabled(isEnabled);
+		for (Component el : elementos) {
+			if (el instanceof JPanel) {
+				enableDisable((JPanel) el, isEnabled);
+			} else if (el instanceof JTabbedPane) {
+				enableDisable((JTabbedPane) el, isEnabled);
+			}
+			el.setEnabled(isEnabled);
+		}
+	}
+	
+	private void enableDisable(JMenuBar menu, boolean isEnabled) {
+		Component[] elementos = menu.getComponents();
+		
+		for (Component el : elementos) {
+			if (el instanceof JMenuBar) {
+				enableDisable((JMenuBar) el, isEnabled);
+			}
+			el.setEnabled(isEnabled);
+		}
+	}
+	
+	private void enableDisable(JTabbedPane aba, boolean isEnabled) {
+		Component[] elementos = aba.getComponents();
+		
+		for (Component el : elementos) {
+			if (el instanceof JTabbedPane) {
+				enableDisable((JTabbedPane) el, isEnabled);
+			} else if (el instanceof JPanel) {
+				enableDisable((JPanel) el, isEnabled);
+			}
+			el.setEnabled(isEnabled);
+		}
+	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	/******************************************* ABA ALUNO ***********************************************/
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	private void alunoSalvar() {
-		mudarStatus("Executando...");
 		// Usado no botão e no menu Aluno > Salvar
+		
+		// Testar se tem algum erro nos dados
+		for (boolean b : erroDados) {
+			if (b) {
+				mudarStatus("Erro nos dados: Campos em branco ou inválidos.");
+				return; 
+			}
+		}
+		
+		// Inserir
 		try {
 			Aluno aluno = new Aluno();
 			AlunoDAO dao = new AlunoDAO();
@@ -931,13 +1351,20 @@ public class TelaPrincipal extends JFrame {
 			mudarStatus("Salvo com sucesso");
 			
 			} catch(Exception e) {
+				e.printStackTrace();
 				System.out.println("Erro ao salvar: " + e.getMessage());
 				mudarStatus("Erro ao salvar: " + e.getMessage());
 			}
 	}
 	
 	private void alunoConsultar() {
-		mudarStatus("Executando...");
+		// Testar se tem algum erro no campo RGM
+		if (erroDados[0] == true) {
+			mudarStatus("Erro nos dados: Campos em branco ou inválidos.");
+			return; 
+		}
+		
+		// Consultar
 		try {
 			Aluno aluno = new AlunoDAO().consultar(txtRgm.getText());
 			
@@ -958,7 +1385,15 @@ public class TelaPrincipal extends JFrame {
 	}
 	
 	private void alunoAlterar() {
-		mudarStatus("Executando...");
+		// Testar erro nos campos
+		for (boolean b : erroDados) {
+			if (b) {
+				mudarStatus("Erro nos dados: Campos em branco ou inválidos.");
+				return; 
+			}
+		}
+		
+		// Alterar
 		try {
 			Aluno aluno = new Aluno();
 			AlunoDAO dao = new AlunoDAO();
@@ -984,7 +1419,6 @@ public class TelaPrincipal extends JFrame {
 	}
 	
 	private void alunoExcluir() {
-		mudarStatus("Executando...");
 		try {
 			AlunoDAO dao = new AlunoDAO();
 			dao.excluir(txtRgm.getText());
@@ -999,7 +1433,6 @@ public class TelaPrincipal extends JFrame {
 	/******************************************** ABA CURSO **********************************************/
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	private void cursoInserir() {
-		mudarStatus("Executando...");
 		try {
 			Aluno aluno = new Aluno();
 			Curso curso = new Curso();
@@ -1027,7 +1460,6 @@ public class TelaPrincipal extends JFrame {
 	}
 	
 	private void cursoConsultar() {
-		mudarStatus("Executando...");
 		try {
 
 			AlunoEmTurma alunoTurma = new AlunoEmTurmaDAO().consultar(txtRgm.getText());
@@ -1056,7 +1488,6 @@ public class TelaPrincipal extends JFrame {
 	}
 	
 	private void cursoAlterar() {
-		mudarStatus("Executando...");
 		try {
 			Aluno aluno = new Aluno();
 			Curso curso = new Curso();
@@ -1085,7 +1516,6 @@ public class TelaPrincipal extends JFrame {
 	}
 	
 	private void cursoExcluir() {
-		mudarStatus("Executando...");
 		try {
 			AlunoEmTurmaDAO dao = new AlunoEmTurmaDAO();		
 			
@@ -1102,7 +1532,6 @@ public class TelaPrincipal extends JFrame {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	private void NotasFaltasRgm() {
-		mudarStatus("Executando...");
 		try {
 			AlunoEmTurmaDAO dao = new AlunoEmTurmaDAO();
 			
@@ -1135,8 +1564,6 @@ public class TelaPrincipal extends JFrame {
 	}
 	
 	private void notasSalvar() {
-		mudarStatus("Executando...");
-		
 		NotasFaltas nf = new NotasFaltas();	
 		
 		int disciplinaId;
@@ -1146,8 +1573,8 @@ public class TelaPrincipal extends JFrame {
 		try {
 			String[] nomeDisc = cmbNotasDisciplina.getSelectedItem().toString().split(" - ");
 			String[] dcId = nomeDisc[1].split(" / ");
-			disciplinaId = Integer.parseInt(dcId[0]);
-			cursoId = Integer.parseInt(dcId[1]);
+			cursoId = Integer.parseInt(dcId[0]);
+			disciplinaId = Integer.parseInt(dcId[1]);
 		} catch (Exception e) {
 			mudarStatus("Disciplina inválida");
 			return;
@@ -1178,9 +1605,7 @@ public class TelaPrincipal extends JFrame {
 		}
 	}
 	
-	private void notasConsultar() {
-		mudarStatus("Executando...");
-		
+	private void notasConsultar() {		
 		NotasFaltas nf;
 		int disciplinaId;
 		int cursoId;
@@ -1189,8 +1614,8 @@ public class TelaPrincipal extends JFrame {
 		try {
 			String[] nomeDisc = cmbNotasDisciplina.getSelectedItem().toString().split(" - ");
 			String[] dcId = nomeDisc[1].split(" / ");
-			disciplinaId = Integer.parseInt(dcId[0]);
-			cursoId = Integer.parseInt(dcId[1]);
+			cursoId = Integer.parseInt(dcId[0]);
+			disciplinaId = Integer.parseInt(dcId[1]);
 		} catch (Exception e) {
 			mudarStatus("Disciplina inválida");
 			return;
@@ -1208,8 +1633,6 @@ public class TelaPrincipal extends JFrame {
 	}
 	
 	private void notasAlterar() {
-		mudarStatus("Executando...");
-		
 		NotasFaltas nf = new NotasFaltas();
 		int disciplinaId;
 		int cursoId;
@@ -1222,8 +1645,8 @@ public class TelaPrincipal extends JFrame {
 		try {
 			String[] nomeDisc = cmbNotasDisciplina.getSelectedItem().toString().split(" - ");
 			String[] dcId = nomeDisc[1].split(" / ");
-			disciplinaId = Integer.parseInt(dcId[0]);
-			cursoId = Integer.parseInt(dcId[1]);
+			cursoId = Integer.parseInt(dcId[0]);
+			disciplinaId = Integer.parseInt(dcId[1]);
 		} catch (Exception e) {
 			mudarStatus("Disciplina inválida");
 			return;
@@ -1236,6 +1659,10 @@ public class TelaPrincipal extends JFrame {
 		Curso c = new Curso();
 		c.setId(cursoId);
 		nf.setCurso(c);
+		
+		nf.setFaltas((int)txtNotasFaltas.getValue());
+		nf.setNota(Double.parseDouble(cmbNotasNota.getSelectedItem().toString().replace(",", ".")));
+		
 		try {
 			NotasFaltasDAO dao = new NotasFaltasDAO();
 			dao.alterar(nf);
@@ -1246,8 +1673,6 @@ public class TelaPrincipal extends JFrame {
 	}
 	
 	private void notasExcluir() {
-		mudarStatus("Executando...");
-		
 		NotasFaltas nf = new NotasFaltas();
 		int disciplinaId;
 		int cursoId;
@@ -1256,8 +1681,8 @@ public class TelaPrincipal extends JFrame {
 		try {
 			String[] nomeDisc = cmbNotasDisciplina.getSelectedItem().toString().split(" - ");
 			String[] dcId = nomeDisc[1].split(" / ");
-			disciplinaId = Integer.parseInt(dcId[0]);
-			cursoId = Integer.parseInt(dcId[1]);
+			cursoId = Integer.parseInt(dcId[0]);
+			disciplinaId = Integer.parseInt(dcId[1]);
 		} catch (Exception e) {
 			mudarStatus("Disciplina inválida");
 			return;
@@ -1289,7 +1714,6 @@ public class TelaPrincipal extends JFrame {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	private void boletimListar() {
-		mudarStatus("Executando...");
 		try {
 			BoletimDAO dao = new BoletimDAO();
 			List<Boletim> bolList = dao.listar(txtBoletimRGM.getText(), cmbBoletimSemestre.getSelectedItem().toString());

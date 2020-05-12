@@ -87,7 +87,8 @@ public class NotasFaltasDAO {
 			ps.setInt(4, nf.getDisciplina().getId());
 			ps.setInt(5, nf.getCurso().getId());
 
-			ps.executeUpdate();
+			if (ps.executeUpdate() == 0)
+				throw new Exception("Nada alterado");
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}

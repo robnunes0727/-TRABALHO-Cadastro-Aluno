@@ -84,7 +84,8 @@ public class AlunoDAO {
 			ps.setString(8, aluno.getCelular());
 			ps.setString(9, aluno.getRgm());
 
-			ps.executeUpdate();
+			if (ps.executeUpdate() == 0)
+				throw new Exception("Nada alterado");
 			
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());

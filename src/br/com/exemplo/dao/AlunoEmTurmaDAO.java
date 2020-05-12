@@ -47,6 +47,8 @@ public class AlunoEmTurmaDAO {
 			System.out.println(e.getMessage());
 			if (e.getMessage().contains("for key 'alunoemturma.PRIMARY'"))
 				throw new Exception("Esse aluno já está cadastrado em um curso.");
+			else if (e.getMessage().contains("Cannot add or update a child row: a foreign key constraint fails"))
+				throw new Exception("Aluno não encontrado");
 			throw new Exception(e.getMessage());
 		}
 	}
@@ -101,7 +103,7 @@ public class AlunoEmTurmaDAO {
 			ps.setString(3, alunoTurma.getTurma().getPeriodo());
 			ps.setString(4, alunoTurma.getTurma().getSemestre());
 			ps.setString(5, alunoTurma.getAluno().getRgm());
-
+			System.out.println(ps);
 			ps.executeUpdate();
 			
 		} catch (Exception e) {
