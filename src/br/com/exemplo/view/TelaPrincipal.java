@@ -108,7 +108,7 @@ public class TelaPrincipal extends JFrame {
 	private JLabel lblEnd;
 	private JTextField txtEndereco;
 	private JLabel lblMunicipio;
-	private JTextField txtMunicipio;
+	private JFormattedTextField txtMunicipio;
 	private JLabel lblEstado;
 	private JComboBox cmbEstado;
 	private JLabel lblCel;
@@ -532,9 +532,10 @@ public class TelaPrincipal extends JFrame {
 		txtNome.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if(txtNome.getText().trim().isEmpty()){
+				String chars = "[0-9]|\\!|\\@|\\#|\\$|\\&|\\*|\\\\|\\(|\\)|\\=|\\-|\\+|\\>|\\<|\\;|\\/|\\,|\\|"; //regex
+				if(txtNome.getText().trim().isEmpty() || txtNome.getText().replaceAll(chars, "%").contains("%")){
 					txtNome.setBackground(Color.RED);
-					mudarStatus("Nome em branco.");
+					mudarStatus("Nome em branco / inválido.");
 					erroDados[1] = true;
 				}
 				else {
@@ -657,22 +658,7 @@ public class TelaPrincipal extends JFrame {
 		lblMunicipio.setFont(new Font("Verdana", Font.PLAIN, 18));
 		tabDadosPessoais.add(lblMunicipio, "cell 0 4,alignx right");
 		
-		txtMunicipio = new JTextField();
-		txtMunicipio.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if(txtMunicipio.getText().trim().isEmpty()){
-					txtMunicipio.setBackground(Color.RED);
-					mudarStatus("Município em branco.");
-					erroDados[6] = true;
-				}
-				else {
-					txtMunicipio.setBackground(Color.WHITE);
-					mudarStatus("");
-					erroDados[6] = false;
-				}
-			}
-		});
+		txtMunicipio = new JFormattedTextField(new MaskFormatter("??????????????????????????????????????????????"));
 		txtMunicipio.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		txtMunicipio.setColumns(10);
 		tabDadosPessoais.add(txtMunicipio, "cell 1 4 4 1,growx");
@@ -1279,7 +1265,8 @@ public class TelaPrincipal extends JFrame {
 		}
 	}
 	
-	// POLIMORFISMO RECURSIVO QUE DEIXA TUDO DISABLED / ENABLED
+	// POLIMORFISMO RECURSIVO QUE DEIXA TUDO DISABLED / ENABLED - Não precisava fazer assim mas ficou legal
+	
 	private void enableDisable(JPanel painel, boolean isEnabled) {
 		Component[] elementos = painel.getComponents();
 		painel.getRootPane().setEnabled(isEnabled);
@@ -1342,7 +1329,7 @@ public class TelaPrincipal extends JFrame {
 			aluno.setCpf(txtCpf.getText());
 			aluno.setEmail(txtEmail.getText());
 			aluno.setEndereco(txtEndereco.getText());
-			aluno.setMunicipio(txtMunicipio.getText());
+			aluno.setMunicipio(txtMunicipio.getText().trim());
 			aluno.setUf((String)cmbEstado.getSelectedItem());
 			aluno.setCelular(txtCelular.getText());
 			
@@ -1404,7 +1391,7 @@ public class TelaPrincipal extends JFrame {
 			aluno.setCpf(txtCpf.getText());
 			aluno.setEmail(txtEmail.getText());
 			aluno.setEndereco(txtEndereco.getText());
-			aluno.setMunicipio(txtMunicipio.getText());
+			aluno.setMunicipio(txtMunicipio.getText().trim());
 			aluno.setUf((String)cmbEstado.getSelectedItem());
 			aluno.setCelular(txtCelular.getText());
 			
