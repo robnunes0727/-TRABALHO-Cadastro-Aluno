@@ -45,7 +45,7 @@ public class AlunoEmTurmaDAO {
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			if (e.getMessage().contains("for key 'alunoemturma.PRIMARY'"))
+			if (e.getMessage().toLowerCase().contains("for key 'alunoemturma.primary'"))
 				throw new Exception("Esse aluno já está cadastrado em um curso.");
 			else if (e.getMessage().contains("Cannot add or update a child row: a foreign key constraint fails"))
 				throw new Exception("Aluno não encontrado");
@@ -107,7 +107,7 @@ public class AlunoEmTurmaDAO {
 			ps.executeUpdate();
 			
 		} catch (Exception e) {
-			if (e.getMessage().contains("'Turma_id' cannot be null"))
+			if (e.getMessage().toLowerCase().contains("'turma_id' cannot be null"))
 				throw new Exception("Turma não existe.");
 			throw new Exception(e.getMessage());
 		}
