@@ -91,20 +91,9 @@ public class AlunoEmTurmaDAO {
 	
 	public void alterar(AlunoEmTurma alunoTurma) throws Exception {
 		try {
-			String sql = "UPDATE AlunoEmTurma SET AlunoEmTurma.Turma_id = " + 
-					"(SELECT id FROM Turma WHERE Curso_id = " + 
-					"(SELECT id FROM Curso WHERE nome = ? AND campus = ? AND periodo = ? AND semestre = ?)) " + 
-					"WHERE Aluno_rgm = ?";
-			
-			ps = conn.prepareStatement(sql);
-			
-			ps.setString(1, alunoTurma.getTurma().getCurso().getNome());
-			ps.setString(2, alunoTurma.getTurma().getCurso().getCampus());
-			ps.setString(3, alunoTurma.getTurma().getPeriodo());
-			ps.setString(4, alunoTurma.getTurma().getSemestre());
-			ps.setString(5, alunoTurma.getAluno().getRgm());
-
-			ps.executeUpdate();
+		
+			excluir(alunoTurma.getAluno().getRgm());
+			salvar(alunoTurma);
 			
 		} catch (Exception e) {
 			if (e.getMessage().toLowerCase().contains("'turma_id' cannot be null"))

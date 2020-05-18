@@ -1041,18 +1041,18 @@ public class TelaPrincipal extends JFrame {
 		
 		lblNotasDisciplina = new JLabel("Disciplina:");
 		lblNotasDisciplina.setFont(new Font("Verdana", Font.PLAIN, 18));
-		tabNotasFaltas.add(lblNotasDisciplina, "flowx,cell 0 2 5 1,alignx trailing");
+		tabNotasFaltas.add(lblNotasDisciplina, "flowx,cell 0 2 6 1,alignx trailing");
 		
 		cmbNotasDisciplina = new JComboBox();
 		cmbNotasDisciplina.setEnabled(false);
 		cmbNotasDisciplina.setModel(new DefaultComboBoxModel(new String[] {"Preencha o RGM"}));
 		cmbNotasDisciplina.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXX");
 		cmbNotasDisciplina.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		tabNotasFaltas.add(cmbNotasDisciplina, "cell 0 2 5 1,growx");
+		tabNotasFaltas.add(cmbNotasDisciplina, "cell 0 2 6 1,growx");
 		
 		lblNotasSemestre = new JLabel("Semestre:");
 		lblNotasSemestre.setFont(new Font("Verdana", Font.PLAIN, 18));
-		tabNotasFaltas.add(lblNotasSemestre, "cell 5 2,alignx trailing");
+		tabNotasFaltas.add(lblNotasSemestre, "flowx,cell 6 2,alignx trailing");
 		
 		cmbNotasSemestre = new JComboBox();
 		cmbNotasSemestre.setModel(new DefaultComboBoxModel(new String[] {"2020-01", "2019-02"}));
@@ -1579,8 +1579,8 @@ public class TelaPrincipal extends JFrame {
 		try {
 			String[] nomeDisc = cmbNotasDisciplina.getSelectedItem().toString().split(" - ");
 			String[] dcId = nomeDisc[1].split(" / ");
-			cursoId = Integer.parseInt(dcId[0]);
-			disciplinaId = Integer.parseInt(dcId[1]);
+			disciplinaId = Integer.parseInt(dcId[0]);
+			cursoId = Integer.parseInt(dcId[1]);
 		} catch (Exception e) {
 			mudarStatus("Disciplina inválida");
 			return;
@@ -1621,8 +1621,8 @@ public class TelaPrincipal extends JFrame {
 		try {
 			String[] nomeDisc = cmbNotasDisciplina.getSelectedItem().toString().split(" - ");
 			String[] dcId = nomeDisc[1].split(" / ");
-			cursoId = Integer.parseInt(dcId[0]);
-			disciplinaId = Integer.parseInt(dcId[1]);
+			disciplinaId = Integer.parseInt(dcId[0]);
+			cursoId = Integer.parseInt(dcId[1]);
 		} catch (Exception e) {
 			mudarStatus("Disciplina inválida");
 			return;
@@ -1652,8 +1652,8 @@ public class TelaPrincipal extends JFrame {
 		try {
 			String[] nomeDisc = cmbNotasDisciplina.getSelectedItem().toString().split(" - ");
 			String[] dcId = nomeDisc[1].split(" / ");
-			cursoId = Integer.parseInt(dcId[0]);
-			disciplinaId = Integer.parseInt(dcId[1]);
+			disciplinaId = Integer.parseInt(dcId[0]);
+			cursoId = Integer.parseInt(dcId[1]);
 		} catch (Exception e) {
 			mudarStatus("Disciplina inválida");
 			return;
@@ -1688,8 +1688,8 @@ public class TelaPrincipal extends JFrame {
 		try {
 			String[] nomeDisc = cmbNotasDisciplina.getSelectedItem().toString().split(" - ");
 			String[] dcId = nomeDisc[1].split(" / ");
-			cursoId = Integer.parseInt(dcId[0]);
-			disciplinaId = Integer.parseInt(dcId[1]);
+			disciplinaId = Integer.parseInt(dcId[0]);
+			cursoId = Integer.parseInt(dcId[1]);
 		} catch (Exception e) {
 			mudarStatus("Disciplina inválida");
 			return;
@@ -1722,13 +1722,15 @@ public class TelaPrincipal extends JFrame {
 	
 	private void boletimListar() {
 		try {
-			BoletimDAO dao = new BoletimDAO();
-			List<Boletim> bolList = dao.listar(txtBoletimRGM.getText(), cmbBoletimSemestre.getSelectedItem().toString());
-			
+			// Limpa as colunas
 			DefaultTableModel rModel = new DefaultTableModel();
 			Object[] colunas = new Object[] {"RGM", "Nome do Aluno", "Disciplina", "Notas", "Faltas", "Periodo", "Curso", "Semestre"};
 			rModel.setColumnIdentifiers(colunas);
+			tbBoletim.setModel(rModel);
 			
+			BoletimDAO dao = new BoletimDAO();
+			List<Boletim> bolList = dao.listar(txtBoletimRGM.getText(), cmbBoletimSemestre.getSelectedItem().toString());
+						
 			for (Boletim b : bolList) {
 				//{"RGM", "Nome do Aluno", "Disciplina", "Notas", "Faltas", "Periodo", "Curso", "Semestre"}
 				String[] linha = new String[8];
@@ -1752,7 +1754,6 @@ public class TelaPrincipal extends JFrame {
 				rModel.addRow(linha);
 			}
 
-			tbBoletim.setModel(rModel);
 			setTamanhoColunasBoletim();
 			mudarStatus("Boletim criado com sucesso");
 		} catch (Exception e) {

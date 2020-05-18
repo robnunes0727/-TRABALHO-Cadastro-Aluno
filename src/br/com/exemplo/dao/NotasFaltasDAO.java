@@ -27,6 +27,7 @@ public class NotasFaltasDAO {
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, nf.getCurso().getId());
 			ps.setString(2, nf.getSemestre());
+			System.out.println(ps);
 			rs = ps.executeQuery();
 			
 			if(!rs.next()) {
@@ -42,7 +43,7 @@ public class NotasFaltasDAO {
 			ps.setDouble(3, nf.getNota());
 			ps.setInt(4, nf.getDisciplina().getId());
 			ps.setInt(5, nf.getCurso().getId());
-			
+			System.out.println(ps);
 			ps.executeUpdate();
 			
 		} catch (Exception e) {
