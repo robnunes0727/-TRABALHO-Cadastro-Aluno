@@ -26,7 +26,7 @@ public class NotasFaltasDAO {
 			String sql = "INSERT INTO NotasFaltas (Aluno_rgm, Faltas, Nota, Disciplina_id, Curso_id) "
 					+ "VALUES (?, ?, ?, ?, ?)";
 
-			ps = conn.prepareStatement(sql.toLowerCase());
+			ps = conn.prepareStatement(sql);
 			ps.setString(1, nf.getAluno().getRgm());
 			ps.setInt(2, nf.getFaltas());
 			ps.setDouble(3, nf.getNota());
@@ -45,7 +45,7 @@ public class NotasFaltasDAO {
 	public NotasFaltas consultar(String rgm, int DiscId, int Cid) throws Exception {
 		try {
 			String sql = "SELECT Nota, Faltas FROM NotasFaltas WHERE Aluno_rgm = ? AND Disciplina_id = ? AND Curso_id = ?";
-			ps = conn.prepareStatement(sql.toLowerCase());
+			ps = conn.prepareStatement(sql);
 			
 			ps.setString(1, rgm);
 			ps.setInt(2, DiscId);
@@ -78,7 +78,7 @@ public class NotasFaltasDAO {
 	public void alterar(NotasFaltas nf) throws Exception {
 		try {
 			String sql = "UPDATE NotasFaltas SET Nota = ?, Faltas = ? WHERE Aluno_rgm = ? AND Disciplina_id = ? AND Curso_id = ?";
-			ps = conn.prepareStatement(sql.toLowerCase());
+			ps = conn.prepareStatement(sql);
 			
 			ps.setDouble(1, nf.getNota());
 			ps.setInt(2, nf.getFaltas());
@@ -96,7 +96,7 @@ public class NotasFaltasDAO {
 	public void excluir(NotasFaltas nf) throws Exception {
 		try {
 			String sql = "DELETE FROM NotasFaltas WHERE Aluno_rgm = ? AND Disciplina_id = ? AND Curso_id = ?";
-			ps = conn.prepareStatement(sql.toLowerCase());
+			ps = conn.prepareStatement(sql);
 			
 			ps.setString(1, nf.getAluno().getRgm());
 			ps.setInt(2, nf.getDisciplina().getId());

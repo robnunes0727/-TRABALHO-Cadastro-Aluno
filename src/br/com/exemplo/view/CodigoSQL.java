@@ -79,46 +79,153 @@ public class CodigoSQL extends JDialog {
 						});
 						txtDDL.setFont(new Font("Consolas", Font.PLAIN, 11));
 						scrollPane.setViewportView(txtDDL);
-						txtDDL.setText("-- MySQL Workbench Forward Engineering\r\n\r\nSET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;\r\nSET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, "
-								+ "FOREIGN_KEY_CHECKS=0;\r\nSET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,N"
-								+ "O_ENGINE_SUBSTITUTION';\r\n\r\n-- -----------------------------------------------------\r\n-- Schema roberto_unicid\r\n-- ---------------------------------------"
-								+ "--------------\r\nDROP SCHEMA IF EXISTS `roberto_unicid` ;\r\n\r\n-- -----------------------------------------------------\r\n-- Schema roberto_unicid\r\n-- ----"
-								+ "-------------------------------------------------\r\nCREATE SCHEMA IF NOT EXISTS `roberto_unicid` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;\r\nU"
-								+ "SE `roberto_unicid` ;\r\n\r\n-- -----------------------------------------------------\r\n-- Table `roberto_unicid`.`aluno`\r\n-- --------------------------------"
-								+ "---------------------\r\nCREATE TABLE IF NOT EXISTS `roberto_unicid`.`aluno` (\r\n  `rgm` CHAR(8) NOT NULL,\r\n  `nome` VARCHAR(45) NOT NULL,\r\n  `nascimento` D"
-								+ "ATE NOT NULL,\r\n  `cpf` CHAR(11) NOT NULL,\r\n  `email` VARCHAR(45) NOT NULL DEFAULT 'NENHUM',\r\n  `endereco` VARCHAR(45) NOT NULL,\r\n  `municipio` VARCHAR(45"
-								+ ") NOT NULL,\r\n  `uf` CHAR(2) NOT NULL,\r\n  `celular` VARCHAR(45) NOT NULL DEFAULT '000000000000',\r\n  PRIMARY KEY (`rgm`))\r\nENGINE = InnoDB\r\nDEFAULT CHARA"
-								+ "CTER SET = utf8mb4\r\nCOLLATE = utf8mb4_0900_ai_ci;\r\n\r\nCREATE UNIQUE INDEX `cpf_UNIQUE` ON `roberto_unicid`.`aluno` (`cpf` ASC) VISIBLE;\r\n\r\n\r\n-- ------"
-								+ "-----------------------------------------------\r\n-- Table `roberto_unicid`.`curso`\r\n-- -----------------------------------------------------\r\nCREATE TABLE "
-								+ "IF NOT EXISTS `roberto_unicid`.`curso` (\r\n  `id` INT NOT NULL,\r\n  `nome` VARCHAR(80) NOT NULL,\r\n  `campus` VARCHAR(45) NOT NULL,\r\n  PRIMARY KEY (`id`))\r"
-								+ "\nENGINE = InnoDB\r\nDEFAULT CHARACTER SET = utf8mb4\r\nCOLLATE = utf8mb4_0900_ai_ci;\r\n\r\n\r\n-- -----------------------------------------------------\r\n-- T"
-								+ "able `roberto_unicid`.`turma`\r\n-- -----------------------------------------------------\r\nCREATE TABLE IF NOT EXISTS `roberto_unicid`.`turma` (\r\n  `id` INT "
-								+ "NOT NULL,\r\n  `curso_id` INT NOT NULL,\r\n  `periodo` CHAR(1) NOT NULL,\r\n  `semestre` CHAR(7) NOT NULL,\r\n  PRIMARY KEY (`id`),\r\n  CONSTRAINT `fk_Turma_Cur"
-								+ "so1`\r\n    FOREIGN KEY (`curso_id`)\r\n    REFERENCES `roberto_unicid`.`curso` (`id`))\r\nENGINE = InnoDB\r\nDEFAULT CHARACTER SET = utf8mb4\r\nCOLLATE = utf8mb"
-								+ "4_0900_ai_ci;\r\n\r\nCREATE INDEX `fk_Turma_Curso1_idx` ON `roberto_unicid`.`turma` (`curso_id` ASC) VISIBLE;\r\n\r\n\r\n-- -------------------------------------"
-								+ "----------------\r\n-- Table `roberto_unicid`.`alunoemturma`\r\n-- -----------------------------------------------------\r\nCREATE TABLE IF NOT EXISTS `roberto_u"
-								+ "nicid`.`alunoemturma` (\r\n  `Aluno_rgm` CHAR(8) NOT NULL,\r\n  `Turma_id` INT NOT NULL,\r\n  PRIMARY KEY (`Aluno_rgm`),\r\n  CONSTRAINT `fk_Aluno_has_Turma_Alun"
-								+ "o1`\r\n    FOREIGN KEY (`Aluno_rgm`)\r\n    REFERENCES `roberto_unicid`.`aluno` (`rgm`)\r\n    ON DELETE CASCADE,\r\n  CONSTRAINT `fk_Aluno_has_Turma_Turma1`\r\n"
-								+ "    FOREIGN KEY (`Turma_id`)\r\n    REFERENCES `roberto_unicid`.`turma` (`id`))\r\nENGINE = InnoDB\r\nDEFAULT CHARACTER SET = utf8mb4\r\nCOLLATE = utf8mb4_0900_a"
-								+ "i_ci;\r\n\r\nCREATE UNIQUE INDEX `Aluno_rgm_UNIQUE` ON `roberto_unicid`.`alunoemturma` (`Aluno_rgm` ASC) VISIBLE;\r\n\r\nCREATE INDEX `fk_Aluno_has_Turma_Turma1_"
-								+ "idx` ON `roberto_unicid`.`alunoemturma` (`Turma_id` ASC) VISIBLE;\r\n\r\nCREATE INDEX `fk_Aluno_has_Turma_Aluno1_idx` ON `roberto_unicid`.`alunoemturma` (`Aluno_"
-								+ "rgm` ASC) VISIBLE;\r\n\r\n\r\n-- -----------------------------------------------------\r\n-- Table `roberto_unicid`.`disciplina`\r\n-- --------------------------"
-								+ "---------------------------\r\nCREATE TABLE IF NOT EXISTS `roberto_unicid`.`disciplina` (\r\n  `id` INT NOT NULL,\r\n  `nome` VARCHAR(45) NOT NULL,\r\n  PRIMARY "
-								+ "KEY (`id`))\r\nENGINE = InnoDB\r\nDEFAULT CHARACTER SET = utf8mb4\r\nCOLLATE = utf8mb4_0900_ai_ci;\r\n\r\n\r\n-- ------------------------------------------------"
-								+ "-----\r\n-- Table `roberto_unicid`.`disciplinaemcurso`\r\n-- -----------------------------------------------------\r\nCREATE TABLE IF NOT EXISTS `roberto_unicid`"
-								+ ".`disciplinaemcurso` (\r\n  `Disciplina_id` INT NOT NULL,\r\n  `Curso_id` INT NOT NULL,\r\n  PRIMARY KEY (`Disciplina_id`, `Curso_id`),\r\n  CONSTRAINT `fk_Disci"
-								+ "plina_has_Curso_Curso1`\r\n    FOREIGN KEY (`Curso_id`)\r\n    REFERENCES `roberto_unicid`.`curso` (`id`),\r\n  CONSTRAINT `fk_Disciplina_has_Curso_Disciplina1`\r"
-								+ "\n    FOREIGN KEY (`Disciplina_id`)\r\n    REFERENCES `roberto_unicid`.`disciplina` (`id`))\r\nENGINE = InnoDB\r\nDEFAULT CHARACTER SET = utf8mb4\r\nCOLLATE = ut"
-								+ "f8mb4_0900_ai_ci;\r\n\r\nCREATE INDEX `fk_Disciplina_has_Curso_Curso1_idx` ON `roberto_unicid`.`disciplinaemcurso` (`Curso_id` ASC) VISIBLE;\r\n\r\nCREATE INDEX "
-								+ "`fk_Disciplina_has_Curso_Disciplina1_idx` ON `roberto_unicid`.`disciplinaemcurso` (`Disciplina_id` ASC) VISIBLE;\r\n\r\n\r\n-- ----------------------------------"
-								+ "-------------------\r\n-- Table `roberto_unicid`.`notasfaltas`\r\n-- -----------------------------------------------------\r\nCREATE TABLE IF NOT EXISTS `roberto"
-								+ "_unicid`.`notasfaltas` (\r\n  `Aluno_rgm` CHAR(8) NOT NULL,\r\n  `Faltas` INT NOT NULL DEFAULT '0',\r\n  `Nota` FLOAT(3,1) NOT NULL DEFAULT '0.0',\r\n  `Discipli"
-								+ "na_id` INT NOT NULL,\r\n  `Curso_id` INT NOT NULL,\r\n  PRIMARY KEY (`Aluno_rgm`, `Disciplina_id`, `Curso_id`),\r\n  CONSTRAINT `fk_NotasFaltas_AlunoEmTurma1`\r\n"
-								+ "    FOREIGN KEY (`Aluno_rgm`)\r\n    REFERENCES `roberto_unicid`.`alunoemturma` (`Aluno_rgm`),\r\n  CONSTRAINT `fk_NotasFaltas_DisciplinaEmCurso1`\r\n    FOREIGN"
-								+ " KEY (`Disciplina_id` , `Curso_id`)\r\n    REFERENCES `roberto_unicid`.`disciplinaemcurso` (`Disciplina_id` , `Curso_id`))\r\nENGINE = InnoDB\r\nDEFAULT CHARACTE"
-								+ "R SET = utf8mb4\r\nCOLLATE = utf8mb4_0900_ai_ci;\r\n\r\nCREATE INDEX `fk_NotasFaltas_AlunoEmTurma1_idx` ON `roberto_unicid`.`notasfaltas` (`Aluno_rgm` ASC) VISIB"
-								+ "LE;\r\n\r\nCREATE INDEX `fk_NotasFaltas_DisciplinaEmCurso1_idx` ON `roberto_unicid`.`notasfaltas` (`Disciplina_id` ASC, `Curso_id` ASC) VISIBLE;\r\n\r\n\r\nSET S"
-								+ "QL_MODE=@OLD_SQL_MODE;\r\nSET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;\r\nSET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;\r\n");
+						txtDDL.setText("-- MySQL Workbench Forward Engineering\r\n" + 
+								"\r\n" + 
+								"SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;\r\n" + 
+								"SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;\r\n" + 
+								"SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';\r\n" + 
+								"\r\n" + 
+								"-- -----------------------------------------------------\r\n" + 
+								"-- Schema roberto_unicid\r\n" + 
+								"-- -----------------------------------------------------\r\n" + 
+								"DROP SCHEMA IF EXISTS `roberto_unicid` ;\r\n" + 
+								"\r\n" + 
+								"-- -----------------------------------------------------\r\n" + 
+								"-- Schema roberto_unicid\r\n" + 
+								"-- -----------------------------------------------------\r\n" + 
+								"CREATE SCHEMA IF NOT EXISTS `roberto_unicid` ;\r\n" + 
+								"USE `roberto_unicid` ;\r\n" + 
+								"\r\n" + 
+								"-- -----------------------------------------------------\r\n" + 
+								"-- Table `roberto_unicid`.`Aluno`\r\n" + 
+								"-- -----------------------------------------------------\r\n" + 
+								"CREATE TABLE IF NOT EXISTS `roberto_unicid`.`Aluno` (\r\n" + 
+								"  `rgm` CHAR(8) NOT NULL,\r\n" + 
+								"  `nome` VARCHAR(45) NOT NULL,\r\n" + 
+								"  `nascimento` DATE NOT NULL,\r\n" + 
+								"  `cpf` CHAR(11) NOT NULL,\r\n" + 
+								"  `email` VARCHAR(45) NOT NULL DEFAULT 'NENHUM',\r\n" + 
+								"  `endereco` VARCHAR(45) NOT NULL,\r\n" + 
+								"  `municipio` VARCHAR(45) NOT NULL,\r\n" + 
+								"  `uf` CHAR(2) NOT NULL,\r\n" + 
+								"  `celular` VARCHAR(45) NOT NULL DEFAULT '000000000000',\r\n" + 
+								"  PRIMARY KEY (`rgm`),\r\n" + 
+								"  UNIQUE INDEX `cpf_UNIQUE` (`cpf` ASC) VISIBLE)\r\n" + 
+								"ENGINE = InnoDB;\r\n" + 
+								"\r\n" + 
+								"\r\n" + 
+								"-- -----------------------------------------------------\r\n" + 
+								"-- Table `roberto_unicid`.`Curso`\r\n" + 
+								"-- -----------------------------------------------------\r\n" + 
+								"CREATE TABLE IF NOT EXISTS `roberto_unicid`.`Curso` (\r\n" + 
+								"  `id` INT NOT NULL,\r\n" + 
+								"  `nome` VARCHAR(80) NOT NULL,\r\n" + 
+								"  `campus` VARCHAR(45) NOT NULL,\r\n" + 
+								"  PRIMARY KEY (`id`))\r\n" + 
+								"ENGINE = InnoDB;\r\n" + 
+								"\r\n" + 
+								"\r\n" + 
+								"-- -----------------------------------------------------\r\n" + 
+								"-- Table `roberto_unicid`.`Disciplina`\r\n" + 
+								"-- -----------------------------------------------------\r\n" + 
+								"CREATE TABLE IF NOT EXISTS `roberto_unicid`.`Disciplina` (\r\n" + 
+								"  `id` INT NOT NULL,\r\n" + 
+								"  `nome` VARCHAR(45) NOT NULL,\r\n" + 
+								"  PRIMARY KEY (`id`))\r\n" + 
+								"ENGINE = InnoDB;\r\n" + 
+								"\r\n" + 
+								"\r\n" + 
+								"-- -----------------------------------------------------\r\n" + 
+								"-- Table `roberto_unicid`.`Turma`\r\n" + 
+								"-- -----------------------------------------------------\r\n" + 
+								"CREATE TABLE IF NOT EXISTS `roberto_unicid`.`Turma` (\r\n" + 
+								"  `id` INT NOT NULL,\r\n" + 
+								"  `curso_id` INT NOT NULL,\r\n" + 
+								"  `periodo` CHAR(1) NOT NULL,\r\n" + 
+								"  `semestre` CHAR(7) NOT NULL,\r\n" + 
+								"  PRIMARY KEY (`id`),\r\n" + 
+								"  INDEX `fk_Turma_Curso1_idx` (`curso_id` ASC) VISIBLE,\r\n" + 
+								"  CONSTRAINT `fk_Turma_Curso1`\r\n" + 
+								"    FOREIGN KEY (`curso_id`)\r\n" + 
+								"    REFERENCES `roberto_unicid`.`Curso` (`id`)\r\n" + 
+								"    ON DELETE CASCADE\r\n" + 
+								"    ON UPDATE CASCADE)\r\n" + 
+								"ENGINE = InnoDB;\r\n" + 
+								"\r\n" + 
+								"\r\n" + 
+								"-- -----------------------------------------------------\r\n" + 
+								"-- Table `roberto_unicid`.`AlunoEmTurma`\r\n" + 
+								"-- -----------------------------------------------------\r\n" + 
+								"CREATE TABLE IF NOT EXISTS `roberto_unicid`.`AlunoEmTurma` (\r\n" + 
+								"  `Aluno_rgm` CHAR(8) NOT NULL,\r\n" + 
+								"  `Turma_id` INT NOT NULL,\r\n" + 
+								"  INDEX `fk_Aluno_has_Turma_Turma1_idx` (`Turma_id` ASC) VISIBLE,\r\n" + 
+								"  INDEX `fk_Aluno_has_Turma_Aluno1_idx` (`Aluno_rgm` ASC) VISIBLE,\r\n" + 
+								"  UNIQUE INDEX `Aluno_rgm_UNIQUE` (`Aluno_rgm` ASC) VISIBLE,\r\n" + 
+								"  PRIMARY KEY (`Aluno_rgm`),\r\n" + 
+								"  CONSTRAINT `fk_Aluno_has_Turma_Aluno1`\r\n" + 
+								"    FOREIGN KEY (`Aluno_rgm`)\r\n" + 
+								"    REFERENCES `roberto_unicid`.`Aluno` (`rgm`)\r\n" + 
+								"    ON DELETE CASCADE\r\n" + 
+								"    ON UPDATE CASCADE,\r\n" + 
+								"  CONSTRAINT `fk_Aluno_has_Turma_Turma1`\r\n" + 
+								"    FOREIGN KEY (`Turma_id`)\r\n" + 
+								"    REFERENCES `roberto_unicid`.`Turma` (`id`)\r\n" + 
+								"    ON DELETE CASCADE\r\n" + 
+								"    ON UPDATE CASCADE)\r\n" + 
+								"ENGINE = InnoDB;\r\n" + 
+								"\r\n" + 
+								"\r\n" + 
+								"-- -----------------------------------------------------\r\n" + 
+								"-- Table `roberto_unicid`.`DisciplinaEmCurso`\r\n" + 
+								"-- -----------------------------------------------------\r\n" + 
+								"CREATE TABLE IF NOT EXISTS `roberto_unicid`.`DisciplinaEmCurso` (\r\n" + 
+								"  `Disciplina_id` INT NOT NULL,\r\n" + 
+								"  `Curso_id` INT NOT NULL,\r\n" + 
+								"  INDEX `fk_Disciplina_has_Curso_Curso1_idx` (`Curso_id` ASC) VISIBLE,\r\n" + 
+								"  INDEX `fk_Disciplina_has_Curso_Disciplina1_idx` (`Disciplina_id` ASC) VISIBLE,\r\n" + 
+								"  PRIMARY KEY (`Disciplina_id`, `Curso_id`),\r\n" + 
+								"  CONSTRAINT `fk_Disciplina_has_Curso_Disciplina1`\r\n" + 
+								"    FOREIGN KEY (`Disciplina_id`)\r\n" + 
+								"    REFERENCES `roberto_unicid`.`Disciplina` (`id`)\r\n" + 
+								"    ON DELETE CASCADE\r\n" + 
+								"    ON UPDATE CASCADE,\r\n" + 
+								"  CONSTRAINT `fk_Disciplina_has_Curso_Curso1`\r\n" + 
+								"    FOREIGN KEY (`Curso_id`)\r\n" + 
+								"    REFERENCES `roberto_unicid`.`Curso` (`id`)\r\n" + 
+								"    ON DELETE CASCADE\r\n" + 
+								"    ON UPDATE CASCADE)\r\n" + 
+								"ENGINE = InnoDB;\r\n" + 
+								"\r\n" + 
+								"\r\n" + 
+								"-- -----------------------------------------------------\r\n" + 
+								"-- Table `roberto_unicid`.`NotasFaltas`\r\n" + 
+								"-- -----------------------------------------------------\r\n" + 
+								"CREATE TABLE IF NOT EXISTS `roberto_unicid`.`NotasFaltas` (\r\n" + 
+								"  `Aluno_rgm` CHAR(8) NOT NULL,\r\n" + 
+								"  `Faltas` INT NOT NULL DEFAULT 0,\r\n" + 
+								"  `Nota` FLOAT(3,1) NOT NULL DEFAULT 0,\r\n" + 
+								"  `Disciplina_id` INT NOT NULL,\r\n" + 
+								"  `Curso_id` INT NOT NULL,\r\n" + 
+								"  PRIMARY KEY (`Aluno_rgm`, `Disciplina_id`, `Curso_id`),\r\n" + 
+								"  INDEX `fk_NotasFaltas_AlunoEmTurma1_idx` (`Aluno_rgm` ASC) VISIBLE,\r\n" + 
+								"  INDEX `fk_NotasFaltas_DisciplinaEmCurso1_idx` (`Disciplina_id` ASC, `Curso_id` ASC) VISIBLE,\r\n" + 
+								"  CONSTRAINT `fk_NotasFaltas_AlunoEmTurma1`\r\n" + 
+								"    FOREIGN KEY (`Aluno_rgm`)\r\n" + 
+								"    REFERENCES `roberto_unicid`.`AlunoEmTurma` (`Aluno_rgm`)\r\n" + 
+								"    ON DELETE CASCADE\r\n" + 
+								"    ON UPDATE CASCADE,\r\n" + 
+								"  CONSTRAINT `fk_NotasFaltas_DisciplinaEmCurso1`\r\n" + 
+								"    FOREIGN KEY (`Disciplina_id` , `Curso_id`)\r\n" + 
+								"    REFERENCES `roberto_unicid`.`DisciplinaEmCurso` (`Disciplina_id` , `Curso_id`)\r\n" + 
+								"    ON DELETE CASCADE\r\n" + 
+								"    ON UPDATE CASCADE)\r\n" + 
+								"ENGINE = InnoDB;\r\n" + 
+								"\r\n" + 
+								"\r\n" + 
+								"SET SQL_MODE=@OLD_SQL_MODE;\r\n" + 
+								"SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;\r\n" + 
+								"SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;\r\n");
 						{
 							JPopupMenu popupMenu = new JPopupMenu();
 							addPopup(txtDDL, popupMenu);

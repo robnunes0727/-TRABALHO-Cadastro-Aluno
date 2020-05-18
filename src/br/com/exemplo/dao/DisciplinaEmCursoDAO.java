@@ -26,7 +26,7 @@ public class DisciplinaEmCursoDAO {
 					+ "INNER JOIN Disciplina ON Disciplina_id = Disciplina.id "
 					+ "WHERE Curso_id = ?";
 			
-			ps = conn.prepareStatement(sql.toLowerCase());
+			ps = conn.prepareStatement(sql);
 			ps.setInt(1, idCurso);
 			rs = ps.executeQuery();
 			

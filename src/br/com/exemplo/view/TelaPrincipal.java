@@ -658,7 +658,22 @@ public class TelaPrincipal extends JFrame {
 		lblMunicipio.setFont(new Font("Verdana", Font.PLAIN, 18));
 		tabDadosPessoais.add(lblMunicipio, "cell 0 4,alignx right");
 		
-		txtMunicipio = new JFormattedTextField(new MaskFormatter("??????????????????????????????????????????????"));
+		txtMunicipio = new JFormattedTextField();
+		txtMunicipio.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				String p = "^([\\.\\ \\u00c0-\\u01ffa-zA-Z'\\-])+$";
+				if (!txtMunicipio.getText().matches(p)) {
+					txtMunicipio.setBackground(Color.RED);
+					mudarStatus("Caracteres invalidos no campo Municipio.");
+					erroDados[6] = true;
+				} else {
+					txtMunicipio.setBackground(Color.WHITE);
+					mudarStatus("");
+					erroDados[6] = false;
+				}
+			}
+		});
 		txtMunicipio.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		txtMunicipio.setColumns(10);
 		tabDadosPessoais.add(txtMunicipio, "cell 1 4 4 1,growx");
@@ -1365,6 +1380,8 @@ public class TelaPrincipal extends JFrame {
 			txtCelular.setText(aluno.getCelular());
 			
 			mudarStatus("Consulta realizada com sucesso");
+			erroDados = new boolean[] {false, false, false, false, false, false, false, false}; 
+			
 		} catch (Exception e) {
 			mudarStatus("Erro ao consultar: " + e.getMessage());
 			System.out.println("Erro ao consultar: " + e.getMessage());

@@ -33,7 +33,7 @@ public class BoletimDAO {
 					   + "INNER JOIN Turma t ON t.id = at.Turma_id "
 					   + "WHERE n.Aluno_rgm = ? AND t.semestre = ?";
 			
-			ps = conn.prepareStatement(sql.toLowerCase());
+			ps = conn.prepareStatement(sql);
 			
 			ps.setString(1, rgm);
 			ps.setString(2, semestre);
