@@ -1547,9 +1547,6 @@ public class TelaPrincipal extends JFrame {
 			String descricao = curso.getNome() + " - " + alunoTurma.getTurma().getPeriodo() + " / " + curso.getCampus();
 			txtNotasCurso.setText(descricao);
 			
-			// Habilitar lista
-			cmbNotasDisciplina.setEnabled(true);
-			
 			// Apagar mensagem de RGM
 			cmbNotasDisciplina.setModel(new DefaultComboBoxModel(new String[] {}));
 			
@@ -1561,6 +1558,10 @@ public class TelaPrincipal extends JFrame {
 			for (Disciplina disciplina : disciplinas) {
 				cmbNotasDisciplina.addItem(disciplina.getNome()  + " - " + disciplina.getId() + " / " + curso.getId());
 			}
+			
+			// Habilitar lista
+			cmbNotasDisciplina.setEnabled(true);
+			
 			mudarStatus("Dados do aluno buscados com sucesso");
 		} catch (Exception e) {
 			mudarStatus("Erro ao trazer dados do aluno: " + e.getMessage());
