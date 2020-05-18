@@ -6,6 +6,7 @@ public class NotasFaltas {
 	private Curso curso;
 	private int faltas;
 	private double nota;
+	private String semestre;
 	
 	public NotasFaltas() {
 		// TODO Auto-generated constructor stub
@@ -58,5 +59,14 @@ public class NotasFaltas {
 	public void setNota(double nota) {
 		this.nota = nota;
 	}
+
+	public String getSemestre() {
+		return semestre;
+	}
+
+	public void setSemestre(String semestre) {
+		this.semestre = semestre;
+	}
+	
 	
 }

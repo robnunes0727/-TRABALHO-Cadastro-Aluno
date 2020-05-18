@@ -197,6 +197,7 @@ public class TelaPrincipal extends JFrame {
 	 * Create the frame.
 	 */
 	public TelaPrincipal() throws Exception {
+		setResizable(false);
 		
 		setIconImage(new ImageIcon(getClass().getResource("/icones/icon.png")).getImage());
 		setFont(new Font("Verdana", Font.PLAIN, 18));		
@@ -490,12 +491,12 @@ public class TelaPrincipal extends JFrame {
 		contentPane.setLayout(null);
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(10, 11, 664, 333);
+		tabbedPane.setBounds(10, 11, 680, 333);
 		contentPane.add(tabbedPane);
 		
 		tabDadosPessoais = new JPanel();
 		tabbedPane.addTab("Dados Pessoais", null, tabDadosPessoais, "Dados pessoais do aluno.");
-		tabDadosPessoais.setLayout(new MigLayout("", "[][120px:120px:120px,grow][][][170:170:170,grow][grow]", "[][][][][][][10][]"));
+		tabDadosPessoais.setLayout(new MigLayout("", "[][120px:120px:120px,grow][][][170:205.00:170,grow][grow]", "[][][][][][][10][]"));
 		
 		lblRgm = new JLabel("RGM");
 		lblRgm.setFont(new Font("Verdana", Font.PLAIN, 18));
@@ -823,7 +824,7 @@ public class TelaPrincipal extends JFrame {
 		tabCurso = new JPanel();
 		tabbedPane.addTab("Dados do Curso", null, tabCurso, "Dados do curso do aluno.");
 		tabbedPane.setEnabledAt(1, false);
-		tabCurso.setLayout(new MigLayout("", "[][10][grow][180:180:180,grow][100px:100px:100px,grow][25]", "[][25][][25][][25][]"));
+		tabCurso.setLayout(new MigLayout("", "[][10][grow][180:180:180,grow][100px:100px:100px,grow]", "[][25][][25][][25][]"));
 		
 		lblCurso = new JLabel("Curso");
 		lblCurso.setFont(new Font("Verdana", Font.PLAIN, 18));
@@ -850,7 +851,7 @@ public class TelaPrincipal extends JFrame {
 		
 		lblOnicoCurso_1 = new JLabel("O único curso em 2019-02 é MEDICINA");
 		lblOnicoCurso_1.setFont(new Font("Verdana", Font.PLAIN, 12));
-		tabCurso.add(lblOnicoCurso_1, "cell 3 3 3 1,alignx center,aligny top");
+		tabCurso.add(lblOnicoCurso_1, "cell 3 3 2 1,alignx center,aligny top");
 		
 		lblPeriodo = new JLabel("Período");
 		lblPeriodo.setFont(new Font("Verdana", Font.PLAIN, 18));
@@ -860,7 +861,7 @@ public class TelaPrincipal extends JFrame {
 		rdGrpPeriodo.add(rdMatutino);
 		rdMatutino.setActionCommand("M");
 		rdMatutino.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		tabCurso.add(rdMatutino, "flowx,cell 2 4 4 1,growx");
+		tabCurso.add(rdMatutino, "flowx,cell 2 4 3 1,growx");
 		
 		btnCursoInserir = new JButton("");
 		btnCursoInserir.addActionListener(new ActionListener() {
@@ -889,12 +890,12 @@ public class TelaPrincipal extends JFrame {
 		});
 		btnCursoNovo.setToolTipText("Novo");
 		btnCursoNovo.setIcon(new ImageIcon(getClass().getResource("/icones/clear.png")));
-		tabCurso.add(btnCursoNovo, "flowx,cell 0 6 6 1,alignx center");
+		tabCurso.add(btnCursoNovo, "flowx,cell 0 6 5 1,alignx center");
 		
 		
 		btnCursoInserir.setIcon(new ImageIcon(getClass().getResource("/icones/save.png")));
 		btnCursoInserir.setToolTipText("Salvar");
-		tabCurso.add(btnCursoInserir, "cell 0 6 6 1,alignx center");
+		tabCurso.add(btnCursoInserir, "cell 0 6 5 1,alignx center");
 		
 		btnCursoConsulta = new JButton("");
 		btnCursoConsulta.setToolTipText("Consultar");
@@ -916,7 +917,7 @@ public class TelaPrincipal extends JFrame {
 				// FIM
 			}
 		});
-		tabCurso.add(btnCursoConsulta, "cell 0 6 6 1,alignx center");
+		tabCurso.add(btnCursoConsulta, "cell 0 6 5 1,alignx center");
 		
 		btnCursoAlterar = new JButton("");
 		btnCursoAlterar.addActionListener(new ActionListener() {
@@ -938,7 +939,7 @@ public class TelaPrincipal extends JFrame {
 		});
 		btnCursoAlterar.setIcon(new ImageIcon(getClass().getResource("/icones/edit.png")));
 		btnCursoAlterar.setToolTipText("Editar");
-		tabCurso.add(btnCursoAlterar, "cell 0 6 6 1,alignx center");
+		tabCurso.add(btnCursoAlterar, "cell 0 6 5 1,alignx center");
 		
 		btnCursoExcluir = new JButton("");
 		btnCursoExcluir.addActionListener(new ActionListener() {
@@ -959,20 +960,20 @@ public class TelaPrincipal extends JFrame {
 		});
 		btnCursoExcluir.setIcon(new ImageIcon(getClass().getResource("/icones/delete.png")));
 		btnCursoExcluir.setToolTipText("Apagar");
-		tabCurso.add(btnCursoExcluir, "cell 0 6 6 1,alignx center");
+		tabCurso.add(btnCursoExcluir, "cell 0 6 5 1,alignx center");
 		
 		rdVespertino = new JRadioButton("Vespertino");
 		rdVespertino.setActionCommand("V");
 		rdGrpPeriodo.add(rdVespertino);
 		rdVespertino.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		tabCurso.add(rdVespertino, "cell 2 4 4 1,growx");
+		tabCurso.add(rdVespertino, "cell 2 4 3 1,growx");
 		
 		rdNoturno = new JRadioButton("Noturno");
 		rdNoturno.setSelected(true);
 		rdNoturno.setActionCommand("N");
 		rdGrpPeriodo.add(rdNoturno);
 		rdNoturno.setFont(new Font("Monospaced", Font.PLAIN, 18));
-		tabCurso.add(rdNoturno, "cell 2 4 4 1,growx");
+		tabCurso.add(rdNoturno, "cell 2 4 3 1,growx");
 		
 		cmbCursoSemestre = new JComboBox();
 		cmbCursoSemestre.setModel(new DefaultComboBoxModel(new String[] {"2020-01", "2019-02"}));
@@ -981,7 +982,7 @@ public class TelaPrincipal extends JFrame {
 		
 		tabNotasFaltas = new JPanel();
 		tabbedPane.addTab("Notas e Faltas", null, tabNotasFaltas, "Notas e faltas do aluno.");
-		tabNotasFaltas.setLayout(new MigLayout("", "[50:50:50,grow][70:70:70][25:25:25][80:80:80,grow][100px:100px:100px,grow][100:100:100,grow][60:60:60,grow][48:48:48,grow][80:80:80]", "[][][][][25][]"));
+		tabNotasFaltas.setLayout(new MigLayout("", "[50:50:50,grow][70:70:70][25:25:25][80:80:80,grow][100px:100px:100px,grow][100:100:100,grow][60:60:60,grow][48:48:48,grow][grow]", "[][][][][25][]"));
 		
 		lblNotasRGM = new JLabel("RGM:");
 		lblNotasRGM.setFont(new Font("Verdana", Font.PLAIN, 18));
@@ -1184,7 +1185,7 @@ public class TelaPrincipal extends JFrame {
 		
 		lblBoletimSemestre = new JLabel("Semestre:");
 		lblBoletimSemestre.setFont(new Font("Verdana", Font.PLAIN, 18));
-		lblBoletimSemestre.setBounds(191, 11, 104, 23);
+		lblBoletimSemestre.setBounds(235, 11, 104, 23);
 		tabBoletim.add(lblBoletimSemestre);
 		
 		txtBoletimRGM = new JFormattedTextField((new MaskFormatter("########")));
@@ -1211,7 +1212,7 @@ public class TelaPrincipal extends JFrame {
 		cmbBoletimSemestre = new JComboBox();
 		cmbBoletimSemestre.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		cmbBoletimSemestre.setModel(new DefaultComboBoxModel(new String[] {"2020-01", "2019-02"}));
-		cmbBoletimSemestre.setBounds(293, 10, 129, 26);
+		cmbBoletimSemestre.setBounds(336, 10, 129, 26);
 		tabBoletim.add(cmbBoletimSemestre);
 		
 		btnNewButton = new JButton("Buscar");
@@ -1231,14 +1232,14 @@ public class TelaPrincipal extends JFrame {
 				}.execute();
 			}
 		});
-		btnNewButton.setBounds(540, 8, 109, 28);
+		btnNewButton.setBounds(556, 8, 109, 28);
 		tabBoletim.add(btnNewButton);
 		DefaultTableModel tModel = new DefaultTableModel();
 		Object[] colunas = new Object[] {"RGM", "Nome do Aluno", "Disciplina", "Notas", "Faltas", "Periodo", "Curso", "Semestre"};
 		tModel.setColumnIdentifiers(colunas);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 45, 639, 249);
+		scrollPane.setBounds(10, 45, 655, 249);
 		tabBoletim.add(scrollPane);
 		
 		tbBoletim = new JTable();
@@ -1253,7 +1254,7 @@ public class TelaPrincipal extends JFrame {
 		txtStatus.setToolTipText("Mensagens do sistema aparecem aqui.");
 		txtStatus.setEditable(false);
 		txtStatus.setFont(new Font("Verdana", Font.PLAIN, 15));
-		txtStatus.setBounds(10, 348, 664, 25);
+		txtStatus.setBounds(10, 348, 678, 25);
 		contentPane.add(txtStatus);
 		txtStatus.setColumns(10);
 		txtStatus.setText("Mensagens do sistema aparecem aqui.");
@@ -1600,6 +1601,7 @@ public class TelaPrincipal extends JFrame {
 		// Tratamento de número com virgula
 		nf.setFaltas((int)txtNotasFaltas.getValue());
 		nf.setNota(Double.parseDouble(cmbNotasNota.getSelectedItem().toString().replace(",", ".")));
+		nf.setSemestre((String)cmbNotasSemestre.getSelectedItem());
 	
 		try {
 			NotasFaltasDAO dao = new NotasFaltasDAO();

@@ -23,7 +23,17 @@ public class NotasFaltasDAO {
 	
 	public void salvar(NotasFaltas nf) throws Exception {
 		try {
-			String sql = "INSERT INTO NotasFaltas (Aluno_rgm, Faltas, Nota, Disciplina_id, Curso_id) "
+			String sql = "SELECT id FROM Turma WHERE Curso_id = ? AND semestre = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, nf.getCurso().getId());
+			ps.setString(2, nf.getSemestre());
+			rs = ps.executeQuery();
+			
+			if(!rs.next()) {
+				throw new Exception("Semestre inválido.");
+			}
+				
+			sql = "INSERT INTO NotasFaltas (Aluno_rgm, Faltas, Nota, Disciplina_id, Curso_id) "
 					+ "VALUES (?, ?, ?, ?, ?)";
 
 			ps = conn.prepareStatement(sql);

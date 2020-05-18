@@ -53,6 +53,7 @@ public class CodigoSQL extends JDialog {
 	 * Create the dialog.
 	 */
 	public CodigoSQL() {
+		setModal(true);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(CodigoSQL.class.getResource("/icones/edit.png")));
 		setTitle("Código SQL");
 		setBounds(100, 100, 450, 468);
