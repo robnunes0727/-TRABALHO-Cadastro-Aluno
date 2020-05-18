@@ -57,9 +57,9 @@ public class AlunoEmTurmaDAO {
 		try {
 			String sql = "SELECT Aluno_rgm, aluno.nome as nome_aluno, Turma_id, Curso_id, periodo, semestre, curso.nome as nome_curso, campus " + 
 					"FROM AlunoEmTurma " + 
-					"INNER JOIN Turma ON Turma.id = AlunoEmTurma.Turma_id " + 
-					"INNER JOIN Curso ON Turma.curso_id = Curso.id " + 
-					"INNER JOIN Aluno ON Aluno.rgm = AlunoEmTurma.Aluno_rgm " + 
+					"INNER JOIN Turma turma ON turma.id = AlunoEmTurma.Turma_id " + 
+					"INNER JOIN Curso curso ON turma.curso_id = curso.id " + 
+					"INNER JOIN Aluno aluno ON aluno.rgm = AlunoEmTurma.Aluno_rgm " + 
 					"WHERE AlunoEmTurma.Aluno_rgm = ?";
 			
 			ps = conn.prepareStatement(sql);
