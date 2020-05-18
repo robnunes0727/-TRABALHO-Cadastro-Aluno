@@ -271,12 +271,46 @@ public class CodigoSQL extends JDialog {
 							}
 						});
 						txtDML.setFont(new Font("Consolas", Font.PLAIN, 11));
-						txtDML.setText("USE roberto_unicid;\n\n-- Adiciona cursos\nINSERT INTO Curso (id, nome, campus) VALUES \n(1, 'Análise e Desenvolvimento de Sistemas', 'Tatuapé'),\n(2, 'Ciên"
-								+ "cia da Computação', 'Tatuapé'),\n(3, 'Medicina', 'Pinheiros');\n\n-- Adiciona disciplinas\nINSERT INTO Disciplina (id, nome) VALUES \n(1, 'Java'),\n(2, 'PHP'),\n"
-								+ "(3, 'Farmacologia'),\n(4, 'Segurança de Dados'),\n(5, 'Virologia');\n\n-- Adiciona turmas\nINSERT INTO Turma (id, curso_id, periodo, semestre) VALUES \n(1, 3, 'M"
-								+ "', '2019-02'),\n(2, 3, 'V', '2019-02'),\n(3, 1, 'M', '2020-01'),\n(4, 2, 'M', '2020-01'),\n(5, 3, 'M', '2020-01'),\n(6, 1, 'V', '2020-01'),\n(7, 2, 'V', '2020-01"
-								+ "'),\n(8, 3, 'V', '2020-01'),\n(9, 1, 'N', '2020-01'),\n(10, 2, 'N', '2020-01');\n\n-- Associa cursos e disciplinas\nINSERT INTO DisciplinaEmCurso (Curso_id,Disci"
-								+ "plina_id) VALUES\n(1,1),\n(1,2),\n(2,1),\n(2,2),\n(2,4),\n(3,3),\n(3,5);\n\n");
+						txtDML.setText("USE roberto_unicid;\r\n" + 
+								"\r\n" + 
+								"\r\n" + 
+								"-- Adiciona cursos \r\n" + 
+								"INSERT INTO Curso (id, nome, campus) VALUES \r\n" + 
+								" (1, 'Análise e Desenvolvimento de Sistemas', 'Tatuapé'),\r\n" + 
+								" (2, 'Ciência da Computação', 'Tatuapé'),\r\n" + 
+								" (3, 'Medicina', 'Pinheiros');\r\n" + 
+								"\r\n" + 
+								"-- Adiciona disciplinas \r\n" + 
+								"INSERT INTO Disciplina (id, nome) VALUES \r\n" + 
+								" (1, 'Java'),\r\n" + 
+								" (2, 'PHP'),\r\n" + 
+								" (3, 'Farmacologia'),\r\n" + 
+								" (4, 'Segurança de Dados'),\r\n" + 
+								" (5, 'Virologia');\r\n" + 
+								"\r\n" + 
+								"-- Adiciona turmas \r\n" + 
+								"INSERT INTO Turma (id, curso_id, periodo, semestre) VALUES \r\n" + 
+								" (1, 3, 'M', '2019-02'),\r\n" + 
+								" (2, 3, 'V', '2019-02'),\r\n" + 
+								" (3, 1, 'M', '2020-01'),\r\n" + 
+								" (4, 2, 'M', '2020-01'),\r\n" + 
+								" (5, 3, 'M', '2020-01'),\r\n" + 
+								" (6, 1, 'V', '2020-01'),\r\n" + 
+								" (7, 2, 'V', '2020-01'),\r\n" + 
+								" (8, 3, 'V', '2020-01'),\r\n" + 
+								" (9, 1, 'N', '2020-01'),\r\n" + 
+								" (10, 2, 'N', '2020-01');\r\n" + 
+								"\r\n" + 
+								"-- Associa cursos e disciplinas\r\n" + 
+								"INSERT INTO DisciplinaEmCurso (Curso_id,Disciplina_id) VALUES\r\n" + 
+								"(1,1),\r\n" + 
+								"(1,2),\r\n" + 
+								"(2,1),\r\n" + 
+								"(2,2),\r\n" + 
+								"(2,4),\r\n" + 
+								"(3,3),\r\n" + 
+								"(3,5);\r\n" + 
+								"\r\n");
 						scrollPane.setViewportView(txtDML);
 						txtDML.setEditable(false);
 						{
