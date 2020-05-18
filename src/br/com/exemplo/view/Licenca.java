@@ -50,6 +50,7 @@ public class Licenca extends JDialog {
 	 * Create the dialog.
 	 */
 	public Licenca() {
+		setModal(true);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Licenca.class.getResource("/icones/icon.png")));
 		setTitle("Licenças e Recursos");
 		setResizable(false);

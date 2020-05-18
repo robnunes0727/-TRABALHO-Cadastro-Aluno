@@ -27,6 +27,7 @@ public class Saida extends JDialog {
 	// ----------------------------------------------------------------------- //
 	
 	public Saida() {
+		setModal(true);
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Saida.class.getResource("/icones/icon.png")));
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
